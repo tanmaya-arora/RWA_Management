@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from member.serializers import MemberSerializer, UserSerializerWithToken
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 import requests
 
 
@@ -37,15 +37,24 @@ def register_member(request):
 def login_member(request):
     data = request.body
 
-    splitlist = str(data).split('&')
+    #splitlist = str(data).split('&')
 
-    username_raw = splitlist[0].split('=')[1]
-    password_raw = splitlist[1].split('=')[1]
+    #username_raw = splitlist[0].split('=')[1]
+    #password_raw = splitlist[1].split('=')[1]
 
-    username = username_raw.replace('%40', '@')
-    password = password_raw[0:len(password_raw)-1]
+    parsed_body = QueryDict(data.decode())
+    
+    print("Parsed body in login_members is ",parsed_body)
+    
+    username = parsed_body.get('username')
+    password = parsed_body.get('password')
 
-    if username == '' or password == '' or (username == '' and password == ''):
+    print("Username final is ",username)
+    print("Password final is ",password)
+    
+    if username == '' or username != None or password == '' or \
+        password != None or ((username == '' or username != None) and \
+                             (password == '' or password != None)):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
     res = requests.post("http://localhost:8000/token/", data=
