@@ -28,13 +28,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='member',
             name='res_city',
-            field=models.ForeignKey(default=9999999, on_delete=django.db.models.deletion.CASCADE, to='member.city'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='member.city'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='member',
             name='res_country',
-            field=models.ForeignKey(default='NA', on_delete=django.db.models.deletion.CASCADE, to='member.country'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='member.country'),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -46,25 +46,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='member',
             name='res_state',
-            field=models.ForeignKey(default='NA', on_delete=django.db.models.deletion.CASCADE, to='member.state'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='member.state'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='tenant',
             name='res_area',
-            field=models.ForeignKey(default='NA', on_delete=django.db.models.deletion.CASCADE, to='member.society'),
+            field=models.ForeignKey(default=999999, on_delete=django.db.models.deletion.CASCADE, to='member.society'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='tenant',
             name='res_city',
-            field=models.ForeignKey(default='NA', on_delete=django.db.models.deletion.CASCADE, to='member.city'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='member.city'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='tenant',
             name='res_country',
-            field=models.ForeignKey(default='NA', on_delete=django.db.models.deletion.CASCADE, to='member.country'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='member.country'),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tenant',
             name='res_state',
-            field=models.ForeignKey(default='NA', on_delete=django.db.models.deletion.CASCADE, to='member.state'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='member.state'),
             preserve_default=False,
         ),
     ]
