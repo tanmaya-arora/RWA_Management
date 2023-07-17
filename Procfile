@@ -1,1 +1,0 @@
-web gunicorn rwa_management.wsgi:apllication --log-file -
