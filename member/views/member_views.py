@@ -39,24 +39,24 @@ def login_member(request):
     data = request.body
 
     # Decode the bytes into a string
-    data_str = data.decode('utf-8')
+    #data_str = data.decode('utf-8')
     
-    #splitlist = str(data).split('&')
+    splitlist = str(data).split('&')
 
-    #username_raw = splitlist[0].split('=')[1]
-    #password_raw = splitlist[1].split('=')[1]
+    username_raw = splitlist[0].split('=')[1]
+    password_raw = splitlist[1].split('=')[1]
 
-    data_dict = json.loads(data_str)
+    #data_dict = json.loads(data_str)
 
     #parsed_body = QueryDict(data.decode('utf-8'))
     
     #print("Parsed body in login_members is ",parsed_body)
     
-    username = data_dict['username']
-    password = data_dict['password']
+    username = username_raw.replace('%40', '@')
+    password = password_raw[0:len(password_raw)-1]
 
-    print("Username final is ",username)
-    print("Password final is ",password)
+    #print("Username final is ",username)
+    #print("Password final is ",password)
     
     if username == '' or username == None or password == '' or \
         password == None or ((username == '' or username == None) and \
