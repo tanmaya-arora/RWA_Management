@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from member.serializers import MemberSerializer, UserSerializer, UserSerializerWithToken
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
-from django.http import HttpResponse, QueryDict
 import requests
 import json
 
@@ -90,9 +89,20 @@ def reset_password(request):
     cnfpassword_raw = splitlist[2].split('=')[1]
 
     email = email_raw.replace('%40', '@')
+    password = password_raw.strip()
+    cnfpassword = cnfpassword_raw.strip()
+
+    userr = User.objects.get(email=email)   
+    serializer = UserSerializer(userr, many=False)
+    user = serializer.data
     
-    user = User.objects.get(email=email)   
-    serializer = UserSerializer(user, many=False)   
-    message = {'info': "API hit", 'data': serializer.data}
+    if password != cnfpassword:
+        message = {'error': 'New password and confirmation password do not match'}
+
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
-    return Response(message, status=status.HTTP_200_OK)
+    user['password'] = make_password(password)
+    
+    user.save()
+
+    return Response(status=status.HTTP_200_OK)
