@@ -92,5 +92,6 @@ def reset_password(request):
     email = email_raw.replace('%40', '@')
     
     user = User.objects.get(email=email)   
+    message = {'info': "API hit", 'data': user}
     
-    return Response(data=user, message="API hit", status=status.HTTP_200_OK)
+    return Response(message, status=status.HTTP_200_OK)
