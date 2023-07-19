@@ -78,3 +78,19 @@ def login_member(request):
                             })
     
     return Response(data=res.json())
+
+@api_view(['POST'])
+def reset_password(request):
+    data = request.body
+
+    splitlist = str(data).split('&')
+    
+    email_raw = splitlist[0].split('=')[1]
+    password_raw = splitlist[1].split('=')[1]
+    cnfpassword_raw = splitlist[2].split('=')[1]
+
+    email = email_raw.replace('%40', '@')
+    
+    user = User.objects.get(email=email)   
+    
+    return Response(data=user, message="API hit", status=status.HTTP_200_OK)
