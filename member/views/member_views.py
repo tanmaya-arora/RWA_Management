@@ -19,19 +19,25 @@ def get_all_members(request):
 @api_view(['POST'])
 def register_member(request):
     data = request.body
-
+    
+    splitlist = str(data).split('&')
+    
+    name_raw = splitlist[0].split('=')[1]
+    email_raw = splitlist[1].split('=')[1]
+    password_raw = splitlist[2].split('=')[1]
+    
     try:
         user = User.objects.create(
-            first_name=data['name'],
-            username=data['email'],
-            email=data['email'],
-            password=make_password(data['password'])
+            first_name=name_raw,
+            username=email_raw,
+            email=password_raw,
+            password=make_password(password_raw)
         )
         # when we register a user, we need to return the token
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
     except:
-        message = {'detail': 'User with this email already exists', 'data': data}
+        message = {'detail': 'User with this email already exists', 'splitlist': splitlist, 'data': data}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
