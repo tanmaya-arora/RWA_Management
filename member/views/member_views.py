@@ -90,7 +90,7 @@ def reset_password(request):
 
     email = email_raw.replace('%40', '@')
     password = password_raw.strip()
-    cnfpassword = cnfpassword_raw.strip()
+    cnfpassword = cnfpassword_raw.strip("'")
 
     userr = User.objects.get(email=email)   
     serializer = UserSerializer(userr, many=False)
