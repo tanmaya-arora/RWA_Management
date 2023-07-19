@@ -97,7 +97,7 @@ def reset_password(request):
     user = serializer.data
     
     if password != cnfpassword:
-        message = {'error': 'New password and confirmation password do not match', 'password': password, 'confirmpassword':cnfpassword}
+        message = {'error': 'New password and confirmation password do not match'}
 
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
