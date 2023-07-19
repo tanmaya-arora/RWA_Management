@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from member.models import Member
 from django.contrib.auth.models import User
-from member.serializers import MemberSerializer, UserSerializerWithToken
+from member.serializers import MemberSerializer, UserSerializer, UserSerializerWithToken
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from django.http import HttpResponse, QueryDict
@@ -92,6 +92,7 @@ def reset_password(request):
     email = email_raw.replace('%40', '@')
     
     user = User.objects.get(email=email)   
-    message = {'info': "API hit", 'data': user}
+    serializer = UserSerializer(user, many=False)   
+    message = {'info': "API hit", 'data': serializer.data}
     
     return Response(message, status=status.HTTP_200_OK)
