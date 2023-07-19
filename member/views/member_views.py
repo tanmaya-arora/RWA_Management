@@ -22,22 +22,24 @@ def register_member(request):
     
     splitlist = str(data).split('&')
     
-    name_raw = splitlist[0].split('=')[1]
+    name = splitlist[0].split('=')[1]
     email_raw = splitlist[1].split('=')[1]
     password_raw = splitlist[2].split('=')[1]
     
+    email = email_raw.replace('%40', '@')
+    
     try:
         user = User.objects.create(
-            first_name=name_raw,
-            username=email_raw,
-            email=password_raw,
-            password=make_password(password_raw)
+            first_name=name,
+            username=email,
+            email=email,
+            password=make_password(password_raw.strip())
         )
         # when we register a user, we need to return the token
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
     except:
-        message = {'detail': 'User with this email already exists', 'splitlist': splitlist, 'data': data}
+        message = {'detail': 'User with this email already exists'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
