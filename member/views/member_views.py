@@ -63,7 +63,7 @@ def login_member(request):
                              (password == '' or password == None)):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    res = requests.post("http://localhost:8000/token/", data=
+    res = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
                             {
                                 'username': username,
                                 'password': password
