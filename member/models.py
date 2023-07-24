@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -46,6 +47,7 @@ class Committee(models.Model):
 
 
 class Member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='member')
     member_id = models.AutoField(primary_key=True, editable=False)
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
@@ -66,6 +68,7 @@ class Member(models.Model):
 
 
 class Tenant(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='tenant')
     tenant_id = models.AutoField(primary_key=True, editable=False)
     member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
     fname = models.CharField(max_length=50, null=False)
