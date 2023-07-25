@@ -18,28 +18,35 @@ def get_all_members(request):
 @api_view(['POST'])
 def register_member(request):
     data = request.body
+
+    # Decode the bytes into a string
+    data_str = data.decode('utf-8')
+
+    data_dict = json.loads(data_str)
     
-    splitlist = str(data).split('&')
+    # splitlist = str(data).split('&')
     
-    name = splitlist[0].split('=')[1]
-    email_raw = splitlist[1].split('=')[1]
-    password_raw = splitlist[2].split('=')[1]
+    # name = splitlist[0].split('=')[1]
+    # email_raw = splitlist[1].split('=')[1]
+    # password_raw = splitlist[2].split('=')[1]
     
-    email = email_raw.replace('%40', '@')
+    # email = email_raw.replace('%40', '@')
     
-    try:
-        user = User.objects.create(
-            first_name=name,
-            username=email,
-            email=email,
-            password=make_password(password_raw.strip())
-        )
-        # when we register a user, we need to return the token
-        serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data)
-    except:
-        message = {'detail': 'User with this email already exists'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    # try:
+    #     user = User.objects.create(
+    #         first_name=name,
+    #         username=email,
+    #         email=email,
+    #         password=make_password(password_raw.strip())
+    #     )
+    #     # when we register a user, we need to return the token
+    #     serializer = UserSerializerWithToken(user, many=False)
+    #     return Response(serializer.data)
+    # except:
+    #     message = {'detail': 'User with this email already exists'}
+    #     return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    message = {'detail': 'Testing', 'data': data_dict}
+    return Response(message, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def login_member(request):
