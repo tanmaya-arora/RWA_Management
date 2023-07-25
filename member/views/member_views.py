@@ -32,21 +32,29 @@ def register_member(request):
     
     # email = email_raw.replace('%40', '@')
     
-    # try:
-    #     user = User.objects.create(
-    #         first_name=name,
-    #         username=email,
-    #         email=email,
-    #         password=make_password(password_raw.strip())
-    #     )
-    #     # when we register a user, we need to return the token
-    #     serializer = UserSerializerWithToken(user, many=False)
-    #     return Response(serializer.data)
-    # except:
-    #     message = {'detail': 'User with this email already exists'}
-    #     return Response(message, status=status.HTTP_400_BAD_REQUEST)
-    message = {'detail': 'Testing', 'data': data_dict}
-    return Response(message, status=status.HTTP_200_OK)
+    try:
+        user = User.objects.create(
+            first_name=data_dict['first_name'],
+            last_name=data_dict['last_name'],
+            username=data_dict['email'],
+            email=['email'],
+            password=make_password(['password'])
+        )
+        member = Member.objects.create(
+            fname = data_dict['first_name'],
+            lname = data_dict['last_name'],
+            gender = data_dict['gender']
+        )
+        # when we register a user, we need to return the token
+        serializer = UserSerializerWithToken(user, many=False)
+        slz = MemberSerializer(member, many=False)
+
+        message = {'User': serializer.data, 'Member': slz.data}
+        return Response(message, status=status.HTTP_200_OK)
+
+    except:
+        message = {'detail': 'User with this email already exists'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def login_member(request):
