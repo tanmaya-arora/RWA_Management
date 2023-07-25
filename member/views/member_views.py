@@ -37,13 +37,15 @@ def register_member(request):
             first_name=data_dict['first_name'],
             last_name=data_dict['last_name'],
             username=data_dict['email'],
-            email=['email'],
-            password=make_password(['password'])
+            email=data_dict['email'],
+            password=make_password(data_dict['password'])
         )
         member = Member.objects.create(
             fname = data_dict['first_name'],
             lname = data_dict['last_name'],
-            gender = data_dict['gender']
+            gender = data_dict['gender'],
+            email = data_dict['email'],
+            phone_no = data_dict['phone']
         )
         # when we register a user, we need to return the token
         serializer = UserSerializerWithToken(user, many=False)
