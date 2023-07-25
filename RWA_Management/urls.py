@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/committees/', include('member.urls.committee_urls')),
     path('api/country/', include('member.urls.country_urls')),
     path('api/members/', include('member.urls.member_urls')),
+    path("api/tenant/", include('member.urls.tenant_url')),
     path('api/society/', include('member.urls.society_urls')),
     path('api/states/', include('member.urls.state_urls')),
     path('token/', 
