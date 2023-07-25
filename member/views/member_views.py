@@ -18,25 +18,42 @@ def get_all_members(request):
 @api_view(['POST'])
 def register_member(request):
     data = request.body
+
+    # Decode the bytes into a string
+    data_str = data.decode('utf-8')
+
+    data_dict = json.loads(data_str)
     
-    splitlist = str(data).split('&')
+    # splitlist = str(data).split('&')
     
-    name = splitlist[0].split('=')[1]
-    email_raw = splitlist[1].split('=')[1]
-    password_raw = splitlist[2].split('=')[1]
+    # name = splitlist[0].split('=')[1]
+    # email_raw = splitlist[1].split('=')[1]
+    # password_raw = splitlist[2].split('=')[1]
     
-    email = email_raw.replace('%40', '@')
+    # email = email_raw.replace('%40', '@')
     
     try:
         user = User.objects.create(
-            first_name=name,
-            username=email,
-            email=email,
-            password=make_password(password_raw.strip())
+            first_name=data_dict['first_name'],
+            last_name=data_dict['last_name'],
+            username=data_dict['email'],
+            email=data_dict['email'],
+            password=make_password(data_dict['password'])
+        )
+        member = Member.objects.create(
+            fname = data_dict['first_name'],
+            lname = data_dict['last_name'],
+            gender = data_dict['gender'],
+            email = data_dict['email'],
+            phone_no = data_dict['phone']
         )
         # when we register a user, we need to return the token
         serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data)
+        slz = MemberSerializer(member, many=False)
+
+        message = {'User': serializer.data, 'Member': slz.data}
+        return Response(message, status=status.HTTP_200_OK)
+
     except:
         message = {'detail': 'User with this email already exists'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
