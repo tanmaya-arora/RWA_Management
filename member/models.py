@@ -62,9 +62,20 @@ class Member(models.Model):
     res_state = models.ForeignKey(State, on_delete=models.CASCADE)
     res_country = models.ForeignKey(Country, on_delete=models.CASCADE)
     committee_role = models.ForeignKey(Committee, on_delete=models.CASCADE)
+    status = models.CharField(max_length=50, default='Single')
     
     def __str__(self):
         return f"{self.fname} {self.lname}"
+
+
+class FamilyMember(models.Model):
+    family_head = models.OneToOneField(Member, on_delete=models.CASCADE)
+    fname = models.CharField(max_length=50, null=False)
+    lname = models.CharField(max_length=50, null=False)
+    date_of_birth = models.DateTimeField(auto_now=False)
+    gender = models.CharField(max_length=12, choices=(
+        ('', ''), ('M', 'male'), ('F', 'female')), default='')
+    relation = models.CharField(max_length=50)
 
 
 class Tenant(models.Model):
