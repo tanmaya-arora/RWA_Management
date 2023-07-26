@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Tenant, Donation, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember
+from .models import Member, Tenant, Donation, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember, Payment
 
 # Register your models here.
 
@@ -15,3 +15,4 @@ admin.site.register(City)
 admin.site.register(Society)
 admin.site.register(Meeting)
 admin.site.register(FamilyMember)
+admin.site.register(Payment)

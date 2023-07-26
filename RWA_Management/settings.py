@@ -107,7 +107,7 @@ if DEVELOPMENT_MODE is True:
 #         raise Exception("DATABASE_URL environment variable not defined")
 #     DATABASES = {
 #         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-    # }
+#     }
 
 else:
     DATABASES = {
