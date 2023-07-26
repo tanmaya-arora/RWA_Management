@@ -77,6 +77,9 @@ class FamilyMember(models.Model):
     gender = models.CharField(max_length=12, choices=(
         ('', ''), ('M', 'male'), ('F', 'female')), default='')
     relation = models.CharField(max_length=50)
+    aniversary_date = models.DateField(auto_now=False)
+    child_name =models.CharField(max_length=40)
+    
 
     def __str__(self):
         return f"{self.fname} {self.lname}"
