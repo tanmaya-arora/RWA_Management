@@ -44,6 +44,7 @@ class Committee(models.Model):
     position = models.CharField(max_length=50, null=False)
     phone_no = models.CharField(max_length=20)
     committee_role = models.CharField(max_length=50, null=False)
+
     def __str__(self):
         return self.position
 
@@ -81,8 +82,7 @@ class FamilyMember(models.Model):
     aniversary_date = models.DateField(auto_now=False)
     person_name =models.CharField(max_length=50, default='')
     #marital_status = models.CharField(max_length=50, default='Single')
-    #spouse_name = models.CharField(max_length=50, default='')
-    
+    #spouse_name = models.CharField(max_length=50, default='')    
 
     def __str__(self):
         return f"{self.fname} {self.lname}"
