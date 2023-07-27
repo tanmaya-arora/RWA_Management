@@ -54,7 +54,7 @@ class Member(models.Model):
     member_id = models.AutoField(primary_key=True, editable=False)
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
-    date_of_birth = models.DateTimeField(auto_now=False)
+    date_of_birth = models.DateField(auto_now=True)
     gender = models.CharField(max_length=12, choices=(
         ('', ''), ('M', 'male'), ('F', 'female')), default='')
     phone_no = models.CharField(max_length=20)
