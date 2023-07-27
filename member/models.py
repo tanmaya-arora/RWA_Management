@@ -42,7 +42,8 @@ class Society(models.Model):
 class Committee(models.Model):
     committee_id = models.AutoField(primary_key=True, editable=False)
     position = models.CharField(max_length=50, null=False)
-
+    phone_no = models.CharField(max_length=20)
+    committee_role = models.CharField(max_length=50, null=False)
     def __str__(self):
         return self.position
 
@@ -57,13 +58,13 @@ class Member(models.Model):
         ('', ''), ('M', 'male'), ('F', 'female')), default='')
     phone_no = models.CharField(max_length=20)
     email = models.EmailField(max_length=100, null=False)
-    res_hno = models.IntegerField()
+    res_hno = models.SmallIntegerField()
     res_area = models.ForeignKey(Society, on_delete=models.CASCADE)
     res_city = models.ForeignKey(City, on_delete=models.CASCADE)
     res_state = models.ForeignKey(State, on_delete=models.CASCADE)
     res_country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    committee_role = models.ForeignKey(Committee, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50, default='Single')
+    # committee_role = models.ForeignKey(Committee, on_delete=models.CASCADE)
+    marital_status = models.CharField(max_length=50, default='Single')
     
     def __str__(self):
         return f"{self.fname} {self.lname}"
