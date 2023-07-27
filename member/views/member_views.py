@@ -61,7 +61,7 @@ def register_member(request):
             res_state = data_dict['state'],
             res_country = data_dict['country'],
         )
-    # when we register a user, we need to return the token
+        # when we register a user, we need to return the token
         serializer = UserSerializerWithToken(user, many=False)
         slz = MemberSerializer(member, many=False)
         message = {'User': serializer.data, 'Member': slz.data}
