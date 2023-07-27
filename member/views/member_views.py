@@ -7,7 +7,8 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 import requests
 import json
-
+from datetime import date
+import random
 
 @api_view(['GET'])
 def get_all_members(request):
@@ -31,32 +32,44 @@ def register_member(request):
     # password_raw = splitlist[2].split('=')[1]
     
     # email = email_raw.replace('%40', '@')
+  
+    data_dict['dob']=date.today()
+    data_dict['hno']=random.randint(1,1000)
+    data_dict['area']=1
+    data_dict['city']=1
+    data_dict['state']=1
+    data_dict['country']=1
     
-    # try:
-    user = User.objects.create(
-        first_name=data_dict['first_name'],
-        last_name=data_dict['last_name'],
-        username=data_dict['email'],
-        email=data_dict['email'],
-        password=make_password(data_dict['password'])
-    )
-    member = Member.objects.create(
-        fname = data_dict['first_name'],
-        lname = data_dict['last_name'],
-        gender = data_dict['gender'],
-        email = data_dict['email'],
-        phone_no = data_dict['phone']
-    )
+    try:
+        user = User.objects.create(
+            first_name=data_dict['first_name'],
+            last_name=data_dict['last_name'],
+            username=data_dict['email'],
+            email=data_dict['email'],
+            password=make_password(data_dict['password'])
+        )
+        member = Member.objects.create(
+            fname = data_dict['first_name'],
+            lname = data_dict['last_name'],
+            gender = data_dict['gender'],
+            email = data_dict['email'],
+            phone_no = data_dict['phone'],
+            date_of_birth = data_dict['dob'],
+            res_hno = data_dict['hno'],
+            res_area = data_dict['area'],
+            res_city = data_dict['city'],
+            res_state = data_dict['state'],
+            res_country = data_dict['country'],
+        )
     # when we register a user, we need to return the token
-    serializer = UserSerializerWithToken(user, many=False)
-    slz = MemberSerializer(member, many=False)
+        serializer = UserSerializerWithToken(user, many=False)
+        slz = MemberSerializer(member, many=False)
+        message = {'User': serializer.data, 'Member': slz.data}
+        return Response(message, status=status.HTTP_200_OK)
 
-    message = {'User': serializer.data, 'Member': slz.data}
-    return Response(message, status=status.HTTP_200_OK)
-
-    # except:
-    #     message = {'detail': 'User with this email already exists'}
-    #     return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail': 'User with this email already exists'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def login_member(request):

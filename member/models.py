@@ -54,7 +54,7 @@ class Member(models.Model):
     member_id = models.AutoField(primary_key=True, editable=False)
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
-    date_of_birth = models.DateField(auto_now=True)
+    date_of_birth = models.DateField(auto_now_add=False, null=False, blank=False)
     gender = models.CharField(max_length=12, choices=(
         ('', ''), ('M', 'male'), ('F', 'female')), default='')
     phone_no = models.CharField(max_length=20)
@@ -95,16 +95,16 @@ class Tenant(models.Model):
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
     
-    date_of_birth = models.DateTimeField(auto_now=False)
+    date_of_birth = models.DateField(auto_now=False)
     gender = models.CharField(max_length=12, choices=(
         ('', ''), ('M', 'male'), ('F', 'female')), default='')
     phone_no = models.CharField(max_length=20)
     email = models.EmailField(max_length=100, null=False)
     res_hno = models.IntegerField()
-    res_area = models.ForeignKey(Society, on_delete=models.CASCADE)
-    res_city = models.ForeignKey(City, on_delete=models.CASCADE)
-    res_state = models.ForeignKey(State, on_delete=models.CASCADE)
-    res_country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    res_area = models.ForeignKey(Society, on_delete=models.CASCADE, null=True, blank=True)
+    res_city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
+    res_state = models.ForeignKey(State, on_delete=models.CASCADE, null=True, blank=True)
+    res_country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.fname} {self.lname}"
