@@ -35,7 +35,8 @@ def register_family_member(request):
         fname=data_dict['first_name'],
         lname=data_dict['last_name'],
         aniversary_date=data_dict['anniversary_date'],
-        marital_status=data_dict['marriedCheck']
+        marital_status=data_dict['marriedCheck'],
+        family_head=data_dict['family_head']
     )
 
     serializer = FamilyMemberSerializer(familymember)
