@@ -30,7 +30,7 @@ def register_family_member(request):
 
     familymember = FamilyMember.objects.create(
         gender=data_dict['gender'],
-        dob=data_dict['dob'],
+        date_of_birth=data_dict['dob'],
         relation=data_dict['relation'],
         fname=data_dict['first_name'],
         lname=data_dict['last_name'],
