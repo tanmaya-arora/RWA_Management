@@ -73,14 +73,13 @@ class Member(models.Model):
 
 class FamilyMember(models.Model):
     family_head = models.OneToOneField(User, on_delete=models.CASCADE)
-    #fname = models.CharField(max_length=50, null=False)
-    #lname = models.CharField(max_length=50, null=False)
-    date_of_birth = models.DateField(auto_now=False)
+    fname = models.CharField(max_length=50, null=False)
+    lname = models.CharField(max_length=50, null=False)
     gender = models.CharField(max_length=12, choices=(
         ('', ''), ('M', 'male'), ('F', 'female')), default='')
+    date_of_birth = models.DateField(auto_now=False)
     relation = models.CharField(max_length=50)
     aniversary_date = models.DateField(auto_now=False)
-    person_name =models.CharField(max_length=50, default='')
     marital_status = models.CharField(max_length=50, default='no')
     #spouse_name = models.CharField(max_length=50, default='')    
 
