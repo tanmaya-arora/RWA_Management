@@ -24,7 +24,7 @@ def register_family_member(request):
     data_dict = json.loads(data_str)
 
     if data_dict['family_head'] != '':
-        user = User.objects.filter(email=data_dict['family_head'])
+        user = User.objects.filter(email=data_dict['family_head']).values()
 
 
     if 'dob' not in data_dict:
