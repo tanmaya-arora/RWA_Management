@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from member.models import Package_category
+from member.models import Package_Category
 from rest_framework import status
 from member.serializers import PackageCategoriesSerializer
 import json
@@ -8,8 +8,8 @@ import json
 
 @api_view(['GET'])
 def get_package_categories(request):
-    package_categories = Package_category.objects.all()
-    Serializer =PackageCategoriesSerializer(package_categories,many=True)
+    package_categories = Package_Category.objects.all()
+    Serializer = PackageCategoriesSerializer(package_categories,many=True)
     return Response(Serializer.data)
 
 
@@ -22,7 +22,7 @@ def get_package_categories_by_user_type(request):
     data_dict = json.loads(data_str)
 
     userValue = data_dict['user_type']
-    pcg = Package_category.objects.filter(package = userValue)
+    pcg = Package_Category.objects.filter(package = userValue)
 
     serializer = PackageCategoriesSerializer(pcg, many = True)
     message = {'Info': 'Package categories successfully fetched', 'data': serializer.data}
