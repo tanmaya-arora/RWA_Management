@@ -72,7 +72,7 @@ class Member(models.Model):
 
 
 class FamilyMember(models.Model):
-    family_head = models.OneToOneField(User, on_delete=models.CASCADE)
+    family_head = models.ForeignKey(User, on_delete=models.CASCADE)
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
     gender = models.CharField(max_length=12, choices=(
