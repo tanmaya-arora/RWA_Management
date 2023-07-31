@@ -5,6 +5,7 @@ from member.models import FamilyMember
 from member.serializers import FamilyMemberSerializer
 import json
 from datetime import date
+from django.contrib.auth.models import User;
 
 
 @api_view(['GET'])
@@ -22,6 +23,10 @@ def register_family_member(request):
 
     data_dict = json.loads(data_str)
 
+    if data_dict['family_head'] != '':
+        user = User.objects.filter(email=data_dict['family_head'])
+
+
     if 'dob' not in data_dict:
         data_dict['dob'] = date.today()
 
@@ -36,7 +41,7 @@ def register_family_member(request):
         lname=data_dict['last_name'],
         aniversary_date=data_dict['anniversary_date'],
         marital_status=data_dict['marriedCheck'],
-        family_head=data_dict['family_head']
+        family_head=user
     )
 
     serializer = FamilyMemberSerializer(familymember)
