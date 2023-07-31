@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/country/', include('member.urls.country_urls')),
     path('api/family-members/', include('member.urls.family_urls')),
     path('api/members/', include('member.urls.member_urls')),
+    path('api/package-categories', include('member.urls.package_category_urls')),
     path("api/tenant/", include('member.urls.tenant_urls')),
     path('api/society/', include('member.urls.society_urls')),
     path('api/states/', include('member.urls.state_urls')),
