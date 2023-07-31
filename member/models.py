@@ -126,6 +126,36 @@ class Payment(models.Model):
     payment_method = models.CharField(max_length=50)
 
 
+class Package(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    name = models.CharField(max_length=30)
+
+
+class Package_Category(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, null=False)
+    name = models.CharField(max_length=50)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    status = models.CharField(max_length=40)
+
+
+class Package_attributes(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, null=False)
+    name = models.CharField(max_length=50)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    status = models.CharField(max_length=40)
+    no_of_days = models.IntegerField()
+    no_of_users = models.IntegerField()
+
+
+class Cart(models.Model):
+    id = models.AutoField(primary_key=True,editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    bundle = models.ForeignKey(Package_attributes, on_delete=models.CASCADE, null=False)
+    total_price = models.DecimalField(max_digits=12, decimal_places=2)
+
+
 class Chat(models.Model):
     chat_id = models.AutoField(primary_key=True, editable=False)
     member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
