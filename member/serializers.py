@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import City, Committee, Country, Member, Tenant, Society, State, FamilyMember, Package_Category 
+from .models import City, Committee, Country, Member, Tenant, Society, State, FamilyMember, Package_Category, Cart 
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -99,3 +99,9 @@ class PackageCategoriesSerializer(serializers.ModelSerializer):
         model = Package_Category
         fields = '__all__'
 
+
+class CartSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Cart
+        fields = '__all__'
