@@ -21,12 +21,17 @@ def get_package_categories_by_user_type(request):
 
     data_dict = json.loads(data_str)
 
-    package = Package.objects.all()
-    slz = PackageSerializer(package, many=True)
+    package_obj = Package.objects.all()
+    slz = PackageSerializer(package_obj, many=True)
+    package = slz.data
     
-    # userValue = data_dict['user_type']
-    # pcg = Package_Category.objects.filter(package = userValue)
+    userValue = 1
+    for items in package:
+        if items["name"] == data_dict['user_type']:
+            userValue = items["_id"]
 
-    # serializer = PackageCategoriesSerializer(pcg, many = True)
-    message = {'Info': 'Package categories successfully fetched', 'data': slz.data}
+    pcg = Package_Category.objects.filter(package = userValue)
+
+    serializer = PackageCategoriesSerializer(pcg, many = True)
+    message = {'Info': 'Package categories successfully fetched', 'data': serializer.data}
     return Response(message, status=status.HTTP_200_OK)
