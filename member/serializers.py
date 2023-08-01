@@ -59,25 +59,25 @@ class StateSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField(read_only=True)
-    _id = serializers.SerializerMethodField(read_only=True)
-    is_admin = serializers.SerializerMethodField(read_only=True)
+    # name = serializers.SerializerMethodField(read_only=True)
+    # _id = serializers.SerializerMethodField(read_only=True)
+    # is_admin = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'email', 'name', 'is_admin']
+        fields = '__all__'
 
-    def get_is_admin(self, obj):
-        return obj.is_staff
+    # def get_is_admin(self, obj):
+    #     return obj.is_staff
 
-    def get__id(self, obj):  # double underscore, because i use '_id' in models
-        return obj.id
+    # def get__id(self, obj):  # double underscore, because i use '_id' in models
+    #     return obj.id
 
-    def get_name(self, obj):
-        name = obj.first_name
-        if name == '':
-            name = obj.email
-        return name
+    # def get_name(self, obj):
+    #     name = obj.first_name
+    #     if name == '':
+    #         name = obj.email
+    #     return name
     
 
 class UserSerializerWithToken(UserSerializer):
