@@ -136,10 +136,10 @@ class Package(models.Model):
 
 class Package_Category(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
-    package = models.ForeignKey(Package, on_delete=models.CASCADE, null=False)
+    category = models.ForeignKey(Package, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2)
-    status = models.CharField(max_length=40)
+    status = models.BooleanField(default=0)
 
     def __str__(self):
         return self.name
