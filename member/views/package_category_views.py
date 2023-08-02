@@ -30,7 +30,7 @@ def get_package_categories_by_user_type(request):
         if items["name"] == data_dict['user_type']:
             userValue = items["_id"]
 
-    pcg = Package_Category.objects.filter(package = userValue)
+    pcg = Package_Category.objects.filter(category = userValue)
 
     serializer = PackageCategoriesSerializer(pcg, many = True)
     message = {'Info': 'Package categories successfully fetched', 'data': serializer.data}
