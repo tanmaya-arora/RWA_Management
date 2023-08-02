@@ -8,7 +8,7 @@ from member.serializers import CartSerializer, UserSerializer
 from django.contrib.auth.models import User
 
 
-@api_view('GET')
+@api_view(['GET'])
 def get_cart_items(request):
     cart = Cart.objects.all()
     serializer = CartSerializer(cart, many=True)
