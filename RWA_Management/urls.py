@@ -31,6 +31,7 @@ urlpatterns = [
     path("api/tenant/", include('member.urls.tenant_urls')),
     path('api/society/', include('member.urls.society_urls')),
     path('api/states/', include('member.urls.state_urls')),
+    path('api/users/', include('member.urls.user_urls')),
     path('token/', 
           jwt_views.TokenObtainPairView.as_view(), 
           name ='token_obtain_pair'),
