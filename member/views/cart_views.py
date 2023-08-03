@@ -27,7 +27,11 @@ def add_to_cart(request):
         print(items)
         user = User.objects.filter(email=items['user']).first()
         package = items.get('package')
-        total_price = float(items.get('total_price'), 0.00)
+
+        try:
+            total_price = float(items.get('total_price'))
+        except:
+            total_price = 0.00
         
         # serializer = UserSerializer(user, many=False)
 
