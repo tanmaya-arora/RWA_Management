@@ -47,4 +47,4 @@ def add_to_cart(request):
     #     except Exception as e:
     #         return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-    return JsonResponse({"message": data_str, "Type of data_str":type(data_str)}, status=status.HTTP_200_OK)
+    return JsonResponse({"message": data_str}, status=status.HTTP_200_OK)
