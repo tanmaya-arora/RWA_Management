@@ -18,7 +18,7 @@ def get_cart_items(request):
 @api_view(['POST'])
 def add_to_cart(request):
     body = request.body
-    #data_str = body.decode('utf-8')
+    data_str = body.decode('utf-8')
     # data_dict = json.loads(data_str)
 
     print("Body in add_to_cart API ",body)
@@ -47,4 +47,4 @@ def add_to_cart(request):
     #     except Exception as e:
     #         return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-    return JsonResponse({"message": body}, status=status.HTTP_200_OK)
+    return JsonResponse({"message": data_str, "Type of data_str":type(data_str)}, status=status.HTTP_200_OK)
