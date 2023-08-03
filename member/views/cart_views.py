@@ -18,11 +18,16 @@ def get_cart_items(request):
 @api_view(['POST'])
 def add_to_cart(request):
     body = request.body
-    for items in body:
-        data = json.loads(items)
-        user = data['user']
-        package = data.get('package')
-        total_price = data.get('total_price', 0)
+    data_str = body.decode('utf-8')
+    data_dict = json.loads(data_str)
+
+    print("Body in add_to_cart API ",body)
+    for items in data_dict:
+        # data = json.loads(items)
+        print(items)
+        user = User.objects.filter(email=items['user']).first()
+        package = items.get('package')
+        total_price = items.get('total_price', 0)
         
         # serializer = UserSerializer(user, many=False)
 
