@@ -17,20 +17,25 @@ def get_cart_items(request):
 
 @api_view(['POST'])
 def add_to_cart(request):
-    data = json.loads(request.body)
-    user = User.objects.filter(email=data['user']).first()
+    body = request.body
+    for items in body:
+        data = json.loads(items)
+        user = data['user']
+        package = data.get('package')
+        total_price = data.get('total_price', 0)
+        
+        # serializer = UserSerializer(user, many=False)
 
-    serializer = UserSerializer(user, many=False)
+        try:
+        
+            cart_item = Cart.objects.create(
+                package = package,
+                user = user,
+                total_price = total_price
+            )
 
-    # package = data.get('package')
-    # total_price = data.get('total_price', 0)
-
-    # cart_item = Cart.objects.create(
-    #         package =package,
-    #         user=user,
-    #         total_price=total_price
-    #     )
+            cart_item.save()
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-    # cart_item.save()
-
-    return JsonResponse({'message': serializer.data})
+    return JsonResponse({"message": "Data saved successfully"}, status=status.HTTP_200_OK)
