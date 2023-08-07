@@ -44,7 +44,7 @@ def initiate_payment(request):
         "reference": reference,
         "amount": amount,
         "email": email,
-        "callback_url": "http://localhost:8000/api/payment/callback/",  
+        "callback_url": "https://lobster-app-et3xm.ondigitalocean.app/api/payment/callback/",  
     }
 
     response = requests.post('https://api.paystack.co/transaction/initialize', json=data, headers=headers)
