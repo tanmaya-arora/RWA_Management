@@ -6,7 +6,7 @@ import uuid
 import requests
 from django.conf import settings
 
-PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
+PAYSTACK_SECRET_KEY = 'sk_test_6ebc624f934b56fa2985396ff79c3057b140eab6'
 
 # def payment_views(request):
 #     if request.method == 'POST':
