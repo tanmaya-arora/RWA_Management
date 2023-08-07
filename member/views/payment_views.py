@@ -4,8 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import uuid
 import requests
+from django.conf import settings
 
-PAYSTACK_SECRET_KEY = "sk_test_6ebc624f934b56fa2985396ff79c3057b140eab6"
+PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
 
 def payment_views(request):
     if request.method == 'POST':
