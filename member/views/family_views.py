@@ -35,6 +35,11 @@ def register_family_member(request):
     if 'anniversary_date' not in data_dict:
         data_dict['anniversary_date'] = date.today()
 
+    if ' ' in data_dict['first_name']:
+        splitname = data_dict['first_name'].split(' ')
+        data_dict['first_name'] = splitname[0]
+        data_dict['last_name'] = splitname[-1]
+    
     familymember = FamilyMember.objects.create(
         gender=data_dict['gender'],
         date_of_birth=data_dict['dob'],
