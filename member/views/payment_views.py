@@ -1,39 +1,49 @@
-from django.shortcuts import render, redirect
-# from django.forms import PaymentForm
+import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import uuid
-import requests
 from django.conf import settings
+from member.models import Payment
+import json
 
-PAYSTACK_SECRET_KEY = 'sk_test_6ebc624f934b56fa2985396ff79c3057b140eab6'
-
-# def payment_views(request):
-#     if request.method == 'POST':
-#         form = PaymentForm(request.POST)
-#         if form.is_valid():
-#             payment = form.save(commit=False)
-#             payment.user = request.user
-#             payment.save()
-#             # Add any additional logic here, such as processing the payment or sending payment confirmation emails
-#             return redirect('payment_success')  # Redirect to a success page after payment
-#     else:
-#         form = PaymentForm()
-#     return render(request, 'payment_form.html', {'form': form})
-
-# def payment_success_view(request):
-#     return render(request, 'payment_success.html')
+PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
 
 @api_view(['POST'])
 def initiate_payment(request):
-    amount = request.data.get('amount')
-    email = request.data.get('email')
+    data = json.loads(request.body)
+    amount = data.get('amount')
+    email = data.get('email')
+    payment_method = data.get('payment_method')
+    bank_name = data.get('bank_name')
+    account_no = data.get('account_no')
 
-    if not amount or not email:
-        return Response({'error': 'Amount and email are required.'}, status=400)
+    if not amount or not email or not payment_method:
+        return Response({'error': 'Amount, Payment_method and email are required.'}, status=400)
 
-    # Create a unique reference for the transaction (you can use your own logic to generate this)
-    reference = f"txn_{uuid.uuid4().hex}"
+    if payment_method == 'cash':
+        reference = f"txn_{uuid.uuid4().hex}"
+        payment = Payment.objects.create(
+            amount = amount,
+            email = email,
+            payment_method = payment_method,
+            payment_id = request.data.get('reference'),
+        )
+        payment.save()
+        
+    elif payment_method == 'online':
+        if not bank_name or not account_no:
+            return Response ({'message':'please provide bank name and account details '}, status=400)
+        reference = f"txn_{uuid.uuid4().hex}"
+        payment = Payment.objects.create(
+            amount = amount,
+            email = email,
+            payment_method = payment_method,
+            payment_id = request.data.get('reference'),
+            bank_name = bank_name,
+            account_no = account_no,
+        )
+        payment.save()
+       
 
     # Make a request to the Paystack API to initialize the payment
     headers = {
@@ -44,7 +54,9 @@ def initiate_payment(request):
         "reference": reference,
         "amount": amount,
         "email": email,
-        "callback_url": "https://lobster-app-et3xm.ondigitalocean.app/api/payment/callback/",  
+        "bank_name": bank_name,
+        "account_no": account_no,
+        "callback_url": "http://localhost:8000/api/payment/callback/",  
     }
 
     response = requests.post('https://api.paystack.co/transaction/initialize', json=data, headers=headers)
@@ -75,9 +87,17 @@ def payment_callback(request):
     if response.status_code == 200:
         data = response.json()
         if data['data']['status'] == 'success':
-            # Payment is successful, process the order or save payment information
+              # Payment is successful, process the order or save payment information
             # You can write your own logic here
-            return Response({'message': 'Payment successful'})
+                payment = Payment.objects.create(
+                    email = request.data.get('email'),
+                    payment_id = request.data.get('reference'),
+                    amount = request.data.get('amount'),
+                    )
+                payment.save()
+
+
+                return Response({'message': 'Payment successful'})
         else:
             return Response({'error': 'Payment not successful'}, status=400)
     else:

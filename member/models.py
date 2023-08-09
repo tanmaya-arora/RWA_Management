@@ -136,7 +136,7 @@ class Package(models.Model):
 
 class Package_Category(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
-    category = models.ForeignKey(Package, on_delete=models.CASCADE, null=False)
+    package_details = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.BooleanField(default=0)
@@ -147,6 +147,7 @@ class Package_Category(models.Model):
 
 class Package_attributes(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
+    package_details = models.CharField(max_length=50,unique=True,editable=True)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=40)
@@ -157,15 +158,36 @@ class Package_attributes(models.Model):
         return self.name
 
 
+class package_rel_attriutes(models.Model):
+    id = models.AutoField(primary_key=True,editable=False)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE,null=False)
+    Package_category = models.ForeignKey(Package_Category, on_delete=models.CASCADE,null=False)
+    Package_attributes = models.ForeignKey(Package_attributes, on_delete=models.CASCADE,null=False)
+    status = models.BooleanField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 class Cart(models.Model):
     id = models.AutoField(primary_key=True,editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     package = models.CharField(max_length=50)
-    total_price = models.DecimalField(max_digits=12, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return str(self.id)
 
+class order(models.Model):
+    id = models.AutoField(primary_key=True,editable=False)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE,null=False)
+    date = models.DateTimeField(auto_now= True)
+    order_details = models.CharField(max_length=50)
+
+class billing_history(models.Model):
+    id = models.AutoField(primary_key=True,editable=False)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE,null=False)
+    billing_history = models.CharField(max_length=50)
+ 
 
 class Chat(models.Model):
     chat_id = models.AutoField(primary_key=True, editable=False)
