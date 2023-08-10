@@ -136,6 +136,7 @@ class Package(models.Model):
 
 class Package_Category(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
+    category = models.ForeignKey(Package, on_delete=models.CASCADE, null=False)
     package_details = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2)

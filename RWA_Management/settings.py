@@ -120,7 +120,7 @@ else:
             'HOST': 'localhost',
             'PORT': '3306',
         }
-    }r
+    }
 
 
 # Password validation
