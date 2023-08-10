@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import City, Committee, Country, Member, Society, State
+from .models import City, Committee, Country, Member, Tenant, Society, State, FamilyMember, Package, Package_Category, Cart 
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -25,12 +25,24 @@ class CountrySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class FamilyMemberSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FamilyMember
+        fields = '__all__'
+
+
 class MemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Member
         fields = '__all__'
 
+class TenantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tenant
+        fields = '__all__'
+    
 
 class SocietySerializer(serializers.ModelSerializer):
 
@@ -47,25 +59,25 @@ class StateSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField(read_only=True)
-    _id = serializers.SerializerMethodField(read_only=True)
-    is_admin = serializers.SerializerMethodField(read_only=True)
+    # name = serializers.SerializerMethodField(read_only=True)
+    # _id = serializers.SerializerMethodField(read_only=True)
+    # is_admin = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'email', 'name', 'is_admin']
+        fields = '__all__'
 
-    def get_is_admin(self, obj):
-        return obj.is_staff
+    # def get_is_admin(self, obj):
+    #     return obj.is_staff
 
-    def get__id(self, obj):  # double underscore, because i use '_id' in models
-        return obj.id
+    # def get__id(self, obj):  # double underscore, because i use '_id' in models
+    #     return obj.id
 
-    def get_name(self, obj):
-        name = obj.first_name
-        if name == '':
-            name = obj.email
-        return name
+    # def get_name(self, obj):
+    #     name = obj.first_name
+    #     if name == '':
+    #         name = obj.email
+    #     return name
     
 
 class UserSerializerWithToken(UserSerializer):
@@ -80,3 +92,23 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
+
+class PackageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Package
+        fields = '__all__'
+
+
+class PackageCategoriesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Package_Category
+        fields = '__all__'
+
+
+class CartSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Cart
+        fields = '__all__'
