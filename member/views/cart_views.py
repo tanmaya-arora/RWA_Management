@@ -24,20 +24,22 @@ def cart_details(request):
     data_dict = json.loads(data_str)
     # data = json.loads(request.body)
     
-    package = data_dict.get('package')
-    quantity = data_dict.get('quantity', 1)
-    total_price = data_dict.get('total_price', 0)
+    for items in data_dict:
+        # data = json.loads(items)
+        print(items)
+        user = User.objects.filter(email=items['user']).first()
+        package = items.get('package')
+        quantity = items.get('quantity')
+        total_price = items.get('total_price')
 
-    try:
         cart_item = Cart.objects.create(
             package = package,
             quantity = quantity,
-            total_price = total_price
+            total_price = total_price,
+            user = user
         )
 
-        cart_item.quantity += quantity
+        #cart_item.quantity += quantity
         cart_item.save()
 
-        return JsonResponse({'message': 'Item added to cart successfully.'}, status=status.HTTP_200_OK)
-    except:
-        return JsonResponse({'message': 'Invalid request method.'}, status=405)
+    return JsonResponse({'message': 'Items added to cart successfully.'}, status=status.HTTP_200_OK)
