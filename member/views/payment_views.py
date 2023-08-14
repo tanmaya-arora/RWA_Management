@@ -14,14 +14,12 @@ def initiate_payment(request):
     body = request.body
     data_str = body.decode('utf-8')
     data = json.loads(data_str)
-    amount = data.get('amount')
+    amount = float(data.get('amount'))
     reference = data.get('reference_id')
     #email = data.get('email')
     #payment_method = data.get('payment_method')
     bank_name = None
     account_no = None
-
-    return Response({"info": data_str, "data": data, "message": "API call successful"}, status=status.HTTP_200_OK)
 
     if 'bankname' in data:
          bank_name = data['bankname']
