@@ -121,9 +121,12 @@ class Donation(models.Model):
 class Payment(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    reference_id = models.CharField(max_length=50, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateTimeField(auto_now=True)
-    payment_method = models.CharField(max_length=50)
+    bank_acname = models.CharField(max_length=100, null=True, blank=True)
+    bank_acnumber = models.CharField(max_length=20, null=True, blank=True)
+    # payment_method = models.CharField(max_length=50)
 
 
 class Package(models.Model):

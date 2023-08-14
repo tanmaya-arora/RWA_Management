@@ -1,6 +1,7 @@
 import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 import uuid
 from django.conf import settings
 from member.models import Payment
@@ -10,63 +11,89 @@ PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
 
 @api_view(['POST'])
 def initiate_payment(request):
-    data = json.loads(request.body)
+    body = request.body
+    data_str = body.decode('utf-8')
+    data = json.loads(data_str)
     amount = data.get('amount')
-    email = data.get('email')
-    payment_method = data.get('payment_method')
-    bank_name = data.get('bank_name')
-    account_no = data.get('account_no')
+    reference = data.get('reference_id')
+    #email = data.get('email')
+    #payment_method = data.get('payment_method')
+    bank_name = None
+    account_no = None
 
-    if not amount or not email or not payment_method:
-        return Response({'error': 'Amount, Payment_method and email are required.'}, status=400)
-
-    if payment_method == 'cash':
-        reference = f"txn_{uuid.uuid4().hex}"
+    if 'bankname' in data:
+         bank_name = data['bankname']
+    
+    if 'bank_ac_no' in data:
+         account_no = data['bank_ac_no']
+    
+    try:
         payment = Payment.objects.create(
-            amount = amount,
-            email = email,
-            payment_method = payment_method,
-            payment_id = request.data.get('reference'),
+            reference_id = reference,
+            amount = amount
         )
-        payment.save()
         
-    elif payment_method == 'online':
-        if not bank_name or not account_no:
-            return Response ({'message':'please provide bank name and account details '}, status=400)
-        reference = f"txn_{uuid.uuid4().hex}"
-        payment = Payment.objects.create(
-            amount = amount,
-            email = email,
-            payment_method = payment_method,
-            payment_id = request.data.get('reference'),
-            bank_name = bank_name,
-            account_no = account_no,
-        )
+        if bank_name != None and account_no != None:
+            payment.bank_ac_name = bank_name
+            payment.bank_ac_number = account_no
+
         payment.save()
+
+        return Response({'info': 'Payment done successfully'}, status=status.HTTP_200_OK)
+    except Exception as e:
+         return Response({'error': e}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+    # if not amount or not email or not payment_method:
+    #     return Response({'error': 'Amount, Payment_method and email are required.'}, status=400)
+
+    # if payment_method == 'cash':
+    #     reference = f"txn_{uuid.uuid4().hex}"
+    #     payment = Payment.objects.create(
+    #         amount = amount,
+    #         email = email,
+    #         payment_method = payment_method,
+    #         payment_id = request.data.get('reference'),
+    #     )
+    #     payment.save()
+        
+    # elif payment_method == 'online':
+    #     if not bank_name or not account_no:
+    #         return Response ({'message':'please provide bank name and account details '}, status=400)
+    #     reference = f"txn_{uuid.uuid4().hex}"
+    #     payment = Payment.objects.create(
+    #         amount = amount,
+    #         email = email,
+    #         payment_method = payment_method,
+    #         payment_id = request.data.get('reference'),
+    #         bank_name = bank_name,
+    #         account_no = account_no,
+    #     )
+    #     payment.save()
        
 
-    # Make a request to the Paystack API to initialize the payment
-    headers = {
-        "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}",
-        "Content-Type": "application/json",
-    }
-    data = {
-        "reference": reference,
-        "amount": amount,
-        "email": email,
-        "bank_name": bank_name,
-        "account_no": account_no,
-        "callback_url": "https://lobster-app-et3xm.ondigitalocean.app/api/payment/callback/",  
-    }
+    # # Make a request to the Paystack API to initialize the payment
+    # headers = {
+    #     "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}",
+    #     "Content-Type": "application/json",
+    # }
+    # data = {
+    #     "reference": reference,
+    #     "amount": amount,
+    #     "email": email,
+    #     "bank_name": bank_name,
+    #     "account_no": account_no,
+    #     "callback_url": "https://lobster-app-et3xm.ondigitalocean.app/api/payment/callback/",  
+    # }
 
-    response = requests.post('https://api.paystack.co/transaction/initialize', json=data, headers=headers)
+    # response = requests.post('https://api.paystack.co/transaction/initialize', json=data, headers=headers)
 
-    # Process the response from Paystack API
-    if response.status_code == 200:
-        data = response.json()
-        return Response(data)
-    else:
-        return Response({'error': 'Failed to initiate payment'}, status=500)
+    # # Process the response from Paystack API
+    # if response.status_code == 200:
+    #     data = response.json()
+    #     return Response(data)
+    # else:
+    #     return Response({'error': 'Failed to initiate payment'}, status=500)
 
 @api_view(['POST'])
 def payment_callback(request):
