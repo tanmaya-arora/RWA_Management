@@ -6,6 +6,7 @@ import uuid
 from django.conf import settings
 from member.models import Payment
 import json
+from django.contrib.auth.models import User
 
 PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
 
@@ -16,7 +17,7 @@ def initiate_payment(request):
     data = json.loads(data_str)
     amount = float(data.get('amount'))
     reference = data.get('reference_id')
-    #email = data.get('email')
+    email = User.objects.filter(email=data.get('email')).first()
     #payment_method = data.get('payment_method')
     bank_name = None
     account_no = None
@@ -30,7 +31,8 @@ def initiate_payment(request):
     # try:
     payment = Payment.objects.create(
         reference_id = reference,
-        amount = amount
+        amount = amount,
+        user = email
     )
     
     if bank_name != None and account_no != None:
