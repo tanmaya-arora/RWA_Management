@@ -27,21 +27,21 @@ def initiate_payment(request):
     if 'bank_ac_no' in data:
          account_no = data['bank_ac_no']
     
-    try:
-        payment = Payment.objects.create(
-            reference_id = reference,
-            amount = amount
-        )
-        
-        if bank_name != None and account_no != None:
-            payment.bank_ac_name = bank_name
-            payment.bank_ac_number = account_no
+    # try:
+    payment = Payment.objects.create(
+        reference_id = reference,
+        amount = amount
+    )
+    
+    if bank_name != None and account_no != None:
+        payment.bank_acname = bank_name
+        payment.bank_acnumber = account_no
 
-        payment.save()
+    payment.save()
 
-        return Response({'info': 'Payment done successfully'}, status=status.HTTP_200_OK)
-    except Exception as e:
-         return Response({'error': e}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    return Response({'info': 'Payment done successfully'}, status=status.HTTP_200_OK)
+    # except IntegrityError as e:
+        #  return Response({'error': e}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
     # if not amount or not email or not payment_method:
