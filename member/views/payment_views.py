@@ -21,6 +21,8 @@ def initiate_payment(request):
     bank_name = None
     account_no = None
 
+    return Response({"info": data_str, "data": data, "message": "API call successful"}, status=status.HTTP_200_OK)
+
     if 'bankname' in data:
          bank_name = data['bankname']
     

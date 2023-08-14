@@ -92,8 +92,8 @@ def login_member(request):
     username = data_dict['username']
     password = data_dict['password']
 
-    print("Username final is ",username)
-    print("Password final is ",password)
+    # print("Username final is ",username)
+    # print("Password final is ",password)
     
     if username == '' or username == None or password == '' or \
         password == None or ((username == '' or username == None) and \
