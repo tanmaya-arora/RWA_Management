@@ -43,13 +43,17 @@ def register_member(request):
     data_dict['country']=Country.objects.filter(country='India').first()
     
     try:
-        user = User.objects.create(
+        user_obj = User.objects.create(
             first_name=data_dict['first_name'],
             last_name=data_dict['last_name'],
             username=data_dict['email'],
             email=data_dict['email'],
             password=make_password(data_dict['password'])
         )
+        
+        # when we register a user, we need to return the token
+        serializer = UserSerializerWithToken(user_obj, many=False)
+        
         member = Member.objects.create(
             fname = data_dict['first_name'],
             lname = data_dict['last_name'],
@@ -62,11 +66,12 @@ def register_member(request):
             res_city = data_dict['city'],
             res_state = data_dict['state'],
             res_country = data_dict['country'],
+            user = User.objects.filter(email=data_dict['email']).first()
         )
-        # when we register a user, we need to return the token
+
         slz = MemberSerializer(member, many=False)
-        serializer = UserSerializerWithToken(user, many=False)
         message = {'User': serializer.data, 'Member': slz.data}
+
         return Response(message, status=status.HTTP_200_OK)
 
     except Exception as e:
