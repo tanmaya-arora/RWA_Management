@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from member.models import Member
+from member.models import Member, City, Country, Society, State
 from django.contrib.auth.models import User
 from member.serializers import MemberSerializer, UserSerializer, UserSerializerWithToken
 from django.contrib.auth.hashers import make_password
@@ -37,10 +37,10 @@ def register_member(request):
         data_dict['dob']=date.today()
     
     data_dict['hno']=random.randint(1,1000)
-    data_dict['area']=1
-    data_dict['city']=1
-    data_dict['state']=1
-    data_dict['country']=1
+    data_dict['area']=Society.objects.filter(area='Ardee City Sector 52').first()
+    data_dict['city']=City.objects.filter(city='Gurgaon').first()
+    data_dict['state']=State.objects.filter(state='Haryana').first()
+    data_dict['country']=Country.objects.filter(country='India').first()
     
     try:
         user = User.objects.create(
@@ -64,8 +64,8 @@ def register_member(request):
             res_country = data_dict['country'],
         )
         # when we register a user, we need to return the token
-        serializer = UserSerializerWithToken(user, many=False)
         slz = MemberSerializer(member, many=False)
+        serializer = UserSerializerWithToken(user, many=False)
         message = {'User': serializer.data, 'Member': slz.data}
         return Response(message, status=status.HTTP_200_OK)
 
