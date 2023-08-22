@@ -33,7 +33,9 @@ def register_member(request):
     
     # email = email_raw.replace('%40', '@')
   
-    data_dict['dob']=date.today()
+    if not 'dob' in data_dict:
+        data_dict['dob']=date.today()
+    
     data_dict['hno']=random.randint(1,1000)
     data_dict['area']=1
     data_dict['city']=1
@@ -62,13 +64,13 @@ def register_member(request):
             res_country = data_dict['country'],
         )
         # when we register a user, we need to return the token
-        serializer = UserSerializerWithToken(user, many=False)
         slz = MemberSerializer(member, many=False)
+        serializer = UserSerializerWithToken(user, many=False)
         message = {'User': serializer.data, 'Member': slz.data}
         return Response(message, status=status.HTTP_200_OK)
 
-    except:
-        message = {'detail': 'User with this email already exists'}
+    except Exception as e:
+        message = {'error': e}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
