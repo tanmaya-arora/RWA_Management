@@ -80,7 +80,7 @@ class FamilyMember(models.Model):
     date_of_birth = models.DateField(auto_now=False)
     relation = models.CharField(max_length=50)
     aniversary_date = models.DateField(auto_now=False)
-    marital_status = models.CharField(max_length=50, default='no')
+    marital_status = models.CharField(max_length=50, default='Single')
     #spouse_name = models.CharField(max_length=50, default='')    
 
     def __str__(self):

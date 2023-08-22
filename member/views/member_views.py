@@ -64,13 +64,13 @@ def register_member(request):
             res_country = data_dict['country'],
         )
         # when we register a user, we need to return the token
-        slz = MemberSerializer(member, many=False)
         serializer = UserSerializerWithToken(user, many=False)
+        slz = MemberSerializer(member, many=False)
         message = {'User': serializer.data, 'Member': slz.data}
         return Response(message, status=status.HTTP_200_OK)
 
     except Exception as e:
-        message = {'error': e}
+        message = {'error': str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
