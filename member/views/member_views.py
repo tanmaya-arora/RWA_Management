@@ -9,6 +9,9 @@ import requests
 import json
 from datetime import date
 import random
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
 
 @api_view(['GET'])
 def get_all_members(request):
@@ -71,6 +74,13 @@ def register_member(request):
 
         slz = MemberSerializer(member, many=False)
         message = {'User': serializer.data, 'Member': slz.data}
+
+        subject = "Confirm email"
+        messagee = render_to_string('acc_active_email.html', {'nme': data_dict['first_name']})
+        
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = [data_dict['email']]
+        send_mail(subject=subject, message=messagee, from_email=from_email, recipient_list=recipient_list)
 
         return Response(message, status=status.HTTP_200_OK)
 

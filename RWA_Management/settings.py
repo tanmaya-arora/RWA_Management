@@ -180,8 +180,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'tanmaya.arora@ikokas.com'
-EMAIL_HOST_PASSWORD = 'We!c@me#432!'
+EMAIL_HOST_USER = 'tarora431@gmail.com'
+EMAIL_HOST_PASSWORD = 'yknjnfujhsjrweei'
