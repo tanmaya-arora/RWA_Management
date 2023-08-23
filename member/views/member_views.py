@@ -104,9 +104,6 @@ def login_member(request):
 
     member = Member.objects.filter(email=useremail).first()
     tenant = Tenant.objects.filter(email=useremail).first()
-    user_obj = User.objects.get(email=useremail)
-    serializer = UserSerializer(user_obj, many=False)
-    user = serializer.data
     
     
     # if useremail == '' or useremail == None or password == '' or \
@@ -114,7 +111,7 @@ def login_member(request):
     #                          (password == '' or password == None)):
     #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    if user['is_superuser'] or member != None or tenant != None:
+    if member != None or tenant != None:
     
         res = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
                                 {
@@ -124,8 +121,22 @@ def login_member(request):
         
         return Response(data=res.json())
     else:
-        message = {'status': 'Unable to login as the user is not registered'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user_obj = User.objects.get(email=useremail)
+            serializer = UserSerializer(user_obj, many=False)
+            user = serializer.data
+
+            if user['is_superuser']:
+                res = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
+                                {
+                                    'username': useremail,
+                                    'password': password
+                                })
+                
+                return Response(data=res.json())
+        except:
+            message = {'error': 'Unable to login as the user is not registered'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def reset_password(request):

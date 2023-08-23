@@ -61,7 +61,7 @@ def registration_tenant(request):
         return Response(message, status=status.HTTP_200_OK)
 
     except:
-        message = {'detail': 'User with this email already exists'}
+        message = {'error': 'User with this email already exists'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
