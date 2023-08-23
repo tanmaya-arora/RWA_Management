@@ -75,13 +75,6 @@ def register_member(request):
         slz = MemberSerializer(member, many=False)
         message = {'User': serializer.data, 'Member': slz.data}
 
-        subject = "Confirm email"
-        messagee = render_to_string('acc_active_email.html', {'nme': data_dict['first_name']})
-        
-        from_email = settings.EMAIL_HOST_USER
-        recipient_list = [data_dict['email']]
-        send_mail(subject=subject, message=messagee, from_email=from_email, recipient_list=recipient_list)
-
         return Response(message, status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -190,3 +183,26 @@ def reset_password(request):
     user.save()
 
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def send_email_to_client(request):
+    try:
+        data = request.body
+
+        # Decode the bytes into a string
+        data_str = data.decode('utf-8')
+
+        data_dict = json.loads(data_str)
+
+        print("Data dict ",data_dict)
+        
+        subject = "Confirm Email"
+        message = render_to_string('acc_active_email.html', {'nme': data_dict['recipient']})
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = [data_dict['recipient']]
+        send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list)
+
+        return Response(status=status.HTTP_200_OK)
+    except Exception as e:
+        message = {'error': str(e)}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
