@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from member.models import Member, City, Country, Society, State
+from member.models import Member, City, Country, Society, State, Tenant
 from django.contrib.auth.models import User
 from member.serializers import MemberSerializer, UserSerializer, UserSerializerWithToken
 from django.contrib.auth.hashers import make_password
@@ -96,24 +96,36 @@ def login_member(request):
     
     #print("Parsed body in login_members is ",parsed_body)
     
-    username = data_dict['username']
+    useremail = data_dict['user_email']
     password = data_dict['password']
 
     # print("Username final is ",username)
     # print("Password final is ",password)
+
+    member = Member.objects.filter(email=useremail).first()
+    tenant = Tenant.objects.filter(email=useremail).first()
+    user_obj = User.objects.get(email=useremail)
+    serializer = UserSerializer(user_obj, many=False)
+    user = serializer.data
     
-    if username == '' or username == None or password == '' or \
-        password == None or ((username == '' or username == None) and \
-                             (password == '' or password == None)):
-        return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    res = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
-                            {
-                                'username': username,
-                                'password': password
-                            })
+    # if useremail == '' or useremail == None or password == '' or \
+    #     password == None or ((useremail == '' or useremail == None) and \
+    #                          (password == '' or password == None)):
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    if user['is_superuser'] or member != None or tenant != None:
     
-    return Response(data=res.json())
+        res = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
+                                {
+                                    'username': useremail,
+                                    'password': password
+                                })
+        
+        return Response(data=res.json())
+    else:
+        message = {'status': 'Unable to login as the user is not registered'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def reset_password(request):
