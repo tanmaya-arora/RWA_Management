@@ -111,16 +111,7 @@ def login_member(request):
     #                          (password == '' or password == None)):
     #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    if member != None or tenant != None:
-    
-        res = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
-                                {
-                                    'username': useremail,
-                                    'password': password
-                                })
-        
-        return Response(data=res.json())
-    else:
+    if member == None and tenant == None:
         try:
             user_obj = User.objects.get(email=useremail)
             serializer = UserSerializer(user_obj, many=False)
@@ -134,9 +125,32 @@ def login_member(request):
                                 })
                 
                 return Response(data=res.json())
-        except:
-            message = {'error': 'Unable to login as the user is not registered'}
+        except Exception as e:
+            message = {'error': str(e)}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif member != None:
+        member_obj = Member.objects.get(email=useremail)
+        token = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
+                                {
+                                    'username': useremail,
+                                    'password': password
+                                })
+        res = token.json()
+        res['person_name'] = member_obj['fname']
+        
+        return Response(data=res)
+    else:
+        tenant_obj = Tenant.objects.get(email=useremail)
+        token = requests.post("https://lobster-app-et3xm.ondigitalocean.app/token/", data=
+                                {
+                                    'username': useremail,
+                                    'password': password
+                                })
+        res = token.json()
+        res['person_name'] = tenant_obj['fname']
+        
+        return Response(data=res)
 
 @api_view(['POST'])
 def reset_password(request):
