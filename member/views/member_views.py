@@ -140,7 +140,8 @@ def login_member(request):
                                     'password': password
                                 })
         res = token.json()
-        res['person_name'] = member_obj['fname']
+        res['person_name'] = member_obj.fname
+        res['user_type'] = 'Owner'
         
         return Response(data=res)
     else:
@@ -151,7 +152,8 @@ def login_member(request):
                                     'password': password
                                 })
         res = token.json()
-        res['person_name'] = tenant_obj['fname']
+        res['person_name'] = tenant_obj.fname
+        res['user_type'] = 'Tenant'
         
         return Response(data=res)
 
