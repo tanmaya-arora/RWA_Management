@@ -208,3 +208,52 @@ def send_email_to_client(request):
     except Exception as e:
         message = {'error': str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def send_otp(request):
+    data = request.body
+
+    data_str = data.decode('utf-8')
+
+    payload = json.loads(data_str)
+
+    email = payload.get('email')  
+
+    otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+
+    request.session['otp'] = otp
+
+    subject = "OTP Verification"
+    message = render_to_string('acc_active_email.html', {'nme': payload['first_name'], 'otp': otp})
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+
+    try:
+        send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list)
+        return Response({"message": "OTP sent successfully"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def verify_otp(request):
+    data = request.body
+
+    data_str = data.decode('utf-8')
+
+    payload = json.loads(data_str)
+
+    user_otp = payload.get('otp')
+
+    if not user_otp:
+        return Response({"error": "OTP is missing"}, status=status.HTTP_400_BAD_REQUEST)
+
+    stored_otp = request.session.get('otp')
+
+    if not stored_otp:
+        return Response({"error": "OTP session data expired or missing"}, status=status.HTTP_400_BAD_REQUEST)
+
+    if user_otp == stored_otp:
+        del request.session['otp']        
+        return Response({"message": "OTP verified successfully"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
