@@ -197,7 +197,7 @@ def send_email_to_client(request):
         print("Data dict ",data_dict)
         
         subject = "Confirm Email"
-        message = render_to_string('acc_active_email.html', {'nme': data_dict['recipient']})
+        message = render_to_string('acc_active_email.html', {'nme': data_dict['username']})
         from_email = settings.EMAIL_HOST_USER
         recipient_list = [data_dict['recipient']]
         send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list)
