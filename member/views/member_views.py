@@ -224,7 +224,7 @@ def send_otp(request):
     request.session['otp'] = otp
 
     subject = "OTP Verification"
-    message = render_to_string('acc_active_email.html', {'nme': payload['first_name'], 'otp': otp})
+    message = render_to_string('acc_active_email.html', {'nme': payload['first_name'], 'random_otp': otp})
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
 
