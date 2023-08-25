@@ -12,6 +12,7 @@ import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
+import time
 
 @api_view(['GET'])
 def get_all_members(request):
@@ -222,6 +223,7 @@ def send_otp(request):
     otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
 
     request.session['otp'] = otp
+    request.session['otp_timestamp'] = int(time.time()) 
 
     subject = "OTP Verification"
     message = render_to_string('acc_active_email.html', {'nme': payload['first_name'], 'otp': otp})
@@ -252,6 +254,15 @@ def verify_otp(request):
     if not stored_otp:
         return Response({"error": "OTP session data expired or missing"}, status=status.HTTP_400_BAD_REQUEST)
 
+    otp_timestamp = request.session.get('otp_timestamp')
+
+    expiration_interval = 60  
+
+    current_timestamp = int(time.time())
+
+    if current_timestamp - otp_timestamp > expiration_interval:
+        return Response({"error": "OTP has expired"}, status=status.HTTP_400_BAD_REQUEST)
+    
     if user_otp == stored_otp:
         del request.session['otp']        
         return Response({"message": "OTP verified successfully"}, status=status.HTTP_200_OK)
