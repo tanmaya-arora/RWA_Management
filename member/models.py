@@ -116,6 +116,7 @@ class Tenant(models.Model):
 class Donation(models.Model):
     donation_id = models.AutoField(primary_key=True, editable=False)
     member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
+    notes = models.CharField(max_length=100, default='')
     donation_amount = models.FloatField()
 
     def __str__(self):

@@ -21,9 +21,23 @@ def add_donation(request):
     data_str = body.decode('utf-8')
     data = json.loads(data_str)
 
-    member_obj = Member.objects.filter(email=data['user_email']).first()
-    slz = MemberSerializer(member_obj, many=False)
-    member = slz.data
+    try:
+        member_obj = Member.objects.filter(email=data['user_email']).first()
+        # slz = MemberSerializer(member_obj, many=False)
+        # member = slz.data
 
-    return Response(data=member, status=status.HTTP_200_OK)
+        donation = Donation.objects.create(
+            member = member_obj,
+            donation_amount = data['donation_amount']
+        )
+        if 'note' in data:
+            donation['notes'] = data['note']
+
+        serializer = DonationSerializer(donation, many=False)
+        message = {'Info': 'Donation done successfully', 'donation': serializer.data}
+
+        return Response(message, status=status.HTTP_200_OK)
+    except Exception as e:
+        message = {'error': str(e)}
+        return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
