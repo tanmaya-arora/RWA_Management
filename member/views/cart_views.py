@@ -17,6 +17,17 @@ def get_cart_items(request):
     message = {'Info': 'Cart items fetched successfully', 'data': serializer.data}
     return Response(message, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_cart_items_by_user(request, pk):
+    try:
+        cart = Cart.objects.get(user=pk)
+        serializer = CartSerializer(cart, many=True)
+        message = {'Info': 'Cart items fetched successfully', 'data': serializer.data}
+        return Response(message, status=status.HTTP_200_OK)
+    except Exception as e:
+        message = {'error': str(e)}
+        return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['POST'])
 def cart_details(request):
     body = request.body
