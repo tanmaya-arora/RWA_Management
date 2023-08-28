@@ -20,7 +20,7 @@ def get_cart_items(request):
 @api_view(['GET'])
 def get_cart_items_by_user(request, pk):
     try:
-        cart = Cart.objects.get(user=pk)
+        cart = Cart.objects.filter(user=pk)
         serializer = CartSerializer(cart, many=True)
         message = {'Info': 'Cart items fetched successfully', 'data': serializer.data}
         return Response(message, status=status.HTTP_200_OK)
