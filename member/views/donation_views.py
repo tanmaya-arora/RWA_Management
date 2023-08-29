@@ -26,12 +26,14 @@ def add_donation(request):
         # slz = MemberSerializer(member_obj, many=False)
         # member = slz.data
 
+        if not 'note' in data:
+            data['note'] = f"Member donated Rs. {data['donation_amount']} to the RWA"
+        
         donation = Donation.objects.create(
             member = member_obj,
-            donation_amount = data['donation_amount']
+            donation_amount = data['donation_amount'],
+            notes = data['note']
         )
-        if 'note' in data:
-            donation['notes'] = data['note']
 
         serializer = DonationSerializer(donation, many=False)
         message = {'Info': 'Donation done successfully', 'donation': serializer.data}
