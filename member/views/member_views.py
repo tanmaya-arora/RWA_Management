@@ -20,6 +20,12 @@ def get_all_members(request):
     serializer = MemberSerializer(member, many=True)
     return Response(serializer.data)
 
+def get_member(request, pk):
+    member = Member.objects.filter(member_id = pk)
+    serializer = MemberSerializer(member, many=False)
+    message = {'Info': 'Member details fetched successfully', 'data': serializer.data}
+    return Response(message, status=status.HTTP_200_OK)
+
 @api_view(['POST'])
 def register_member(request):
     data = request.body
