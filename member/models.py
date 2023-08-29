@@ -113,9 +113,19 @@ class Tenant(models.Model):
         return f"{self.fname} {self.lname}"
 
 
+class Event(models.Model):
+    event_id = models.AutoField(primary_key=True, editable=False)
+    event_name = models.CharField(max_length=50)
+    location = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.event_name
+
+
 class Donation(models.Model):
     donation_id = models.AutoField(primary_key=True, editable=False)
     member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False)
     notes = models.CharField(max_length=100, default='')
     donation_amount = models.FloatField()
 

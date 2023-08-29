@@ -1,10 +1,9 @@
 import json
-from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from member.models import Donation, Member
-from member.serializers import DonationSerializer, MemberSerializer
+from member.serializers import DonationSerializer
 
 
 @api_view(['GET'])

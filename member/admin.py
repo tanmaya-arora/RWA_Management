@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Tenant, Donation, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember, Payment, Package, Package_Category, Package_attributes, Cart
+from .models import Member, Tenant, Donation, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember, Payment, Package, Package_Category, Package_attributes, Cart, Event
 
 # Register your models here.
 
@@ -20,3 +20,4 @@ admin.site.register(Package)
 admin.site.register(Package_Category)
 admin.site.register(Package_attributes)
 admin.site.register(Cart)
+admin.site.register(Event)
