@@ -31,7 +31,7 @@ def add_donation(request):
         donation = Donation.objects.create(
             member = member_obj,
             donation_amount = data['donation_amount'],
-            event = Event.objects.filter(email=data['event_value']).first(),
+            event = Event.objects.filter(email=data['event_name']).first(),
             notes = data['note']
         )
 
