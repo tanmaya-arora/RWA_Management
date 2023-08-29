@@ -2,7 +2,7 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from member.models import Donation, Member
+from member.models import Donation, Member, Event
 from member.serializers import DonationSerializer
 
 
@@ -31,6 +31,7 @@ def add_donation(request):
         donation = Donation.objects.create(
             member = member_obj,
             donation_amount = data['donation_amount'],
+            event = Event.objects.filter(email=data['event_value']).first(),
             notes = data['note']
         )
 
