@@ -25,7 +25,7 @@ def get_all_members(request):
         return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def get_member(request, pk):
-    member = Member.objects.filter(member_id = pk)
+    member = Member.objects.get(member_id = pk)
     serializer = MemberSerializer(member, many=False)
     message = {'Info': 'Member details fetched successfully', 'data': serializer.data}
     return Response(message, status=status.HTTP_200_OK)
