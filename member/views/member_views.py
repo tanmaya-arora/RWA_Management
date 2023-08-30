@@ -24,6 +24,7 @@ def get_all_members(request):
         message = {'error': str(e)}
         return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
 def get_member(request, pk):
     member = Member.objects.get(member_id = pk)
     serializer = MemberSerializer(member, many=False)
