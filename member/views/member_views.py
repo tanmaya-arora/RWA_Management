@@ -16,9 +16,13 @@ import time
 
 @api_view(['GET'])
 def get_all_members(request):
-    member = Member.objects.all()
-    serializer = MemberSerializer(member, many=True)
-    return Response(serializer.data)
+    try:
+        member = Member.objects.all()
+        serializer = MemberSerializer(member, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        message = {'error': str(e)}
+        return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def get_member(request, pk):
     member = Member.objects.filter(member_id = pk)
