@@ -23,7 +23,7 @@ urlpatterns = [
     path('', include('admin_soft.urls')),
     path('admin/', admin.site.urls),
     path('api/cart/', include('member.urls.cart_urls')),
-    path('api/city', include('member.urls.city_urls')),
+    path('api/city/', include('member.urls.city_urls')),
     path('api/committees/', include('member.urls.committee_urls')),
     path('api/country/', include('member.urls.country_urls')),
     path('api/donation/', include('member.urls.donation_urls')),
