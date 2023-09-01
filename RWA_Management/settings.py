@@ -38,6 +38,7 @@ DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
 INSTALLED_APPS = [
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'admin_soft.apps.AdminSoftDashboardConfig',
     'django.contrib.admin',
@@ -65,12 +66,12 @@ REST_FRAMEWORK = {
       ],
 }
 
-SIMPLE_JWT = {
-     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
-     'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
-     'ROTATE_REFRESH_TOKENS': True,
-     'BLACKLIST_AFTER_ROTATION': True
-}
+# SIMPLE_JWT = {
+#      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+#      'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+#      'ROTATE_REFRESH_TOKENS': True,
+#      'BLACKLIST_AFTER_ROTATION': True
+# }
 
 ROOT_URLCONF = 'RWA_Management.urls'
 

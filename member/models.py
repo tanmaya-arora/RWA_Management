@@ -68,6 +68,8 @@ class Member(models.Model):
     res_country = models.ForeignKey(Country, on_delete=models.CASCADE)
     # committee_role = models.ForeignKey(Committee, on_delete=models.CASCADE)
     # marital_status = models.CharField(max_length=50, default='Single')
+    is_verified = models.BooleanField(default=False)
+    otp = models.CharField(max_length=10)
     
     def __str__(self):
         return f"{self.fname} {self.lname}"

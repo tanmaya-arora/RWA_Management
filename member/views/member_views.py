@@ -7,12 +7,16 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 import requests
 import json
-from datetime import date
+from datetime import date, datetime
 import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-import time
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework import status
+import json
+from rest_framework import status
 
 @api_view(['GET'])
 def get_all_members(request):
@@ -173,27 +177,24 @@ def login_member(request):
 def reset_password(request):
     data = request.body
 
-    splitlist = str(data).split('&')
+    # Decode the bytes into a string
+    data_str = data.decode('utf-8')
+
+    data_dict = json.loads(data_str)
+
+    email = data_dict['email']
+    password = data_dict['password']
+    cnfpassword = data_dict['cnfpassword']
     
-    email_raw = splitlist[0].split('=')[1]
-    password_raw = splitlist[1].split('=')[1]
-    cnfpassword_raw = splitlist[2].split('=')[1]
-
-    email = email_raw.replace('%40', '@')
-    password = password_raw.strip()
-    cnfpassword = cnfpassword_raw.strip("'")
-
+    if password != cnfpassword:
+        message = {'error': 'New password and confirmation password do not match'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
     userr = User.objects.get(email=email)   
     serializer = UserSerializer(userr, many=False)
     user = serializer.data
     
-    if password != cnfpassword:
-        message = {'error': 'New password and confirmation password do not match'}
-
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
-    
     user['password'] = make_password(password)
-    
     user.save()
 
     return Response(status=status.HTTP_200_OK)
@@ -222,19 +223,23 @@ def send_email_to_client(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def send_otp(request):
+def generate_otp(request):
     data = request.body
 
     data_str = data.decode('utf-8')
 
     payload = json.loads(data_str)
 
-    email = payload.get('email')  
+    email = payload.get('email')
 
-    otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-
-    request.session['otp'] = otp
-    request.session['otp_timestamp'] = int(time.time()) 
+    try:
+        member = Member.objects.get(email=email)
+    except Member.DoesNotExist:
+        return Response({"error": "Member not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    otp = str(random.randint(1000, 9999))
+    member.otp = otp
+    member.save()
 
     subject = "OTP Verification"
     message = render_to_string('acc_active_email.html', {'nme': payload['first_name'], 'otp': otp})
@@ -257,25 +262,30 @@ def verify_otp(request):
 
     user_otp = payload.get('otp')
 
-    if not user_otp:
-        return Response({"error": "OTP is missing"}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        refresh = RefreshToken()
+        access_token = refresh.access_token
 
-    stored_otp = request.session.get('otp')
-
-    if not stored_otp:
-        return Response({"error": "OTP session data expired or missing"}, status=status.HTTP_400_BAD_REQUEST)
-
-    otp_timestamp = request.session.get('otp_timestamp')
-
-    expiration_interval = 60  
-
-    current_timestamp = int(time.time())
-
-    if current_timestamp - otp_timestamp > expiration_interval:
-        return Response({"error": "OTP has expired"}, status=status.HTTP_400_BAD_REQUEST)
+        expiry_timestamp = access_token.payload['exp']
+        current_timestamp = datetime.utcnow().timestamp()
     
-    if user_otp == stored_otp:
-        del request.session['otp']        
-        return Response({"message": "OTP verified successfully"}, status=status.HTTP_200_OK)
-    else:
-        return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+        if expiry_timestamp < current_timestamp:
+            return Response({"message": "Refresh token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+    except (TokenError, ValueError):
+        return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = Member.objects.get(otp=user_otp)
+
+        if user.otp == user_otp:
+            user.is_verified = True
+            user.save()
+            return Response({"message": "OTP verified successfully"}, status=status.HTTP_200_OK)
+
+        else:
+            return Response({"error":"OTP formatting"}, status=status.HTTP_400_BAD_REQUEST)
+
+    except Member.DoesNotExist:
+        return Response({"error": "Member not found or Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
