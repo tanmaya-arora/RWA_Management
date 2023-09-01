@@ -151,7 +151,7 @@ def login_member(request):
     elif member != None:
         member_obj = Member.objects.get(email=useremail)
         
-        if member_obj['is_verified'] == False:
+        if member_obj.is_verified == False:
             message = {'error': 'Member is not verified to login to the RWA', 'is_verified': member_obj['is_verified']}
             return Response(message, status=status.HTTP_401_UNAUTHORIZED)
         
