@@ -95,7 +95,7 @@ class FamilyMember(models.Model):
 class Tenant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='tenant')
     tenant_id = models.AutoField(primary_key=True, editable=False)
-    member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
+    # member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
     
@@ -110,6 +110,8 @@ class Tenant(models.Model):
     res_state = models.ForeignKey(State, on_delete=models.CASCADE)
     res_country = models.ForeignKey(Country, on_delete=models.CASCADE)
     marital_status = models.CharField(max_length=50, default='Single')
+    is_verified = models.BooleanField(default=False)
+    otp = models.CharField(max_length=10)
 
     def __str__(self):
         return f"{self.fname} {self.lname}"
