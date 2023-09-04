@@ -120,6 +120,7 @@ class Tenant(models.Model):
 class Event(models.Model):
     event_id = models.AutoField(primary_key=True, editable=False)
     event_name = models.CharField(max_length=50)
+    event_date = models.DateTimeField(auto_now=False)
     location = models.CharField(max_length=100)
 
     def __str__(self):
