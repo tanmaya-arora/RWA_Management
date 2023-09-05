@@ -1,133 +1,85 @@
 import requests
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-import uuid
-from django.conf import settings
-from member.models import Payment
-import json
-from django.contrib.auth.models import User
-
-PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
-
-@api_view(['POST'])
-def initiate_payment(request):
-    body = request.body
-    data_str = body.decode('utf-8')
-    data = json.loads(data_str)
-    amount = float(data.get('amount'))
-    reference = data.get('reference_id')
-    email = User.objects.filter(email=data.get('email')).first()
-    #payment_method = data.get('payment_method')
-    bank_name = None
-    account_no = None
-
-    if 'bankname' in data:
-         bank_name = data['bankname']
-    
-    if 'bank_ac_no' in data:
-         account_no = data['bank_ac_no']
-    
-    # try:
-    payment = Payment.objects.create(
-        reference_id = reference,
-        amount = amount,
-        user = email
-    )
-    
-    if bank_name != None and account_no != None:
-        payment.bank_acname = bank_name
-        payment.bank_acnumber = account_no
-
-    payment.save()
-
-    return Response({'info': 'Payment done successfully'}, status=status.HTTP_200_OK)
-    # except IntegrityError as e:
-        #  return Response({'error': e}, status=status.HTTP_406_NOT_ACCEPTABLE)
+import json 
+from paytmchecksum import PaytmChecksum
+import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 
-    # if not amount or not email or not payment_method:
-    #     return Response({'error': 'Amount, Payment_method and email are required.'}, status=400)
+PAYTM_MID = "XTuSTF64649388339128"
+PAYTM_MERCHANT_KEY = "V8%MqlQ@MX8@WVhc"
 
-    # if payment_method == 'cash':
-    #     reference = f"txn_{uuid.uuid4().hex}"
-    #     payment = Payment.objects.create(
-    #         amount = amount,
-    #         email = email,
-    #         payment_method = payment_method,
-    #         payment_id = request.data.get('reference'),
-    #     )
-    #     payment.save()
-        
-    # elif payment_method == 'online':
-    #     if not bank_name or not account_no:
-    #         return Response ({'message':'please provide bank name and account details '}, status=400)
-    #     reference = f"txn_{uuid.uuid4().hex}"
-    #     payment = Payment.objects.create(
-    #         amount = amount,
-    #         email = email,
-    #         payment_method = payment_method,
-    #         payment_id = request.data.get('reference'),
-    #         bank_name = bank_name,
-    #         account_no = account_no,
-    #     )
-    #     payment.save()
-       
+PAYTM_ENVIRONMENT= 'https://securegw-stage.paytm.in'
+PAYTM_WEBSITE= 'WEBSTAGING'
 
-    # # Make a request to the Paystack API to initialize the payment
-    # headers = {
-    #     "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}",
-    #     "Content-Type": "application/json",
-    # }
-    # data = {
-    #     "reference": reference,
-    #     "amount": amount,
-    #     "email": email,
-    #     "bank_name": bank_name,
-    #     "account_no": account_no,
-    #     "callback_url": "https://lobster-app-et3xm.ondigitalocean.app/api/payment/callback/",  
-    # }
+amount= '1.00'
+order_id='order_'+str(datetime.datetime.now().timestamp())
 
-    # response = requests.post('https://api.paystack.co/transaction/initialize', json=data, headers=headers)
+@csrf_exempt
+def getTransactionToken(request):
+    try:
+        paytmParams = dict()
 
-    # # Process the response from Paystack API
-    # if response.status_code == 200:
-    #     data = response.json()
-    #     return Response(data)
-    # else:
-    #     return Response({'error': 'Failed to initiate payment'}, status=500)
+        paytmParams["body"] = {
+            "requestType": "Payment",
+            "mid": PAYTM_MID,
+            "websiteName": PAYTM_WEBSITE,
+            "orderId": order_id,
+            "callbackUrl": "http://127.0.0.1:5000/callback",
+            "txnAmount": {
+                "value": amount,
+                "currency": "INR",
+            },
+            "userInfo": {
+                "custId": "CUST_001",
+            },
+        }
 
-@api_view(['POST'])
-def payment_callback(request):
-    reference = request.data.get('reference')
+        # Generate checksum by parameters we have in body
+        checksum = PaytmChecksum.generateSignature(json.dumps(paytmParams["body"]), PAYTM_MERCHANT_KEY)
 
-    if not reference:
-        return Response({'error': 'Reference is required.'}, status=400)
+        paytmParams["head"] = {
+            "signature": checksum
+        }
 
-    # Make a request to the Paystack API to verify the payment
-    headers = {
-        "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}",
-        "Content-Type": "application/json",
-    }
-
-    response = requests.get(f'https://api.paystack.co/transaction/verify/{reference}', headers=headers)
-
-    # Process the response from Paystack API
-    if response.status_code == 200:
-        data = response.json()
-        if data['data']['status'] == 'success':
-              # Payment is successful, process the order or save payment information
-            # You can write your own logic here
-                payment = Payment.objects.create(
-                    email = request.data.get('email'),
-                    payment_id = request.data.get('reference'),
-                    amount = request.data.get('amount'),
-                    )
-                payment.save()
-
-
-                return Response({'message': 'Payment successful'})
+        post_data = json.dumps(paytmParams)
+        url = PAYTM_ENVIRONMENT + "/theia/api/v1/initiateTransaction?mid=" + PAYTM_MID + "&orderId=" + order_id
+        response = requests.post(url, data=post_data, headers={"Content-type": "application/json"}).json()
+        print(paytmParams)
+        if response.get("body", {}).get("resultInfo", {}).get("resultStatus") == 'S':
+            token = response.get("body", {}).get("txnToken", "")
         else:
-            return Response({'error': 'Payment not successful'}, status=400)
-    else:
-        return Response({'error': 'Verification failed'}, status=500)
+            token = ""
+        
+        return token
+    except Exception as e:
+        # Handle exceptions here
+        print("Error:", str(e))
+        return ""
+    
+
+# def transactionStatus():
+#   paytmParams = dict()
+#   paytmParams["body"] = {
+#     "mid" : PAYTM_MID,
+#     # Enter your order id which needs to be check status for
+#     "orderId" : "order_1647237662.654877",
+#     }
+  
+#     checksum = PaytmChecksum.generateSignature(json.dumps(paytmParams["body"]), PAYTM_MERCHANT_KEY)
+
+#     # head parameters
+# paytmParams["head"] = {
+#       "signature". : checksum
+#     }
+
+#     # prepare JSON string for request
+#     post_data = json.dumps(paytmParams)
+
+#     url = PAYTM_ENVIRONMENT+"/v3/order/status"
+
+#     response = requests.post(url, data = post_data, headers = {"Content-type": "application/json"}).json()
+#     response_str = json.dumps(response)
+#     res = json.loads(response_str)
+#     msg="Transaction Status Response"
+
+#     return res['body']
