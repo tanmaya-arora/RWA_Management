@@ -1,85 +1,76 @@
-import requests
-import json 
-from paytmchecksum import PaytmChecksum
-import datetime
+from django.http import JsonResponse, HttpResponse
+from django.conf import settings
+import hashlib
+import base64
+import json
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+import uuid
 
 
-PAYTM_MID = "XTuSTF64649388339128"
-PAYTM_MERCHANT_KEY = "V8%MqlQ@MX8@WVhc"
+@api_view(['POST'])
+def generate_paytm_token(request):
+    data = request.body
+    data_str = data.decode('utf-8')
+    data_dict = json.loads(data_str)
 
-PAYTM_ENVIRONMENT= 'https://securegw-stage.paytm.in'
-PAYTM_WEBSITE= 'WEBSTAGING'
+    requested_amount = data_dict.get('amount')
+    unique_orderid = uuid.uuid4()
+    email = data_dict.get('email')
 
-amount= '1.00'
-order_id='order_'+str(datetime.datetime.now().timestamp())
+    if requested_amount:
+            paytm_params = {
+                "MID": settings.PAYTM_MERCHANT_ID,
+                "ORDER_ID": unique_orderid,  
+                "CUST_ID": email,
+                "CHANNEL_ID": "WEB",
+                "INDUSTRY_TYPE_ID": "Retail",
+                "WEBSITE": settings.PAYTM_WEBSITE,
+                "CALLBACK_URL": settings.PAYTM_CALLBACK_URL,
+                "TXN_AMOUNT": requested_amount,
+            }
+
+            paytm_params["CHECKSUMHASH"] = generate_checksum(paytm_params, settings.PAYTM_MERCHANT_KEY)
+
+            return JsonResponse(paytm_params)
+    else:
+            return HttpResponse("Invalid amount provided.")
+    
+def generate_checksum(params, key):
+    paytm_params = {}
+    for key, value in params.items():
+        paytm_params[key] = str(value)
+
+    data = "|".join([str(value) for value in paytm_params.values()])
+    checksum = hashlib.sha256(data.encode('utf-8')).hexdigest()
+    return base64.b64encode(checksum.encode()).decode('utf-8')
 
 @csrf_exempt
-def getTransactionToken(request):
-    try:
-        paytmParams = dict()
+def verify_checksum(data, checksum, merchant_key):
+    data_values = [str(value) for value in data.values()]
+    data_string = "|".join(data_values)
+    print(data_string)
 
-        paytmParams["body"] = {
-            "requestType": "Payment",
-            "mid": PAYTM_MID,
-            "websiteName": PAYTM_WEBSITE,
-            "orderId": order_id,
-            "callbackUrl": "http://127.0.0.1:5000/callback",
-            "txnAmount": {
-                "value": amount,
-                "currency": "INR",
-            },
-            "userInfo": {
-                "custId": "CUST_001",
-            },
-        }
+    generated_checksum = hashlib.sha256(merchant_key.encode('utf-8')).hexdigest()
+    generated_checksum = base64.b64encode(generated_checksum.encode()).decode('utf-8')
 
-        # Generate checksum by parameters we have in body
-        checksum = PaytmChecksum.generateSignature(json.dumps(paytmParams["body"]), PAYTM_MERCHANT_KEY)
+    return generated_checksum == checksum
 
-        paytmParams["head"] = {
-            "signature": checksum
-        }
+@csrf_exempt
+def paytm_callback(request):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        received_checksum = data.get('CHECKSUMHASH', '')
 
-        post_data = json.dumps(paytmParams)
-        url = PAYTM_ENVIRONMENT + "/theia/api/v1/initiateTransaction?mid=" + PAYTM_MID + "&orderId=" + order_id
-        response = requests.post(url, data=post_data, headers={"Content-type": "application/json"}).json()
-        print(paytmParams)
-        if response.get("body", {}).get("resultInfo", {}).get("resultStatus") == 'S':
-            token = response.get("body", {}).get("txnToken", "")
+        is_checksum_valid = verify_checksum(data, received_checksum, settings.PAYTM_MERCHANT_KEY)
+
+        if is_checksum_valid:
+            if data.get('STATUS') == 'TXN_SUCCESS':
+                return HttpResponse("Payment successful. Thank you!")
+
+            elif data.get('STATUS') == 'TXN_FAILURE':
+                return HttpResponse("Payment failed. Please try again later.")
         else:
-            token = ""
-        
-        return token
-    except Exception as e:
-        # Handle exceptions here
-        print("Error:", str(e))
-        return ""
-    
+            return HttpResponse("Checksum verification failed.")
 
-# def transactionStatus():
-#   paytmParams = dict()
-#   paytmParams["body"] = {
-#     "mid" : PAYTM_MID,
-#     # Enter your order id which needs to be check status for
-#     "orderId" : "order_1647237662.654877",
-#     }
-  
-#     checksum = PaytmChecksum.generateSignature(json.dumps(paytmParams["body"]), PAYTM_MERCHANT_KEY)
-
-#     # head parameters
-# paytmParams["head"] = {
-#       "signature". : checksum
-#     }
-
-#     # prepare JSON string for request
-#     post_data = json.dumps(paytmParams)
-
-#     url = PAYTM_ENVIRONMENT+"/v3/order/status"
-
-#     response = requests.post(url, data = post_data, headers = {"Content-type": "application/json"}).json()
-#     response_str = json.dumps(response)
-#     res = json.loads(response_str)
-#     msg="Transaction Status Response"
-
-#     return res['body']
+    return HttpResponse("Invalid request method.")
