@@ -15,7 +15,7 @@ def generate_paytm_token(request):
     data_dict = json.loads(data_str)
 
     requested_amount = data_dict.get('amount')
-    unique_orderid = uuid.uuid4()
+    unique_orderid = uuid.uuid4().hex
     email = data_dict.get('email')
 
     if requested_amount:
