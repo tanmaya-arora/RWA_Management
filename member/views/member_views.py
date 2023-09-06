@@ -35,8 +35,8 @@ def get_member(request, pk):
 @api_view(['POST'])
 def generate_otp(request):
     data = request.body
-    data_str = data.decode('utr-8')
-    data_dict = json.load(data_str)
+    data_str = data.decode('utf-8')
+    data_dict = json.loads(data_str)
 
     email = data_dict.get('email')
     
@@ -63,7 +63,11 @@ def generate_otp(request):
             
 @api_view(['POST'])
 def verify_jwt(request):
-    otp = request.data.get('otp')
+    data = request.body
+    data_str = data.decode('utf-8')
+    data_dict = json.loads(data_str)
+    
+    otp = data_dict.get('otp')
     try:
         refresh = RefreshToken()
         access_token = refresh.access_token
