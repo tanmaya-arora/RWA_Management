@@ -34,7 +34,11 @@ def get_member(request, pk):
 
 @api_view(['POST'])
 def generate_otp(request):
-    email = request.data.get('email')
+    data = request.body
+    data_str = data.decode('utr-8')
+    data_dict = json.load(data_str)
+
+    email = data_dict.get('email')
     
     try:
         member = Member.objects.get(email=email)
