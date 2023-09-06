@@ -94,45 +94,47 @@ def verify_jwt(request):
 
 @api_view(['POST'])
 def register_member(request):
-    data = request.data
-  
-    if not 'dob' in data:
-        data['dob'] = date.today()
+    data = request.body
+    data_str = data.decode('utf-8')
+    data_dict = json.loads(data_str)
+      
+    if not 'dob' in data_dict:
+        data_dict['dob'] = date.today()
 
-    data['hno'] = random.randint(1, 1000)
-    data['area'] = Society.objects.filter(area='Ardee City Sector 52').first()
-    data['city'] = City.objects.filter(city='Gurgaon').first()
-    data['state'] = State.objects.filter(state='Haryana').first()
-    data['country'] = Country.objects.filter(country='India').first()
+    data_dict['hno'] = random.randint(1, 1000)
+    data_dict['area'] = Society.objects.filter(area='Ardee City Sector 52').first()
+    data_dict['city'] = City.objects.filter(city='Gurgaon').first()
+    data_dict['state'] = State.objects.filter(state='Haryana').first()
+    data_dict['country'] = Country.objects.filter(country='India').first()
 
     try:
-        email = data.get('email')
+        email = data_dict.get('email')
         user = User.objects.filter(email=email).first()
 
         if user:
             return Response({"error": "User with this email already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = User.objects.create(
-            first_name=data['first_name'],
-            last_name=data['last_name'],
+            first_name=data_dict['first_name'],
+            last_name=data_dict['last_name'],
             username=email,
             email=email,
-            password=make_password(data['password'])
+            password=make_password(data_dict['password'])
         )    
 
         member = Member.objects.create(
             user=user, 
-            fname=data['first_name'],
-            lname=data['last_name'],
-            gender=data['gender'],
+            fname=data_dict['first_name'],
+            lname=data_dict['last_name'],
+            gender=data_dict['gender'],
             email=email,
-            phone_no=data['phone'],
-            date_of_birth=data['dob'],
-            res_hno=data['hno'],
-            res_area=data['area'],
-            res_city=data['city'],
-            res_state=data['state'],
-            res_country=data['country'],
+            phone_no=data_dict['phone'],
+            date_of_birth=data_dict['dob'],
+            res_hno=data_dict['hno'],
+            res_area=data_dict['area'],
+            res_city=data_dict['city'],
+            res_state=data_dict['state'],
+            res_country=data_dict['country'],
         )
 
         response_data = {
@@ -148,9 +150,12 @@ def register_member(request):
 
 @api_view(['POST'])
 def login_member(request):
-    data = request.data
-    email = data.get('email')
-    password = data.get('password')
+    data = request.body
+    data_str = data.decode('utf-8')
+    data_dict = json.loads(data_str)
+
+    email = data_dict.get('email')
+    password = data_dict.get('password')
 
     try:
         user = User.objects.get(email=email)
@@ -171,10 +176,13 @@ def login_member(request):
 @api_view(['POST'])
 def reset_password(request):
     try:
-        data = request.data
-        email = data.get('email')
-        password = data.get('password')
-        cnfpassword = data.get('cnfpassword')
+        data = request.body
+        data_str = data.decode('utf-8')
+        data_dict = json.loads(data_str)
+        
+        email = data_dict.get('email')
+        password = data_dict.get('password')
+        cnfpassword = data_dict.get('cnfpassword')
 
         if password != cnfpassword:
             return Response({"error": "New password and confirmation password do not match"}, status=status.HTTP_400_BAD_REQUEST)
