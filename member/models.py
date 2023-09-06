@@ -159,7 +159,8 @@ class Package(models.Model):
 class Package_Category(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     category = models.ForeignKey(Package, on_delete=models.CASCADE, null=False)
-    package_details = models.CharField(max_length=50, unique=True)
+    package_details = models.TextField()
+    image_path = models.TextField()
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.BooleanField(default=0)
