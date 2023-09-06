@@ -21,6 +21,17 @@ def get_all_members(request):
     serializer = MemberSerializer(member, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_member(request, pk):
+    try:    
+        member = Member.objects.get(member_id = pk)
+        serializer = MemberSerializer(member, many = False)
+        message = {'Info':'Member details fetched successfully', 'data':serializer.data}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'error':'Member does not exists'}
+        return Response(message, status=status.HTTP_303_SEE_OTHER)
+
 @api_view(['POST'])
 def generate_otp(request):
     email = request.data.get('email')

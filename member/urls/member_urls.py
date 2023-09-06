@@ -9,6 +9,7 @@ from member.views import member_views as views
 
 urlpatterns = [
     path('', views.get_all_members, name='rwa-member-listing'),
+    path('<str:pk>', views.get_member, name = 'view_member'),
     path('otp/', views.generate_otp, name='generate-otp'),
     path('verify/', views.verify_jwt, name='verify-jwt'),
     path('register/', views.register_member, name='register-member'),
