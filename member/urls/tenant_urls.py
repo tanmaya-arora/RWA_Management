@@ -4,8 +4,10 @@ from member.views import tenant_views as views
 
 urlpatterns =[
     path('',views.get_all_tenant,name='rwa-tenant-listing'),
+    path('<str:pk>',views.get_tenant, name = 'tenat_details'),
     path('register/',views.register_tenant,name='add-rwa-tenant'),
     path('otp/', views.generate_otp, name='generate-otp'),
-    path('verify-otp/', views.verify_otp, name='verify-otp')
+    path('verify/', views.verify_jwt, name='verify-jwt'),
+    path('login/', views.login_member, name='login-member'),
+    path('reset/', views.reset_password, name='reset-password'),
 ]
-
