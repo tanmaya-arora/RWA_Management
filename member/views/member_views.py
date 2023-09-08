@@ -269,6 +269,7 @@ def reset_password_with_token(request):
         email = data_dict.get('email')
         password = data_dict.get('password')
         cnfpassword = data_dict.get('cnfpassword')
+        print(password,cnfpassword)
 
         try:
             refresh = RefreshToken()
@@ -294,14 +295,16 @@ def reset_password_with_token(request):
                 user.is_verified = True
                 user.save()
 
-                if password != cnfpassword:
+                if password == None or cnfpassword == None or (password==None and cnfpassword==None):
+                    return Response({"error":"password should not be empty"}, status=status.HTTP_400_BAD_REQUEST)
+
+                elif password != cnfpassword:
                     return Response({"error": "New password and confirmation password do not match"}, status=status.HTTP_400_BAD_REQUEST)
-                
+                                      
                 else:
                     user = User.objects.get(email=email)
                     user.set_password(password)
                     user.save()
-
                     return Response({"message": "Password reset successfully"}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Invalid OTP"}, status=status.HTTP_303_SEE_OTHER)
