@@ -15,7 +15,7 @@ def get_package_categories(request):
 @api_view(['GET'])
 def get_package(request,pk):
     try:
-        categories = Package_Category.objects.get(category_id = pk)
+        categories = Package_Category.objects.get(_id = pk)
         serializer = PackageCategoriesSerializer(categories, many = False)
         message = {'Info':'package details fetched successfully','data':serializer.data}
         return Response(message,status=status.HTTP_200_OK)
