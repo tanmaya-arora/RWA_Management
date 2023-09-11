@@ -8,6 +8,6 @@ urlpatterns =[
     path('register/',views.register_tenant,name='add-rwa-tenant'),
     path('otp/', views.generate_otp, name='generate-otp'),
     path('verify/', views.verify_jwt, name='verify-jwt'),
-    path('login/', views.login_member, name='login-member'),
+    path('login/', views.login_tenant, name='login-member'),
     path('reset/', views.reset_password, name='reset-password'),
 ]

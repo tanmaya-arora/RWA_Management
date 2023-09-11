@@ -36,7 +36,7 @@ def get_tenant(request, pk):
 def generate_otp(request):
     data = request.body
     data_str = data.decode('utf-8')
-    data_dict = json.load(data_str)
+    data_dict = json.loads(data_str)
 
     email = data_dict.get('email')
     
@@ -65,7 +65,7 @@ def generate_otp(request):
 def verify_jwt(request):
     data = request.body
     data_str = data.decode('utf-8')
-    data_dict = json.load(data_str)
+    data_dict = json.loads(data_str)
 
     otp = data_dict.get('otp')
 
@@ -105,12 +105,11 @@ def verify_jwt(request):
 def register_tenant(request):
     data = request.body
     data_str = data.decode('utf-8')
-    data_dict = json.load(data_str)
+    data_dict = json.loads(data_str)
   
     if not 'dob' in data:
         data['dob'] = date.today()
 
-    data_dict['hno'] = data.get('hno')
     data_dict['area'] = Society.objects.filter(area='Ardee City Sector 52').first()
     data_dict['city'] = City.objects.filter(city='Gurgaon').first()
     data_dict['state'] = State.objects.filter(state='Haryana').first()
@@ -158,10 +157,10 @@ def register_tenant(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def login_member(request):
+def login_tenant(request):
     data = request.body
     data_str = data.decode('utf-8')
-    data_dict = json.load(data_str)
+    data_dict = json.loads(data_str)
 
     email = data_dict.get('email')
     password = data_dict.get('password')
@@ -187,7 +186,7 @@ def reset_password(request):
     try:
         data = request.body
         data_str = data.decode('utf-8')
-        data_dict = json.load(data_str)
+        data_dict = json.loads(data_str)
 
         email = data_dict.get('email')
         password = data_dict.get('password')
