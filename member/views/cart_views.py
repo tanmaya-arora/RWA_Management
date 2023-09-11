@@ -33,11 +33,8 @@ def cart_details(request):
     body = request.body
     data_str = body.decode('utf-8')
     data_dict = json.loads(data_str)
-    # data = json.loads(request.body)
     
     for items in data_dict:
-        # data = json.loads(items)
-        print(items)
         user = User.objects.filter(email=items['user']).first()
         package = items.get('package')
         quantity = items.get('quantity')
@@ -53,8 +50,18 @@ def cart_details(request):
             total_price = total_price,
             user = user
         )
-
-        #cart_item.quantity += quantity
         cart_item.save()
 
     return JsonResponse({'message': 'Items added to cart successfully.'}, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def remove_items(request, id):
+    try:
+        item = Cart.objects.filter(id=id)
+        item.delete()
+        message = {'message':'item removed successfully'}
+        return Response(message, status=status.HTTP_200_OK)
+
+    except: 
+        message = {'error':'item cannot be remvoved'}
+        return Response(message, status=status.HTTP_406_NOT_ACCEPTABLE)
