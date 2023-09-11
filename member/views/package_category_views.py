@@ -12,13 +12,22 @@ def get_package_categories(request):
     Serializer = PackageCategoriesSerializer(package_categories,many=True)
     return Response(Serializer.data)
 
+@api_view(['GET'])
+def get_package(request,pk):
+    try:
+        categories = Package_Category.objects.get(category_id = pk)
+        serializer = PackageCategoriesSerializer(categories, many = False)
+        message = {'Info':'package details fetched successfully','data':serializer.data}
+        return Response(message,status=status.HTTP_200_OK)
 
+    except:
+        message = {'error':'category not found'}
+        return Response(message,status=status.HTTP_303_SEE_OTHER)   
+        
 @api_view(['POST'])
 def get_package_categories_by_user_type(request):
     data = request.body
-
     data_str = data.decode('utf-8')
-
     data_dict = json.loads(data_str)
 
     package_obj = Package.objects.all()
