@@ -196,6 +196,8 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     package = models.CharField(max_length=50)
     quantity = models.PositiveIntegerField(default=1)
+    package_details = models.TextField()
+    image_path = models.TextField()
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
