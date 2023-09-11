@@ -105,10 +105,10 @@ def verify_jwt(request):
 def register_tenant(request):
     data = request.body
     data_str = data.decode('utf-8')
-    data_dict = json.loads(data_str)
+    data_dict = json.loads(data_str )
   
-    if not 'dob' in data:
-        data['dob'] = date.today()
+    if not 'dob' in data_dict:
+        data_dict['dob'] = date.today()
 
     data_dict['area'] = Society.objects.filter(area='Ardee City Sector 52').first()
     data_dict['city'] = City.objects.filter(city='Gurgaon').first()
@@ -116,7 +116,7 @@ def register_tenant(request):
     data_dict['country'] = Country.objects.filter(country='India').first()
 
     try:
-        email = data.get('email')
+        email = data_dict.get('email')
         user = User.objects.filter(email=email).first()
 
         if user:
