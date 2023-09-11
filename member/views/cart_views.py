@@ -41,11 +41,15 @@ def cart_details(request):
         user = User.objects.filter(email=items['user']).first()
         package = items.get('package')
         quantity = items.get('quantity')
+        img_path = items.get('image_path')
+        package_details = items.get('package_detail')
         total_price = items.get('total_price')
 
         cart_item = Cart.objects.create(
             package = package,
             quantity = quantity,
+            package_details = package_details,
+            image_path = img_path,
             total_price = total_price,
             user = user
         )
