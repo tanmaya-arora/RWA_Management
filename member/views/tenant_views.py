@@ -177,7 +177,7 @@ def login_member(request):
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
-        return Response({"access_token": access_token}, status=status.HTTP_200_OK)
+        return Response({"access_token": access_token, "user_type":"Tenant"}, status=status.HTTP_200_OK)
 
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
