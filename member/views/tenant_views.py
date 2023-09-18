@@ -165,13 +165,15 @@ def login_tenant(request):
     email = data_dict.get('email')
     password = data_dict.get('password')
 
+    tenant = Tenant.objects.get(email=email)
+    
     try:
         user = User.objects.get(email=email)
         if not user.check_password(password):
             return Response({"error": "Invalid credentials : user id or password may be incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
         
-        if not user.tenant.is_verified:
-            return Response({"error": "User is not verified"}, status=status.HTTP_401_UNAUTHORIZED)
+        if not tenant.is_verified:
+            return Response({"error": "User is not verified", 'is_verified':False}, status=status.HTTP_401_UNAUTHORIZED)
 
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
