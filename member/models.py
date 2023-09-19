@@ -47,7 +47,7 @@ class Committee(models.Model):
     committee_role = models.TextField()
 
     def __str__(self):
-        return self.position
+        return str(self.position)
 
 
 class Member(models.Model):
