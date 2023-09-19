@@ -12,7 +12,6 @@ from django.template.loader import render_to_string
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework import status
 import json
-from rest_framework import status
 import os
 
 @api_view(['GET'])

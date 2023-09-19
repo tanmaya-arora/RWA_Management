@@ -55,5 +55,5 @@ def register_family_member(request):
     message = {
         'Info': 'Family Member added successfully.',
         'FamilyMember': serializer.data
-    },
+    }
     return Response(message, status=status.HTTP_200_OK)
