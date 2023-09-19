@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import City, Committee, Country, Donation, Member, Tenant, Society, State, FamilyMember, Package, Package_Category, Cart, Event 
+from .models import City, Committee, Country, Campaign, Member, Tenant, Society, State, FamilyMember, Package, Package_Category, Cart, Event 
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -25,10 +25,10 @@ class CountrySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class DonationSerializer(serializers.ModelSerializer):
+class CampaignSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Donation
+        model = Campaign
         fields = '__all__'
 
 

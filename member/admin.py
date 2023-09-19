@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import Member, Tenant, Donation, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember, Payment, Package, Package_Category, Package_attributes, Cart, Event
+from .models import Member, Tenant, Campaign, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember, Payment, Package, Package_Category, Package_attributes, Cart, Event
 
 # Register your models here.
 
 admin.site.register(Member)
 admin.site.register(Tenant)
-admin.site.register(Donation)
+admin.site.register(Campaign)
 admin.site.register(Chat)
 admin.site.register(Broadcast)
 admin.site.register(Committee)

@@ -41,9 +41,10 @@ class Society(models.Model):
 
 class Committee(models.Model):
     committee_id = models.AutoField(primary_key=True, editable=False)
+    name = models.CharField(max_length=50, null=False)
     position = models.CharField(max_length=50, null=False)
     phone_no = models.CharField(max_length=20)
-    committee_role = models.CharField(max_length=50, null=False)
+    committee_role = models.TextField()
 
     def __str__(self):
         return self.position
@@ -128,7 +129,7 @@ class Event(models.Model):
         return self.event_name
 
 
-class Donation(models.Model):
+class Campaign(models.Model):
     donation_id = models.AutoField(primary_key=True, editable=False)
     member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False)
@@ -147,6 +148,9 @@ class Payment(models.Model):
     bank_acname = models.CharField(max_length=100, null=True, blank=True)
     bank_acnumber = models.CharField(max_length=20, null=True, blank=True)
     # payment_method = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.payment_id)
 
 
 class Package(models.Model):
@@ -235,4 +239,9 @@ class Broadcast(models.Model):
 
 class Meeting(models.Model):
     meeting_id = models.AutoField(primary_key=True, editable=False)
+    date = models.DateTimeField(auto_now= False)
     location = models.CharField(max_length=50)
+    organizer = models.ForeignKey(Committee, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return str(self.meeting_id)
