@@ -122,8 +122,8 @@ class Event(models.Model):
     event_name = models.CharField(max_length=50)
     event_date = models.DateTimeField(auto_now=False)
     location = models.CharField(max_length=100)
-    organised_by = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    organised_by = models.ForeignKey(Committee, on_delete=models.CASCADE)
+    
     def __str__(self):
         return self.event_name
 
