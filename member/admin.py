@@ -3,9 +3,18 @@ from .models import Member, Tenant, Campaign, Chat, Broadcast, Committee, Countr
 
 # Register your models here.
 
-admin.site.register(Member)
-admin.site.register(Tenant)
-admin.site.register(Campaign)
+class MemberAdmin(admin.ModelAdmin):
+    list_display= ('fname','lname')
+admin.site.register(Member, MemberAdmin)
+
+class TenantAdmin(admin.ModelAdmin):
+    list_display= ('fname','lname')
+admin.site.register(Tenant, TenantAdmin)
+
+class CampaignAdmin(admin.ModelAdmin):
+    list_display =('event','notes')
+admin.site.register(Campaign, CampaignAdmin)
+
 admin.site.register(Chat)
 admin.site.register(Broadcast)
 admin.site.register(Committee)

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import uuid
 
 # Create your models here.
@@ -42,7 +42,7 @@ class Society(models.Model):
 class Committee(models.Model):
     committee_id = models.AutoField(primary_key=True, editable=False)
     name = models.CharField(max_length=50, null=False)
-    position = models.CharField(max_length=50, null=False)
+    position = models.ForeignKey(Group, on_delete=models.CASCADE)
     phone_no = models.CharField(max_length=20)
     committee_role = models.TextField()
 
@@ -147,7 +147,7 @@ class Payment(models.Model):
     payment_date = models.DateTimeField(auto_now=True)
     bank_acname = models.CharField(max_length=100, null=True, blank=True)
     bank_acnumber = models.CharField(max_length=20, null=True, blank=True)
-    # payment_method = models.CharField(max_length=50)
+    payment_method = models.CharField(max_length=50)
 
     def __str__(self):
         return str(self.payment_id)
@@ -198,7 +198,7 @@ class package_rel_attriutes(models.Model):
 
 class Cart(models.Model):
     id = models.AutoField(primary_key=True,editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)    
     package = models.CharField(max_length=50)
     quantity = models.PositiveIntegerField(default=1)
     package_details = models.TextField()
@@ -242,6 +242,7 @@ class Meeting(models.Model):
     date = models.DateTimeField(auto_now= False)
     location = models.CharField(max_length=50)
     organizer = models.ForeignKey(Committee, on_delete=models.CASCADE, null=False)
+    proceeding = models.TextField()
 
     def __str__(self):
         return str(self.meeting_id)
