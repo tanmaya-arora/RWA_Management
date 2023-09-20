@@ -26,7 +26,11 @@ admin.site.register(Meeting)
 admin.site.register(FamilyMember)
 admin.site.register(Payment)
 admin.site.register(Package)
-admin.site.register(Package_Category)
+
+class PackageCategoryAdmin(admin.ModelAdmin):
+    list_display=('name', 'price' )
+admin.site.register(Package_Category, PackageCategoryAdmin)
+
 admin.site.register(Package_attributes)
 admin.site.register(Cart)
 admin.site.register(Event)
