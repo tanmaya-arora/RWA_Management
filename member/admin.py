@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Tenant, Campaign, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember, Payment, Package, Package_Category, Package_attributes, Cart, Event
+from .models import Member, Tenant, Chat, Broadcast, Committee, Country, State, City, Society, Meeting, FamilyMember, Payment, Package, Package_Category, Package_attributes, Cart, Event
 
 # Register your models here.
 
@@ -11,9 +11,9 @@ class TenantAdmin(admin.ModelAdmin):
     list_display= ('res_hno','fname','lname')
 admin.site.register(Tenant, TenantAdmin)
 
-class CampaignAdmin(admin.ModelAdmin):
-    list_display =('event','notes')
-admin.site.register(Campaign, CampaignAdmin)    
+# class CampaignAdmin(admin.ModelAdmin):
+#     list_display =('event','notes')
+# admin.site.register(Campaign, CampaignAdmin)    
 
 admin.site.register(Chat)
 admin.site.register(Broadcast)
@@ -27,6 +27,7 @@ admin.site.register(Meeting)
 class FamilyMemberAdmin(admin.ModelAdmin):
     list_display = ('fname','relation','gender','family_head')
 admin.site.register(FamilyMember, FamilyMemberAdmin)
+
 admin.site.register(Payment)
 admin.site.register(Package)
 

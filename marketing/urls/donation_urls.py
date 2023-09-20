@@ -1,4 +1,4 @@
-from member.views import donation_views as views
+from marketing.views import donation_views as views
 from django.urls import path
 
 urlpatterns = [

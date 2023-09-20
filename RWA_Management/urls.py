@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/city/', include('member.urls.city_urls')),
     path('api/committees/', include('member.urls.committee_urls')),
     path('api/country/', include('member.urls.country_urls')),
-    path('api/donation/', include('member.urls.donation_urls')),
+    path('api/donation/', include('marketing.urls.donation_urls')),
     path('api/events/', include('member.urls.event_urls')),
     path('api/family-members/', include('member.urls.family_urls')),
     path('api/members/', include('member.urls.member_urls')),

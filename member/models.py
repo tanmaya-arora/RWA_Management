@@ -129,15 +129,15 @@ class Event(models.Model):
         return self.event_name
 
 
-class Campaign(models.Model):
-    donation_id = models.AutoField(primary_key=True, editable=False)
-    member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False)
-    notes = models.CharField(max_length=100, default='')
-    donation_amount = models.FloatField()
+# class Campaign(models.Model):
+#     donation_id = models.AutoField(primary_key=True, editable=False)
+#     member = models.ForeignKey(Member, on_delete=models.CASCADE, null=False)
+#     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False)
+#     notes = models.CharField(max_length=100, default='')
+#     donation_amount = models.FloatField()
 
-    def __str__(self):
-        return str(self.donation_id)
+#     def __str__(self):
+#         return str(self.donation_id)
 
 class Payment(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
