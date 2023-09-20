@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from member.models import Society, City, State, Country
+from internal.models import Society, City, State, Country
 
 # Create your models here.
 

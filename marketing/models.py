@@ -1,5 +1,5 @@
 from django.db import models
-from member.models import Event
+from internal.models import Event
 from user_management.models import Owner
 
 # Create your models here.

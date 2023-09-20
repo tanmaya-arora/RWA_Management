@@ -1,10 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from user_management.models import Owner
-from member.models import City, Country, Society, State
+from internal.models import City, Country, Society, State
 from user_management.models import Owner
 from django.contrib.auth.models import User
-from member.serializers import MemberSerializer
+from internal.serializers import MemberSerializer
 from django.contrib.auth.hashers import make_password
 from datetime import date, datetime, timedelta
 import random

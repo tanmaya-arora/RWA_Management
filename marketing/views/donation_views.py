@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from marketing.models import Campaign, Event
-from member.serializers import CampaignSerializer
+from internal.serializers import CampaignSerializer
 from user_management.models import Owner
 
 
