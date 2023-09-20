@@ -34,6 +34,7 @@ PAYTM_CALLBACK_URL = 'http://localhost:8000/api/payment/callback/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
+# DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
@@ -52,6 +53,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'member',
+    'marketing',
+    'reporting',
+    'support'
 ]
 
 MIDDLEWARE = [
