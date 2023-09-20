@@ -23,7 +23,10 @@ admin.site.register(State)
 admin.site.register(City)
 admin.site.register(Society)
 admin.site.register(Meeting)
-admin.site.register(FamilyMember)
+
+class FamilyMemberAdmin(admin.ModelAdmin):
+    list_display = ('fname','relation','gender','family_head')
+admin.site.register(FamilyMember, FamilyMemberAdmin)
 admin.site.register(Payment)
 admin.site.register(Package)
 
