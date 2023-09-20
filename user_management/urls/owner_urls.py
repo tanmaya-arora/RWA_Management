@@ -5,7 +5,7 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetView
 )
-from member.views import member_views as views
+from user_management.views import owner_views as views
 
 urlpatterns = [
     path('', views.get_all_members, name='rwa-member-listing'),

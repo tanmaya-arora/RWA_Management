@@ -1,37 +1,38 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from member.serializers import TenantSerializer, UserSerializerWithToken
-from member.models import Tenant, City, Country, State, Society
-from django.contrib.auth.hashers import make_password
+from user_management.models import Owner
+from member.models import City, Country, Society, State
+from user_management.models import Owner
 from django.contrib.auth.models import User
-from rest_framework import status
-import json
+from member.serializers import MemberSerializer
+from django.contrib.auth.hashers import make_password
+from datetime import date, datetime, timedelta
 import random
-from datetime import date
-from django.conf import settings
 from django.core.mail import send_mail
+from django.conf import settings
 from django.template.loader import render_to_string
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-from datetime import datetime, timedelta
+from rest_framework import status
+import json
 import os
 
 @api_view(['GET'])
-def get_all_tenant(request):
-    tenant = Tenant.objects.all()
-    serializer = TenantSerializer(tenant, many=True)
+def get_all_members(request):
+    member = Owner.objects.all()
+    serializer = MemberSerializer(member, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_tenant(request, pk):
+def get_member(request, pk):
     try:    
-        tenant = Tenant.objects.get(tenant_id = pk)
-        serializer = TenantSerializer(tenant, many = False)
+        member = Owner.objects.get(member_id = pk)
+        serializer = MemberSerializer(member, many = False)
         message = {'Info':'Member details fetched successfully', 'data':serializer.data}
         return Response(message, status=status.HTTP_200_OK)
     except:
         message = {'error':'Member does not exists'}
         return Response(message, status=status.HTTP_303_SEE_OTHER)
-    
+
 @api_view(['POST'])
 def generate_otp(request):
     data = request.body
@@ -41,16 +42,16 @@ def generate_otp(request):
     email = data_dict.get('email')
     
     try:
-        tenant = Tenant.objects.get(email=email)
-    except Tenant.DoesNotExist:
+        member = Owner.objects.get(email=email)
+    except Owner.DoesNotExist:
         return Response({"error": "Member not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     otp = str(random.randint(1000, 9999))
 
-    tenant.otp = otp
-    tenant.save()
+    member.otp = otp
+    member.save()
 
     subject = "Your OTP Code"
     message = f"Your OTP code is: {otp}"
@@ -66,9 +67,8 @@ def verify_jwt(request):
     data = request.body
     data_str = data.decode('utf-8')
     data_dict = json.loads(data_str)
-
+    
     otp = data_dict.get('otp')
-
     try:
         refresh = RefreshToken()
         access_token = refresh.access_token
@@ -88,7 +88,7 @@ def verify_jwt(request):
         return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        user = Tenant.objects.get(otp=otp)
+        user = Owner.objects.get(otp=otp)
 
         if user.otp == otp:
             user.is_verified = True
@@ -98,18 +98,19 @@ def verify_jwt(request):
         else:
             return Response({"error":"OTP formatting"})
         
-    except Tenant.DoesNotExist:
+    except Owner.DoesNotExist:
         return Response({"error": "Member not found or Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def register_tenant(request):
+def register_member(request):
     data = request.body
     data_str = data.decode('utf-8')
-    data_dict = json.loads(data_str )
-  
+    data_dict = json.loads(data_str)
+      
     if not 'dob' in data_dict:
         data_dict['dob'] = date.today()
 
+    data_dict['hno'] = random.randint(1, 1000)
     data_dict['area'] = Society.objects.filter(area='Ardee City Sector 52').first()
     data_dict['city'] = City.objects.filter(city='Gurgaon').first()
     data_dict['state'] = State.objects.filter(state='Haryana').first()
@@ -130,7 +131,7 @@ def register_tenant(request):
             password=make_password(data_dict['password'])
         )    
 
-        tenant = Tenant.objects.create(
+        member = Owner.objects.create(
             user=user, 
             fname=data_dict['first_name'],
             lname=data_dict['last_name'],
@@ -157,7 +158,7 @@ def register_tenant(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def login_tenant(request):
+def login_member(request):
     data = request.body
     data_str = data.decode('utf-8')
     data_dict = json.loads(data_str)
@@ -165,20 +166,20 @@ def login_tenant(request):
     email = data_dict.get('email')
     password = data_dict.get('password')
 
-    tenant = Tenant.objects.get(email=email)
-    
+    member = Owner.objects.get(email=email)
+
     try:
         user = User.objects.get(email=email)
         if not user.check_password(password):
             return Response({"error": "Invalid credentials : user id or password may be incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
         
-        if not tenant.is_verified:
+        if not member.is_verified:
             return Response({"error": "User is not verified", 'is_verified':False}, status=status.HTTP_401_UNAUTHORIZED)
 
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
-        return Response({"access_token": access_token, "user_type":"Tenant"}, status=status.HTTP_200_OK)
+        return Response({"access_token": access_token,"user_type": "Owner"}, status=status.HTTP_200_OK)
 
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -189,7 +190,7 @@ def reset_password(request):
         data = request.body
         data_str = data.decode('utf-8')
         data_dict = json.loads(data_str)
-
+        
         email = data_dict.get('email')
         password = data_dict.get('password')
         cnfpassword = data_dict.get('cnfpassword')
@@ -208,3 +209,24 @@ def reset_password(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# @api_view(['POST'])
+# def send_email_to_client(request):
+#     try:
+#         data = request.data
+#         data_str = data.decode('utf-8')
+#         data_dict = json.loads(data_str)
+
+#         print("Data dict ",data_dict)
+        
+#         subject = "Confirm Email"
+#         message = render_to_string('acc_active_email.html', {'nme': data_dict['username']})
+#         from_email = settings.EMAIL_HOST_USER
+#         recipient_list = [data_dict['recipient']]
+#         send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list)
+
+#         return Response(status=status.HTTP_200_OK)
+#     except Exception as e:
+#         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+

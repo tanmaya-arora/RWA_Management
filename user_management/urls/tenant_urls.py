@@ -1,5 +1,5 @@
 from django.urls import path
-from member.views import tenant_views as views
+from user_management.views import tenant_views as views
 
 
 urlpatterns =[

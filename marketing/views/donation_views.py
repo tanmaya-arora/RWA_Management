@@ -2,8 +2,9 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from marketing.models import Campaign, Member, Event
+from marketing.models import Campaign, Event
 from member.serializers import CampaignSerializer
+from user_management.models import Owner
 
 
 @api_view(['GET'])
@@ -21,7 +22,7 @@ def add_donation(request):
     data = json.loads(data_str)
 
     try:
-        member_obj = Member.objects.filter(email=data['user_email']).first()
+        member_obj = Owner.objects.filter(email=data['user_email']).first()
         # slz = MemberSerializer(member_obj, many=False)
         # member = slz.data
 

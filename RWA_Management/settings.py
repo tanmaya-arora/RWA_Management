@@ -55,7 +55,9 @@ INSTALLED_APPS = [
     'member',
     'marketing',
     'reporting',
-    'support'
+    'support',
+    'user_management',
+
 ]
 
 MIDDLEWARE = [
