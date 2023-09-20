@@ -50,23 +50,6 @@ class Committee(models.Model):
         return str(self.position)
 
 
-class FamilyMember(models.Model):
-    family_head = models.ForeignKey(User, on_delete=models.CASCADE)
-    fname = models.CharField(max_length=50, null=False)
-    lname = models.CharField(max_length=50, null=False)
-    gender = models.CharField(max_length=12, choices=(
-        ('', ''), ('Male', 'Male'), ('Female', 'Female'), ('Transgender', 'Transgender')), default=''
-    )
-    date_of_birth = models.DateField(auto_now=False)
-    relation = models.CharField(max_length=50)
-    aniversary_date = models.DateField(auto_now=False)
-    marital_status = models.CharField(max_length=50, default='Single')
-    #spouse_name = models.CharField(max_length=50, default='')    
-
-    def __str__(self):
-        return f"{self.fname} {self.lname}"
-
-
 class Event(models.Model):
     event_id = models.AutoField(primary_key=True, editable=False)
     event_name = models.CharField(max_length=50)

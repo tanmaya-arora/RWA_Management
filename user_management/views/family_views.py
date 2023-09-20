@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from member.models import FamilyMember
+from user_management.models import FamilyMember
 from member.serializers import FamilyMemberSerializer
 import json
 from datetime import date

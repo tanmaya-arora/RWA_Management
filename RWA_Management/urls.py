@@ -28,7 +28,7 @@ urlpatterns = [
     path('api/country/', include('member.urls.country_urls')),
     path('api/donation/', include('marketing.urls.donation_urls')),
     path('api/events/', include('member.urls.event_urls')),
-    path('api/family-members/', include('member.urls.family_urls')),
+    path('api/family-members/', include('user_management.urls.family_urls')),
     path('api/members/', include('user_management.urls.owner_urls')),
     path('api/package-categories/', include('member.urls.package_category_urls')),
     path('api/payment/', include('member.urls.payment_urls')),
