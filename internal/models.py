@@ -129,17 +129,11 @@ class Cart(models.Model):
     def __str__(self):
         return str(self.id)
 
-class order(models.Model):
+class Order(models.Model):
     id = models.AutoField(primary_key=True,editable=False)
     package = models.ForeignKey(Package, on_delete=models.CASCADE,null=False)
     date = models.DateTimeField(auto_now= True)
     order_details = models.CharField(max_length=50)
-
-class billing_history(models.Model):
-    id = models.AutoField(primary_key=True,editable=False)
-    package = models.ForeignKey(Package, on_delete=models.CASCADE,null=False)
-    billing_history = models.CharField(max_length=50)
- 
 
 class Chat(models.Model):
     chat_id = models.AutoField(primary_key=True, editable=False)
