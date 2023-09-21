@@ -1,10 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from support.models import Ticket
+from support.models import Ticket, TicketReply
 from internal.serializers import TicketSerializer
 import json
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 @api_view(['GET'])
 def get_all (request):
@@ -13,13 +13,14 @@ def get_all (request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_one (request , pk ):
+def get_one(request, pk):
     try:
-        ticket=Ticket.objects.get(user=pk )
-        serializer = TicketSerializer(ticket,many = False)
-        return Response ({'message':'Ticket request of the user are as follows'},status=status.HTTP_200_OK)
-    except:
-        return Response({'error': 'No such a User exists'},status=status.HTTP_204_NO_CONTENT)
+        ticket = Ticket.objects.get(pk=pk)
+        serializer = TicketSerializer(ticket, many=False)
+        return Response(serializer.data)
+    except Ticket.DoesNotExist:
+        return Response({'error': 'Ticket not found'}, status=status.HTTP_404_NOT_FOUND)
+
     
 @api_view(['POST'])
 def add(request):
@@ -47,3 +48,26 @@ def add(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+    
+@api_view(['POST'])
+def reply(request):
+    data = json.loads(request.body.decode('utf-8'))
+
+    name  = data.get('name')
+    try:
+        ticket_id = data.get('ticket_id')
+        ticket = Ticket.objects.filter(pk=ticket_id).first()
+
+        if not ticket:
+            return Response({'error': 'Ticket not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        ticket_reply = TicketReply.objects.create(
+            ticket=ticket,
+            reply_message=data.get('message'),
+            replied_by = Group.objects.get(name = name ),
+        )
+
+        return Response({'message': 'Reply to this ticket successful'}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)

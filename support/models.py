@@ -15,6 +15,7 @@ class Ticket(models.Model):
         ('low', 'Low'), ('normal', 'Normal'), ('high', 'High')),
         default='Normal'
     )
+
     def __str__(self):
         return self.priority
 
@@ -23,4 +24,4 @@ class TicketReply(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     reply_message = models.TextField()
     datetime_reply = models.DateTimeField(auto_now=True)
-    replied_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    replied_by = models.ForeignKey(User, on_delete=models.CASCADE, null =False)

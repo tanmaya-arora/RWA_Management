@@ -5,4 +5,5 @@ urlpatterns = [
     path('get/', views.get_all, name='get-all-tickets'),
     path('<str:pk>', views.get_one, name='get-one-ticket-as-per-user'),
     path('add/', views.add, name = 'add-ticket-request'),
+    path('reply/', views.reply, name = 'reply-to-the-ticket')
 ]
