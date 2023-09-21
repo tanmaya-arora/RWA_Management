@@ -43,5 +43,6 @@ def add(request):
 
         return Response({'message':'Ticket Raised Successfully'},status=status.HTTP_201_CREATED)
 
-    except:
-        return Response({'error':'Ticket request cannot be generated'},status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"Error":str(e)},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        # return Response({'error':'Ticket request cannot be generated'},status=status.HTTP_400_BAD_REQUEST)
