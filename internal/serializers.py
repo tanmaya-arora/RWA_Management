@@ -4,6 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import City, Committee, Country, Society, State, Package, Package_Category, Cart, Event 
 from marketing.models import Campaign
 from user_management.models import Owner, Tenant, FamilyMember
+from support.models import Ticket
 
 class CitySerializer(serializers.ModelSerializer):
 
@@ -125,4 +126,9 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
+        fields = '__all__'
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
         fields = '__all__'

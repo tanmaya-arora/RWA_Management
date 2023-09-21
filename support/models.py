@@ -17,7 +17,7 @@ class Ticket(models.Model):
     ticket_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     person_name = models.CharField(max_length=50)
     person_email = models.EmailField(max_length=100)
-    contact_no = models.CharField(max_length=20)
+    contact_no = models.IntegerField(max_length=20)
     message = models.TextField()
     priority = models.ForeignKey(TicketPriority, on_delete=models.CASCADE)
     resolved = models.BooleanField(default=False)
