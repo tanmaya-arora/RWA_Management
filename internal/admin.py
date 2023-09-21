@@ -20,5 +20,7 @@ class PackageCategoryAdmin(admin.ModelAdmin):
 admin.site.register(Package_Category, PackageCategoryAdmin)
 
 admin.site.register(Package_attributes)
-admin.site.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display=('user','package','total_price')
+admin.site.register(Cart,CartAdmin)
 admin.site.register(Event)
