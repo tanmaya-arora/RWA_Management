@@ -5,6 +5,7 @@ from .models import City, Committee, Country, Society, State, Package, Package_C
 from marketing.models import Campaign
 from user_management.models import Owner, Tenant, FamilyMember
 from support.models import Ticket
+from reporting.models import ProductStock
 
 class CitySerializer(serializers.ModelSerializer):
 
@@ -131,4 +132,10 @@ class CartSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
+        fields = '__all__'
+
+
+class StockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductStock
         fields = '__all__'

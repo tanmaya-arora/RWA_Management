@@ -8,7 +8,7 @@ class Ticket(models.Model):
     ticket_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     person_name = models.CharField(max_length=50)
     person_email = models.EmailField(max_length=100)
-    contact_no = models.IntegerField()
+    contact_no = models.BigIntegerField()
     message = models.TextField()
     resolved = models.BooleanField(default=False)
     priority = models.CharField(max_length=12, choices=(
