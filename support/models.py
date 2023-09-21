@@ -17,7 +17,7 @@ class Ticket(models.Model):
     )
 
     def __str__(self):
-        return self.priority
+        return str(self.ticket_id)
 
 class TicketReply(models.Model):
     reply_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
