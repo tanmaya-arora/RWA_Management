@@ -16,5 +16,10 @@ def get_stock_name (request, pk):
     try:
         stock = ProductStock.objects.filter(name =pk)
         serializer = StockSerializer(stock, many = False)
-        return Response({'message':'Stock for the asked product'})
+        return Response({'message':'Stock for the asked product'}, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        return Response({"error":str(e)},status=status.HTTP_204_NO_CONTENT)
+
+
     

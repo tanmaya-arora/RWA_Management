@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class ProductStock(models.Model):
+    id = models.AutoField(primary_key=True, editable=False)
     product_name = models.CharField('Product Name', max_length=250)
     quantity = models.IntegerField()
 

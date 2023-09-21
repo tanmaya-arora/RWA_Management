@@ -35,6 +35,7 @@ urlpatterns = [
     path("api/tenant/", include('user_management.urls.tenant_urls')),
     path('api/society/', include('internal.urls.society_urls')),
     path('api/ticket/',include('support.urls.ticket_urls')),
+    path('api/stock/', include('reporting.urls.stock_urls')),
     path('api/states/', include('internal.urls.state_urls')),
     path('api/users/', include('internal.urls.user_urls')),
     path('token/', 
