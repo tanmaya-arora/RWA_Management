@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from support.models import Ticket, TicketReply
+from support.models import Ticket
 from internal.serializers import TicketSerializer
 import json
 from django.contrib.auth.models import User, Group
@@ -55,14 +55,7 @@ def reply(request):
 
     name  = data.get('name')
     try:
-        ticket_id = data.get('ticket_id')
-        ticket = Ticket.objects.filter(pk=ticket_id).first()
-
-        if not ticket:
-            return Response({'error': 'Ticket not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        ticket_reply = TicketReply.objects.create(
-            ticket=ticket,
+        ticket_reply = Ticket.objects.create(
             reply_message=data.get('message'),
             replied_by = Group.objects.get(name = name ),
         )
