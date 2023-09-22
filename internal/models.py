@@ -131,9 +131,11 @@ class Cart(models.Model):
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True,editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False) 
     package = models.ForeignKey(Package_Category, on_delete=models.CASCADE,null=False)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now= True)
-    order_details = models.CharField(max_length=50)
+    #order_details = models.CharField(max_length=50)
 
 class Chat(models.Model):
     chat_id = models.AutoField(primary_key=True, editable=False)
