@@ -15,9 +15,9 @@ class Ticket(models.Model):
         ('low', 'Low'), ('normal', 'Normal'), ('high', 'High')),
         default='Normal'
     )
-    reply_message = models.TextField()
+    reply_message = models.TextField(null=True)
     datetime_reply = models.DateTimeField(auto_now=True)
-    replied_by = models.ForeignKey(Group, on_delete=models.CASCADE, null =False, default = 'secretary')
+    replied_by = models.ForeignKey(Group, on_delete=models.CASCADE, null =True, default = 'secretary')
       
     def __str__(self):
         return str(self.ticket_id)
