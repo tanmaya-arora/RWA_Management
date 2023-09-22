@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from reporting.models import ProductStock
-from internal.serializers import StockSerializer
+from reporting.models import ProductStock, SaleHistory
+from internal.serializers import StockSerializer, SaleHistorySerializer
 
 
 @api_view(['GET'])
@@ -21,5 +21,11 @@ def get_stock_name (request, pk):
     except Exception as e:
         return Response({"error":str(e)},status=status.HTTP_204_NO_CONTENT)
 
+
+@api_view(['GET'])
+def get_order(request):
+    order = SaleHistory.objects.all()
+    serializer = SaleHistorySerializer(order, many= True)
+    return Response(serializer.data)
 
     
