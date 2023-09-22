@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Chat, Broadcast, Committee, Country, State, City, Society, Meeting, Payment, Package, Package_Category, Package_attributes, Cart, Event
+from .models import Chat, Broadcast, Committee, Country, State, City, Society, Meeting, Payment, Package, Package_Category, Package_attributes, Cart, Event, Order
 
 # Register your models here.
 
@@ -14,6 +14,7 @@ admin.site.register(Meeting)
 
 admin.site.register(Payment)
 admin.site.register(Package)
+admin.site.register(Order)
 
 class PackageCategoryAdmin(admin.ModelAdmin):
     list_display=('name', 'price' )

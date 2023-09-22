@@ -131,7 +131,7 @@ class Cart(models.Model):
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True,editable=False)
-    package = models.ForeignKey(Package, on_delete=models.CASCADE,null=False)
+    package = models.ForeignKey(Package_Category, on_delete=models.CASCADE,null=False)
     date = models.DateTimeField(auto_now= True)
     order_details = models.CharField(max_length=50)
 
