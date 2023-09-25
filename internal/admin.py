@@ -24,4 +24,7 @@ admin.site.register(Package_attributes)
 class CartAdmin(admin.ModelAdmin):
     list_display=('user','package','total_price')
 admin.site.register(Cart,CartAdmin)
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('event_name','date')
 admin.site.register(Event)
