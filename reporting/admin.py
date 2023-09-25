@@ -6,8 +6,6 @@ from .models import ProductStock, SaleHistory, PaymentHistory
 
 class ProductStockAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'quantity')
-    def has_add_permission(self, request):
-        return False
     
 admin.site.register(ProductStock, ProductStockAdmin)
 class SaleHistoryAdmin(admin.ModelAdmin):
