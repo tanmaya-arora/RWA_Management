@@ -5,5 +5,7 @@ from support.models import Ticket
 class TicketAdmin(admin.ModelAdmin):
     list_display= ('ticket_id', 'priority','person_name','resolved')
     list_filter = ('resolved','priority')
+    search_fields = ('person_name','ticket_id')
+    
 admin.site.register(Ticket, TicketAdmin)
 
