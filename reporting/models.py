@@ -16,6 +16,7 @@ class ProductStock(models.Model):
 class SaleHistory(AbstractUserModel):
     id = models.AutoField(primary_key=True,editable=False)
 
+
 class PaymentHistory(models.Model):
     id = models.AutoField(primary_key=True,editable=False)
     customer = models.ForeignKey(User, on_delete= models.CASCADE)

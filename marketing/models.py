@@ -9,6 +9,8 @@ class Campaign(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False)
     notes = models.CharField(max_length=100, default='')
     donation_amount = models.FloatField()
+    date = models.DateField(null=False)
+    time = models.TimeField(null= False)
 
     def __str__(self):
         return str(self.donation_id)
