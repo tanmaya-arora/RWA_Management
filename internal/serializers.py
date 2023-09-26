@@ -6,6 +6,7 @@ from marketing.models import Campaign
 from user_management.models import Owner, Tenant, FamilyMember
 from support.models import Ticket
 from reporting.models import ProductStock, SaleHistory
+from internal.models import Order
 
 class CitySerializer(serializers.ModelSerializer):
 
@@ -143,4 +144,9 @@ class StockSerializer(serializers.ModelSerializer):
 class SaleHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SaleHistory
+        fields = '__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
         fields = '__all__'
