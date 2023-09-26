@@ -12,7 +12,10 @@ admin.site.register(City)
 admin.site.register(Society)
 admin.site.register(Meeting)
 
-admin.site.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('payment_id', 'amount', 'payment_method')
+admin.site.register(Payment, PaymentAdmin)
+
 admin.site.register(Package)
 admin.site.register(Order)
 
