@@ -97,7 +97,7 @@ class Package_Category(models.Model):
 
 class Package_attributes(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
-    package_details = models.CharField(max_length=50,unique=True,editable=True)
+    package_details = models.ForeignKey(Package_Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=40)
@@ -129,13 +129,25 @@ class Cart(models.Model):
     def __str__(self):
         return str(self.id)
 
-class Order(models.Model):
-    id = models.AutoField(primary_key=True,editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False) 
-    package = models.ForeignKey(Package_Category, on_delete=models.CASCADE,null=False)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now= True)
-    #order_details = models.CharField(max_length=50)
+class AbstractUserModel(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    package = models.ForeignKey(Package_Category, on_delete= models.CASCADE)
+    Payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Order (AbstractUserModel):
+    id = models.AutoField(primary_key= True, editable= False)
+
+# class Order(models.Model):
+#     id = models.AutoField(primary_key=True,editable=False)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False) 
+#     package = models.ForeignKey(Package_Category, on_delete=models.CASCADE,null=False)
+#     payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+#     date = models.DateTimeField(auto_now= True)
+#     #order_details = models.CharField(max_length=50)
 
 class Chat(models.Model):
     chat_id = models.AutoField(primary_key=True, editable=False)

@@ -12,12 +12,8 @@ class SaleHistoryAdmin(admin.ModelAdmin):
     list_display = ('order','package')
 
     def has_add_permission(self, request):
-        return False
-    
-    def history_view(self, request: HttpRequest, object_id: str, extra_context: None = ...) -> HttpResponse:
-        return super().history_view(request, object_id, extra_context)
-    
-admin.site.register(SaleHistory,SaleHistoryAdmin)
+        return False  
+admin.site.register(SaleHistory)
 
 class PaymentHistoryAdmin(admin.ModelAdmin):
     list_display = ('id','customer')

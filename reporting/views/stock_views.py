@@ -5,7 +5,6 @@ from reporting.models import ProductStock, SaleHistory
 from internal.serializers import StockSerializer, SaleHistorySerializer, OrderSerializer
 from internal.models import Order
 
-
 @api_view(['GET'])
 def get_all (request):
     stock = ProductStock.objects.all()
@@ -25,7 +24,7 @@ def get_stock_name (request, pk):
 
 @api_view(['GET'])
 def get_order(request):
-    order = Order.objects.all()
+    order = order.objects.all()
     serializer = OrderSerializer(order, many= True)
     return Response(serializer.data)
 

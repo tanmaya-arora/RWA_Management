@@ -20,7 +20,7 @@ admin.site.register(Package)
 admin.site.register(Order)
 
 class PackageCategoryAdmin(admin.ModelAdmin):
-    list_display=('name', 'price' )
+    list_display=('name', 'price', 'category' )
 admin.site.register(Package_Category, PackageCategoryAdmin)
 
 admin.site.register(Package_attributes)
