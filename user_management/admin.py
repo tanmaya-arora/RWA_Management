@@ -4,7 +4,8 @@ from user_management.models import Owner, Tenant, FamilyMember
 # Register your models here.
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display= ('res_hno','fname','lname')
+    list_display= ('res_hno','fname','lname','is_verified')
+    list_filter = ('gender','is_verified')
 admin.site.register(Owner, MemberAdmin)
 
 class TenantAdmin(admin.ModelAdmin):
