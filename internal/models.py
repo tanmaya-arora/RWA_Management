@@ -97,7 +97,7 @@ class Package_Category(models.Model):
 
 class Package_attributes(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
-    package_details = models.ForeignKey(Package_Category, on_delete=models.CASCADE)
+    package_details = models.ForeignKey(Package_Category, on_delete=models.CASCADE) 
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=40)

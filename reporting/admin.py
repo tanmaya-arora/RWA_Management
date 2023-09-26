@@ -9,13 +9,8 @@ class ProductStockAdmin(admin.ModelAdmin):
     
 admin.site.register(ProductStock, ProductStockAdmin)
 class SaleHistoryAdmin(admin.ModelAdmin):
-    list_display = ('order','package')
-
-    # def has_add_permission(self, request):
-    #     return False
-    
-    def history_view(self, request: HttpRequest, object_id: str, extra_context: None = ...) -> HttpResponse:
-        return super().history_view(request, object_id, extra_context)
+    # list_display = ('order','package')
+    pass
     
 admin.site.register(SaleHistory,SaleHistoryAdmin)
 
