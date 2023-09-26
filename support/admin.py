@@ -6,6 +6,7 @@ class TicketAdmin(admin.ModelAdmin):
     list_display= ('ticket_id', 'priority','person_name','resolved')
     list_filter = ('resolved','priority')
     search_fields = ('person_name','ticket_id')
+    list_per_page = 5
     
 admin.site.register(Ticket, TicketAdmin)
 

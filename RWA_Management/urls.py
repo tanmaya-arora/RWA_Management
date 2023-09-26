@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/stock/', include('reporting.urls.stock_urls')),
     path('api/states/', include('internal.urls.state_urls')),
     path('api/users/', include('internal.urls.user_urls')),
+    path('api/sale/',include('reporting.urls.sale_history_urls')),
     path('token/', 
           jwt_views.TokenObtainPairView.as_view(), 
           name ='token_obtain_pair'),
