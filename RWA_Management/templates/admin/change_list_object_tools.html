@@ -8,7 +8,11 @@
     {% if has_add_permission %}
         {% url cl.opts|admin_urlname:'add' as add_url %}
         <a href="{% add_preserved_filters add_url is_popup to_field %}" class="green-btn btn-padding">
-            {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+            {% if cl.opts.verbose_name == "sale history" %}
+            {% blocktrans with cl.opts.verbose_name as name %}{{ name }} {% endblocktrans %}
+            {% else %}
+                {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+            {% endif %}
         </a>
     {% endif %}
 {% endblock %}
