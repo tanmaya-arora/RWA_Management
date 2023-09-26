@@ -10,7 +10,7 @@ class MemberAdmin(admin.ModelAdmin):
 admin.site.register(Owner, MemberAdmin)
 
 class TenantAdmin(admin.ModelAdmin):
-    list_display= ('res_hno','fname','lname, is_verified')
+    list_display= ('res_hno','fname','lname', 'is_verified')
     list_filter = ('gender','is_verified')
     list_per_page = 5
 admin.site.register(Tenant, TenantAdmin)
