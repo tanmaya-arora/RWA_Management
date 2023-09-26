@@ -7,4 +7,5 @@ class CampaignAdmin(admin.ModelAdmin):
     list_per_page = 5
     list_filter = ('event','date','member')
     search_fields = ('event','member','date')
+    
 admin.site.register(Campaign, CampaignAdmin)    
