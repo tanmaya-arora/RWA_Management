@@ -17,7 +17,10 @@ class PaymentAdmin(admin.ModelAdmin):
 admin.site.register(Payment, PaymentAdmin)
 
 admin.site.register(Package)
-admin.site.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('user','package','quantity')
+    list_per_page = 5
+admin.site.register(Order, OrderAdmin)
 
 class PackageCategoryAdmin(admin.ModelAdmin):
     list_display=('name', 'price', 'category' )
