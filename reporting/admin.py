@@ -17,6 +17,6 @@ admin.site.register(SaleHistory,SaleHistoryAdmin)
 
 class PaymentHistoryAdmin(admin.ModelAdmin):
     list_display = ('id','customer')
-    def has_add_permission(self,request):
-        return False
+    # def has_add_permission(self,request):
+    #     return False
 admin.site.register(PaymentHistory, PaymentHistoryAdmin)
