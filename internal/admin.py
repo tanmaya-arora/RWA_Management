@@ -34,5 +34,9 @@ class CartAdmin(admin.ModelAdmin):
 admin.site.register(Cart,CartAdmin)
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('event_name','date')
-admin.site.register(Event)
+    list_display = ('event_name','event_date')
+    list_filter = ('event_name','event_date')
+    search_fields = [('event_name')]
+    list_per_page = 5
+
+admin.site.register(Event,EventAdmin)
