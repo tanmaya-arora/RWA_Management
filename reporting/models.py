@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class ProductStock(models.Model):
-    id = models.AutoField(primary_key=True, editable=False)
     product_name = models.CharField('Product Name', max_length=250)
     quantity = models.IntegerField()
 
@@ -14,12 +13,12 @@ class ProductStock(models.Model):
         self.save()
 
 class SaleHistory(AbstractUserModel):
+    package = models.CharField('Package', max_length=250)
     quantity = models.PositiveIntegerField(null=True)
 
     def __str__(self):
         return f"SaleHistory - {self.package}"
 
 class PaymentHistory(models.Model):
-    id = models.AutoField(primary_key=True,editable=False)
     customer = models.ForeignKey(User, on_delete= models.CASCADE)
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE)

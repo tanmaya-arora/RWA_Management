@@ -9,9 +9,10 @@ class ProductStockAdmin(admin.ModelAdmin):
     
 admin.site.register(ProductStock, ProductStockAdmin)
 class SaleHistoryAdmin(admin.ModelAdmin):
-    # list_display = ('order','package')
-    pass
-    
+    list_display = ('user','package')
+    list_per_page = 5
+    list_filter = [('package')]
+    search_fields = [('package')]
 admin.site.register(SaleHistory,SaleHistoryAdmin)
 
 class PaymentHistoryAdmin(admin.ModelAdmin):
