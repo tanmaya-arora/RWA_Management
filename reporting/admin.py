@@ -6,6 +6,9 @@ from .models import ProductStock, SaleHistory, PaymentHistory
 
 class ProductStockAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'quantity')
+    list_filter = [('product_name')]
+    search_fields = [('product_name')]
+    list_per_page = 5
     
 admin.site.register(ProductStock, ProductStockAdmin)
 class SaleHistoryAdmin(admin.ModelAdmin):
@@ -17,6 +20,7 @@ admin.site.register(SaleHistory,SaleHistoryAdmin)
 
 class PaymentHistoryAdmin(admin.ModelAdmin):
     list_display = ('id','customer')
+    search_fields = ['customer']
     # def has_add_permission(self,request):
     #     return False
 admin.site.register(PaymentHistory, PaymentHistoryAdmin)
