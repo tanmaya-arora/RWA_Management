@@ -19,6 +19,8 @@ admin.site.register(Payment, PaymentAdmin)
 admin.site.register(Package)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('user','package','quantity')
+    list_filter = [('package')]
+    search_fields =('package','user')
     list_per_page = 5
 admin.site.register(Order, OrderAdmin)
 
