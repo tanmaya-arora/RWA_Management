@@ -2,14 +2,30 @@ from django.contrib import admin
 from support.models import Ticket
 from django.utils.html import format_html
 
-# Register your models here.
+    # Register your models here.
 class TicketAdmin(admin.ModelAdmin):
-    list_display= ('ticket_colored', 'priority_colored','name_colored','resolved')
+    list_display= ('ticket_colored', 'priority_colored','name_colored','check_resolved')
     list_filter = ('resolved','priority')
     search_fields = ('person_name','ticket_id')
     list_per_page = 5
     actions = ['mark_as_flagged']
-    readonly_fields = ('person_name','person_email','contact_no','priority','message')
+    readonly_fields = ('person_name','person_email','contact_no','priority','message')    
+    # ordering = ("person_name", "person_email", "contact_no")  
+    
+    fieldsets = (
+        ('Requested Fields:', {
+            'fields': (
+                ("person_name", "person_email", "contact_no"),
+                ("priority", "message"),
+
+            ),
+        }),
+        ('Additional Fields:', {
+            'fields': (
+                ("reply_message", "resolved", "replied_by"),
+            ),
+        }),
+    )
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
@@ -44,6 +60,12 @@ class TicketAdmin(admin.ModelAdmin):
             else:
                 return format_html('<span style="color: black;">{}</span>', obj.person_name)
     name_colored.short_description = 'name'
+
+    def check_resolved(self,obj):
+         if obj.resolved:
+              return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-yes.svg" class="mx-auto"></div></img>')
+         else:
+              return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-no.svg" class="mx-auto"></div></img>')
 
     def mark_as_flagged(self, request, queryset):
             queryset.update(is_flagged=True)
