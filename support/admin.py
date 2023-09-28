@@ -17,10 +17,12 @@ class TicketAdmin(admin.ModelAdmin):
         extra_context['show_save_as_new'] = False
         extra_context['show_save_and_add_another'] = False
         extra_context['show_save_and_continue'] = False
-        extra_context['show_delete_link_and_original'] = False
-
+        
         return super().change_view(request, object_id, form_url=form_url, extra_context=extra_context)
 
+    def has_delete_permission(self, request, obj=None):
+         return False
+    
     def priority_colored(self, obj):
             if obj.resolved:
                 return format_html('<span style="color: grey;">{}</span>', obj.priority)
@@ -44,14 +46,6 @@ class TicketAdmin(admin.ModelAdmin):
 
     def mark_as_flagged(self, request, queryset):
             queryset.update(is_flagged=True)
-
-    class Meta:     
-          css = {
-                'all':('admin/change_file.css'),
-          }
-
-change_list_template = 'admin/change_list.html'
-
 
 admin.site.register(Ticket, TicketAdmin)
 
