@@ -9,6 +9,7 @@ class TicketAdmin(admin.ModelAdmin):
     search_fields = ('person_name','ticket_id')
     list_per_page = 5
     actions = ['mark_as_flagged']
+    readonly_fields = ('person_name','person_email','contact_no','priority','message')
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
