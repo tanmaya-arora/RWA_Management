@@ -11,6 +11,7 @@ class Ticket(models.Model):
     person_name = models.CharField(max_length=50)
     person_email = models.EmailField(max_length=100)
     contact_no = models.BigIntegerField()
+    date = models.DateTimeField(auto_now=True)
     message = models.TextField()
     resolved = models.BooleanField(default=False)
     priority = models.CharField(max_length=12, choices=(
@@ -20,15 +21,6 @@ class Ticket(models.Model):
     reply_message = models.TextField(null=True)
     datetime_reply = models.DateTimeField(auto_now=True)
     replied_by = models.ForeignKey(Group, on_delete=models.CASCADE, null =True, default = None)
-    
-        
-    # def status_colored(self):
-    #     if self.resolved:
-    #         return format_html('<span style="color: green;">Resolved</span>')
-    #     else:
-    #         return format_html('<span style="color: red;">Not Resolved</span>')
-    
-    # status_colored.short_description = 'Status'  
 
     def __str__(self):
         return str(self.ticket_id)
