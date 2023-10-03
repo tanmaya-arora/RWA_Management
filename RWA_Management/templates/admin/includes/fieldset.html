@@ -25,19 +25,21 @@
                                 </label>
                             </div>
                         {% else %}
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
+
                             {{ field.label_tag }}
 
                             {% if field.is_readonly %}
+                            <style>
+                                .readonly{
+                                    margin: auto;
+                                    font-weight: 900;
+                                    padding: auto;
+                                    margin-left: 3%;    
+                                }
+                            </style>
                                 <div class="readonly">{{ field.contents }}</div>
                             {% else %}
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ field.field }} {#<i class="fa fa-plus"></i>#}
+                                {{ field.field }} {#<i class="fa fa-plus"></i>#}
                             {% endif %}
                         {% endif %}
 

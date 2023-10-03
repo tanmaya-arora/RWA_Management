@@ -15,8 +15,8 @@ class TicketAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Requested Fields:', {
             'fields': (
-                ("person_name", "person_email", "contact_no"),
-                ("date","priority", "message"),
+                ("person_name","person_email", "contact_no"),
+                ("priority","date", "message"),
 
             ),
         }),
