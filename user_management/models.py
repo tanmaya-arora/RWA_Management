@@ -11,7 +11,7 @@ class Owner(models.Model):
     lname = models.CharField(max_length=50, null=False)
     date_of_birth = models.DateField(auto_now_add=False, null=False, blank=False)
     gender = models.CharField(max_length=12, choices=(
-        ('', ''), ('Male', 'Male'), ('Female', 'Female'), ('Transgender', 'Transgender')),
+        ('Male', 'Male'), ('Female', 'Female'), ('other', 'Other')),
         default=''
     )
     phone_no = models.CharField(max_length=20)
@@ -38,7 +38,7 @@ class Tenant(models.Model):
     
     date_of_birth = models.DateField(auto_now=False)
     gender = models.CharField(max_length=12, choices=(
-        ('', ''), ('M', 'male'), ('F', 'female')), default='')
+        ('M', 'male'), ('F', 'female')), default='')
     phone_no = models.CharField(max_length=20)
     email = models.EmailField(max_length=100, null=False)
     res_hno = models.IntegerField()
@@ -58,7 +58,7 @@ class FamilyMember(models.Model):
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
     gender = models.CharField(max_length=12, choices=(
-        ('', ''), ('Male', 'Male'), ('Female', 'Female'), ('Transgender', 'Transgender')), default=''
+        ('Male', 'Male'), ('Female', 'Female'), ('other', 'Other')), default=''
     )
     date_of_birth = models.DateField(auto_now=False)
     relation = models.CharField(max_length=50)
