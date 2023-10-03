@@ -1,7 +1,8 @@
 {% load i18n admin_soft static %}
 
 {% block extrastyle %}
-    <link rel="stylesheet" type="text/css" href="{% static "css/forms.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "files/css/forms.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "files/css/soft-ui-dashboard.css" %}">
 {% endblock %}
 
 {% if cl.paginator.num_pages > 1 %}
