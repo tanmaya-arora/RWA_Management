@@ -69,10 +69,10 @@ form ul.inline li {
 
 .aligned label {
     display: block;
-    padding: 1px 5px !important;
+    padding: 0.15rem 1rem !important;
     /*float: left;*/
-    width: 104px;
-    word-wrap: break-word;
+    width: 8rem;
+    word-wrap: inherit;
     /*line-height: 1;*/
 }
 
