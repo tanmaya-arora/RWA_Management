@@ -155,7 +155,7 @@ input[type="number"],
 textarea,
 select {
     display: block;
-    width: 100%;
+    width: 50%;
     padding: 0.5rem 20px;
     font-size: 0.875rem;
     font-weight: 400;
