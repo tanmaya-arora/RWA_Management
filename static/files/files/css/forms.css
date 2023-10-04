@@ -84,6 +84,7 @@ form ul.inline li {
 }
 
 .aligned label + p, .aligned label + div.help, .aligned label + div.readonly {
+    display: flex;
     padding: 6px 0;
     margin-top: 0;
     margin-bottom: 0;
@@ -177,7 +178,7 @@ form .aligned table p {
 .aligned .vCheckboxLabel {
     float: none;
     width: auto;
-    display: inline-block;
+    display: contents;
     /*vertical-align: -3px;*/
     /*padding: 0 0 5px 5px;*/
 }
