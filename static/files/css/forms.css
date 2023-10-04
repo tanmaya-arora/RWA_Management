@@ -350,7 +350,7 @@ body.popup .submit-row {
 }
 
 .vDateField {
-    min-width: 6.85em;
+    min-width: 8.85em;
 }
 
 .vTimeField {
@@ -568,7 +568,7 @@ form .related-widget-wrapper ul {
 }
 
 .btn-padding {
-    padding: 0.4rem 0.55rem;
+    padding: 0.4rem 1.55rem;
 }
 
 .bg-green {
