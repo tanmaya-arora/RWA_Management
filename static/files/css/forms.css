@@ -69,9 +69,9 @@ form ul.inline li {
 
 .aligned label {
     display: block;
-    padding: 7px 10px !important;
+    padding: 1px 5px !important;
     /*float: left;*/
-    /*width: 160px;*/
+    width: 104px;
     word-wrap: break-word;
     /*line-height: 1;*/
 }

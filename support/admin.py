@@ -9,14 +9,14 @@ class TicketAdmin(admin.ModelAdmin):
     search_fields = ('person_name','ticket_id')
     list_per_page = 5
     actions = ['mark_as_flagged']
-    readonly_fields = ('person_name','person_email','contact_no','priority','message','date')    
+    readonly_fields = ('person_name','person_email','phone_no','priority','message','date')    
     # ordering = ("person_name", "person_email", "contact_no")  
     date_hierarchy =('date')
     fieldsets = (
         ('Requested Fields:', {
             'fields': (
-                ("person_name","person_email", "contact_no"),
-                ("priority","date", "message"),
+                ("person_name","person_email","phone_no"),
+                ("priority","date","message"),
 
             ),
         }),

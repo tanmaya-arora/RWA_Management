@@ -10,7 +10,7 @@ class Ticket(models.Model):
     ticket_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     person_name = models.CharField(max_length=50)
     person_email = models.EmailField(max_length=100)
-    contact_no = models.BigIntegerField()
+    phone_no = models.BigIntegerField()
     date = models.DateTimeField(auto_now=True)
     message = models.TextField()
     resolved = models.BooleanField(default=False)

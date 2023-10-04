@@ -8,6 +8,7 @@ class MemberAdmin(admin.ModelAdmin):
     list_filter = ('is_verified',('gender', admin.ChoicesFieldListFilter))
     list_per_page = 5
     show_full_result_count = True
+    search_fields =('res_hno','fname','lname')
     # change_form_template = 'admin/pagination.html'  
 
     # def get_list_filter(self, request):
