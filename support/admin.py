@@ -11,7 +11,7 @@ class TicketAdmin(admin.ModelAdmin):
     actions = ['mark_as_flagged']
     readonly_fields = ('person_name','person_email','phone_no','priority','message','date')    
     # ordering = ("person_name", "person_email", "contact_no")  
-    date_hierarchy =('date')
+    # date_hierarchy =('date')
     fieldsets = (
         ('Requested Fields:', {
             'fields': (
@@ -79,6 +79,9 @@ class TicketAdmin(admin.ModelAdmin):
 
     def mark_as_flagged(self, request, queryset):
             queryset.update(is_flagged=True)
+    
+    class Media:
+         js = ['custom_admin.js']
 
 
 admin.site.register(Ticket, TicketAdmin)
