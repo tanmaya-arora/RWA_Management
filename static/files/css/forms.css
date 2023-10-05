@@ -620,3 +620,11 @@ form .related-widget-wrapper ul {
 .d-inline-block {
     display: inline-block;
 }
+
+.txt-black {
+    color: black;
+}
+
+.txt-capitalize {
+    text-transform: capitalize;
+}
