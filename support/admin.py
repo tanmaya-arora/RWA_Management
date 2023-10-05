@@ -1,15 +1,23 @@
 from django.contrib import admin
 from support.models import Ticket
 from django.utils.html import format_html
-
-    # Register your models here.
+from django_admin_listfilter_dropdown.filters import (
+     ChoiceDropdownFilter
+     )
+    # Register your models here.    
 class TicketAdmin(admin.ModelAdmin):
-    list_display= ('ticket_colored', 'priority_colored','name_colored','check_resolved','formatted_date')
-    list_filter = ('resolved','priority')
+    list_display= ('ticket_colored', 'priority_colored','name_colored','color_status','check_status','formatted_date')
+    list_filter = (
+        ('status', ChoiceDropdownFilter),
+        ('priority', ChoiceDropdownFilter),
+    )
     search_fields = ('person_name','ticket_id')
     list_per_page = 5
     actions = ['mark_as_flagged']
     readonly_fields = ('person_name','person_email','phone_no','priority','message','date')    
+    
+
+    # object_history_template ='admin/support/object_history.html'
     # ordering = ("person_name", "person_email", "contact_no")  
     # date_hierarchy =('date')
     fieldsets = (
@@ -22,7 +30,7 @@ class TicketAdmin(admin.ModelAdmin):
         }),
         ('Additional Fields:', {
             'fields': (
-                ("reply_message", "resolved", "replied_by"),
+                ("reply_message","status","replied_by"),
             ),
         }),
     )
@@ -35,7 +43,7 @@ class TicketAdmin(admin.ModelAdmin):
     def formatted_date(self, obj):
         return obj.date.strftime("%d-%m-%Y  %H:%M")  
 
-    formatted_date.short_description = 'Formatted Date'
+    formatted_date.short_description = 'Date'
     
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
@@ -51,37 +59,45 @@ class TicketAdmin(admin.ModelAdmin):
          return False
     
     def priority_colored(self, obj):
-            if obj.resolved:
+            if obj.status=='closed':
                 return format_html('<span style="color: grey;">{}</span>', obj.priority)
             else:
                 return format_html('<span style="color: black;">{}</span>', obj.priority)
     priority_colored.short_description = 'Priority'
 
     def ticket_colored(self, obj):
-            if obj.resolved:
+            if obj.status=='closed':
                 return format_html('<span style="color: grey;">{}</span>', obj.ticket_id)
             else:
                 return format_html('<span style="color: black;">{}</span>', obj.ticket_id)
     ticket_colored.short_description = 'ticket_id'
 
     def name_colored(self, obj):
-            if obj.resolved:
+            if obj.status=='closed':
                 return format_html('<span style="color: grey;">{}</span>', obj.person_name)
             else:
                 return format_html('<span style="color: black;">{}</span>', obj.person_name)
     name_colored.short_description = 'name'
 
-    def check_resolved(self,obj):
-         if obj.resolved:
+    def color_status(self,obj):
+        if obj.status=='closed':
+            return format_html('<span style="color: grey;">{}</span>', obj.status)
+        else:
+            return format_html('<span style="color: black;">{}</span>', obj.status)
+    color_status.short_description ='status'
+        
+    def check_status(self,obj):
+         if obj.status=='closed':
               return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-yes.svg" class="mx-auto"></div></img>')
          else:
               return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-no.svg" class="mx-auto"></div></img>')
+    check_status.short_description = 'Resolved'
 
     def mark_as_flagged(self, request, queryset):
             queryset.update(is_flagged=True)
     
     class Media:
-         js = ['custom_admin.js']
+         js = ['/static/files/js/custom_admin.js']
 
 
 admin.site.register(Ticket, TicketAdmin)
