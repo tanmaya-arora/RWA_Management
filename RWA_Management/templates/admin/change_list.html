@@ -57,11 +57,16 @@
 
 {% block content %}
     <div class="table-settings mb-4 mt-5 mx-5">
-        <div class="row align-items-center justify-content-between">
-            <div class="col col-md-8 col-lg-3 col-xl-8">
+        <div class="row align-items-center">
+            <div class="col col-md-5 col-xl-5">
                 {% block search %}{% search_form cl %}{% endblock %}
             </div>
-            <div class="d-block mb-4 mb-md-0 col-4 col-md-2">
+            <div class="d-flex mt-2 mb-md-0 col-4 col-md-4">
+                {% for spec in cl.filter_specs %}
+                                {% admin_list_filter cl spec %}
+                            {% endfor %}
+            </div>
+            <div class="d-block mb-4 mb-md-0 col-3 col-md-3">
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group">
                         {% block object-tools-items %}
@@ -74,7 +79,7 @@
     </div>
 
     <div class="row mx-4">
-        <div class="{% if cl.has_filters %}col-md-10{% else %}col-md-12{% endif %}">
+        <div class="{% if cl.has_filters %}col-md-11{% else %}col-md-12{% endif %}">
             {% block date_hierarchy %}
                 {% if cl.date_hierarchy %}{% date_hierarchy cl %}{% endif %}
             {% endblock %}
@@ -102,22 +107,6 @@
                     {% block pagination %}{% pagination cl %}{% endblock %}
                 </div>
             </form>
-        </div>
-        <div class="col-md-2">
-            {% if cl.has_filters %}
-                {% block filters %}
-                    <div class="card card-body border-0 shadow table-wrapper table-responsive">
-                        <div class="card-header filter_card_header">
-                            <h5>{% trans 'Filter' %}</h5>
-                        </div>
-                        <div class="card-body">
-                            {% for spec in cl.filter_specs %}
-                                {% admin_list_filter cl spec %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endblock %}
-            {% endif %}
         </div>
     </div>
 {% endblock %}

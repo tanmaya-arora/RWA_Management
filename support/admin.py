@@ -1,15 +1,13 @@
 from django.contrib import admin
 from support.models import Ticket
 from django.utils.html import format_html
-from django_admin_listfilter_dropdown.filters import (
-     ChoiceDropdownFilter
-     )
+from django_admin_listfilter_dropdown.filters import ChoiceDropdownFilter
     # Register your models here.    
 class TicketAdmin(admin.ModelAdmin):
     list_display= ('ticket_colored', 'priority_colored','name_colored','color_status','check_status','formatted_date')
     list_filter = (
-        ('status', ChoiceDropdownFilter),
-        ('priority', ChoiceDropdownFilter),
+        ('status'),
+        ('priority'),
     )
     search_fields = ('person_name','ticket_id')
     list_per_page = 5

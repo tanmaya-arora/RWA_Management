@@ -628,3 +628,54 @@ form .related-widget-wrapper ul {
 .txt-capitalize {
     text-transform: capitalize;
 }
+
+.nvbar {
+    z-index: 1;
+    padding-inline: 15px;
+}
+
+
+.dropdn {
+    float: left;
+}
+
+.dropdn .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 5px 5px 5px 14px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+    color: black;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdn:hover .dropdown-content {
+    display: block;
+    z-index: 1;
+}

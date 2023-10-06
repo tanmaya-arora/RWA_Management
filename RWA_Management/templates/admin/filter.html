@@ -1,0 +1,26 @@
+{% load i18n static %}
+
+
+
+{% block extrastyle %}
+
+<link rel="stylesheet" type="text/css" href="{% static " files/css/forms.css" %}">
+
+{% endblock %}
+
+
+
+<div class="filter_panel nvbar">
+    <div class="mb-3 dropdn">
+        <span class="h6 dropbtn">{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}
+            <i class="fa fa-caret-down"></i>
+        </span>
+
+        <div class="dropdown-content">
+            {% for choice in choices %}
+            <a href="{{ choice.query_string|iriencode }}" title="{{ choice.display }}">{{ choice.display }}</a>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
