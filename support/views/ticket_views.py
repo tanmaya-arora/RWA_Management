@@ -6,6 +6,8 @@ from internal.serializers import TicketSerializer
 import json
 from django.contrib.auth.models import User, Group
 
+
+
 @api_view(['GET'])
 def get_all (request):
     ticket = Ticket.objects.all()
@@ -24,6 +26,13 @@ def get_one(request, pk):
     
 @api_view(['POST'])
 def add(request):
+    status_choices = (
+        ('closed','Closed'),
+        ('pending','Pending'),
+        ('opened','Opened'),
+        ('reopened','Re opened'),
+        )
+
     data = json.loads(request.body.decode('utf-8'))
     try:
         email = data.get('email')  
@@ -32,14 +41,14 @@ def add(request):
         if not user:
             return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
-        existing_ticket = Ticket.objects.filter(person_email=email, resolved=False).first()
+        existing_ticket = Ticket.objects.filter(person_email=email).first()
         if existing_ticket:
             return Response({'error': 'A ticket has already been raised for this user'}, status=status.HTTP_400_BAD_REQUEST)
 
         ticket = Ticket.objects.create(
             person_name=data.get('name'),
             person_email=email,
-            contact_no=data.get('phone'),
+            phone_no=data.get('phone'),
             message=data.get('message'),
             priority=data.get('priority')
         )

@@ -1,9 +1,10 @@
 from django.contrib import admin
 from support.models import Ticket
 from django.utils.html import format_html
-from django_admin_listfilter_dropdown.filters import ChoiceDropdownFilter
+from simple_history.admin import SimpleHistoryAdmin
+
     # Register your models here.    
-class TicketAdmin(admin.ModelAdmin):
+class TicketAdmin(SimpleHistoryAdmin):
     list_display= ('ticket_colored', 'priority_colored','name_colored','color_status','check_status','formatted_date')
     list_filter = (
         ('status'),
@@ -13,7 +14,8 @@ class TicketAdmin(admin.ModelAdmin):
     list_per_page = 5
     actions = ['mark_as_flagged']
     readonly_fields = ('person_name','person_email','phone_no','priority','message','date')    
-    
+    history_list_display = ["status"]
+
 
     # object_history_template ='admin/support/object_history.html'
     # ordering = ("person_name", "person_email", "contact_no")  

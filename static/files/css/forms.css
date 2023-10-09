@@ -29,7 +29,7 @@ form .form-row p {
 /* FORM LABELS */
 
 label {
-    font-weight: normal;
+    font-weight: bold;
     color: #666;
     font-size: 13px;
 }
@@ -632,6 +632,10 @@ form .related-widget-wrapper ul {
 .nvbar {
     z-index: 1;
     padding-inline: 15px;
+    border: 1px solid #d2d6da;
+    border-radius: 1rem;
+    margin-inline: 4%;
+    margin-bottom: 2%;
 }
 
 
@@ -659,8 +663,6 @@ form .related-widget-wrapper ul {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
-
-
 
 .dropdown-content a {
     float: none;

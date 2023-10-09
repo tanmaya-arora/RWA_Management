@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 import uuid
 from django.utils.html import format_html
+from simple_history.models import HistoricalRecords
 
 
 # Create your models here.
@@ -25,9 +26,10 @@ class Ticket(models.Model):
         ('low', 'Low'), ('normal', 'Normal'), ('high', 'High')),
         default='Normal'
     )
-    reply_message = models.TextField(null=True)
-    datetime_reply = models.DateTimeField(auto_now=True)
-    replied_by = models.ForeignKey(Group, on_delete=models.CASCADE, null =True, default = None)
+    reply_message = models.TextField(null=True, blank=True)
+    # datetime_reply = models.DateTimeField(auto_now=True)
+    replied_by = models.ForeignKey(Group, on_delete=models.CASCADE, null =True,blank=True, default = None)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.ticket_id)
