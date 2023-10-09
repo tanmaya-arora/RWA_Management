@@ -5,7 +5,7 @@ from django.utils.html import format_html
 class MemberAdmin(admin.ModelAdmin):
 
     list_display= ('res_hno','fname','lname','check_verified')
-    list_filter = ('is_verified','gender')
+    list_filter = ('isVerified','gender')
     list_per_page = 5
     show_full_result_count = True
     search_fields =('res_hno','fname','lname')
@@ -13,7 +13,7 @@ class MemberAdmin(admin.ModelAdmin):
          js = ['/static/files/js/owner_admin.js']
 
     def check_verified(self,obj):
-         if obj.is_verified:
+         if obj.isVerified:
               return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-yes.svg" style="margin-left:50px"></style></div></img>')
          else:
               return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-no.svg" style="margin-left:50px"></style></div></img>')
@@ -25,7 +25,7 @@ admin.site.register(Owner, MemberAdmin)
 
 class TenantAdmin(admin.ModelAdmin):
     list_display= ('res_hno','fname','lname','check_verified')
-    list_filter = ('is_verified','gender')
+    list_filter = ('isVerified','gender')
     list_per_page = 5
     show_full_result_count = True
     search_fields =('res_hno','fname','lname')
@@ -33,7 +33,7 @@ class TenantAdmin(admin.ModelAdmin):
          js = ['/static/files/js/owner_admin.js']
 
     def check_verified(self,obj):
-         if obj.is_verified:
+         if obj.isVerified:
               return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-yes.svg" style="margin-left:50px"></style></div></img>')
          else:
               return format_html('<div class="d-flex"><img src ="/static/admin/img/icon-no.svg" style="margin-left:50px"></style></div></img>')

@@ -23,7 +23,7 @@ class Owner(models.Model):
     res_country = models.ForeignKey(Country, on_delete=models.CASCADE)
     # committee_role = models.ForeignKey(Committee, on_delete=models.CASCADE)
     # marital_status = models.CharField(max_length=50, default='Single')
-    is_verified = models.BooleanField(default=False)
+    isVerified = models.BooleanField(default=False)
     otp = models.CharField(max_length=10)
     
     def __str__(self):
@@ -47,7 +47,7 @@ class Tenant(models.Model):
     res_state = models.ForeignKey(State, on_delete=models.CASCADE)
     res_country = models.ForeignKey(Country, on_delete=models.CASCADE)
     marital_status = models.CharField(max_length=50, default='Single')
-    is_verified = models.BooleanField(default=False)
+    isVerified = models.BooleanField(default=False)
     otp = models.CharField(max_length=10)
 
     def __str__(self):

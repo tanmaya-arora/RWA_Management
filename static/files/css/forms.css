@@ -681,3 +681,21 @@ form .related-widget-wrapper ul {
     display: block;
     z-index: 1;
 }
+
+#change-history, .module{
+    margin-top: 4%;
+}
+
+#clear-filter-button{
+    font-size: 14px;
+    border: 1px solid;
+    border-radius: 15px;
+    border-color: #16ab39;
+    outline: none;
+    color: white;
+    padding: 5px 5px 5px 14px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+    color: black;
+}
