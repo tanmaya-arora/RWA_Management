@@ -694,10 +694,10 @@ form .related-widget-wrapper ul {
     border-color: #16ab39;
     outline: none;
     color: white;
-    padding: 5px 5px 5px 14px;
+    padding: 5px 15px 5px 14px;
     background-color: inherit;
     font-family: inherit;
-    margin: 0;
+    margin-bottom: 2%;
     color: black;
 }
 
