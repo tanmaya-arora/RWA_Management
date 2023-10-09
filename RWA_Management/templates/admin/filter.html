@@ -9,70 +9,108 @@
 
 <script>
     $(document).ready(function () {
+        const expirationInSeconds = 5;
+
         $('#dropdownfilter-status a').click(function (e) {
             var selectedValue = $(this).text();
-            localStorage.setItem('statusFilterValue', selectedValue) // Get the text of the clicked anchor tag
-            $('#filter-status').text(selectedValue); 
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('statusFilterValue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-status').text(selectedValue);
         });
 
         $('#dropdownfilter-priority a').click(function (e) {
             var selectedValue = $(this).text();
-            localStorage.setItem('priorityFilterValue', selectedValue) // Get the text of the clicked anchor tag
-            $('#filter-priority').text(selectedValue); 
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('priorityFilterValue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-priority').text(selectedValue);
         });
 
         $('#dropdownfilter-isVerified a').click(function (e) {
             var selectedValue = $(this).text();
-            localStorage.setItem('isVerifiedFilterValue', selectedValue) // Get the text of the clicked anchor tag
-            $('#filter-isVerified').text(selectedValue); 
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('isVerifiedFilterValue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-isVerified').text(selectedValue);
         });
 
         $('#dropdownfilter-gender a').click(function (e) {
             var selectedValue = $(this).text();
-            localStorage.setItem('genderFilterValue', selectedValue) // Get the text of the clicked anchor tag
-            $('#filter-gender').text(selectedValue); 
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('genderFilterValue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-gender').text(selectedValue);
         });
 
         $('#dropdownfilter-relation a').click(function (e) {
             var selectedValue = $(this).text();
-            localStorage.setItem('relationFilterValue', selectedValue) // Get the text of the clicked anchor tag
-            $('#filter-relation').text(selectedValue); 
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('relationFilterValue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-relation').text(selectedValue);
         });
 
         // For updating status filter dropdown value when an option is selected
-        if(localStorage.getItem('statusFilterValue')){
-            $('#filter-status').text(localStorage.getItem('statusFilterValue')); // Update the paragraph text
-        }
-        else{
-            $('#filter-status').text('All');
+        if (localStorage.getItem('statusFilterValue')) {
+            const item = JSON.parse(localStorage.getItem('statusFilterValue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-status').text(item["selectedValue"]); // Update the paragraph text
+            }
+            else {
+                $('#filter-status').text('All');
+                localStorage.removeItem('statusFilterValue');
+            }
         }
 
-        if(localStorage.getItem('priorityFilterValue')){
-            $('#filter-priority').text(localStorage.getItem('priorityFilterValue')); // Update the paragraph text
-        }
-        else{
-            $('#filter-priority').text('All');
+        if (localStorage.getItem('priorityFilterValue')) {
+            const item = JSON.parse(localStorage.getItem('priorityFilterValue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime){
+                $('#filter-priority').text(item.selectedValue); // Update the paragraph text
+            }
+            else {
+                $('#filter-priority').text('All');
+                localStorage.removeItem('priorityFilterValue');
+            }            
         }
 
-        if(localStorage.getItem('isVerifiedFilterValue')){
-            $('#filter-isVerified').text(localStorage.getItem('isVerifiedFilterValue')); // Update the paragraph text
-        }
-        else{
-            $('#filter-isVerified').text('All');
+        if (localStorage.getItem('isVerifiedFilterValue')) {
+            const item = JSON.parse(localStorage.getItem('isVerifiedFilterValue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-isVerified').text(item.selectedValue); // Update the paragraph text
+            }
+            else {
+                $('#filter-isVerified').text('All');
+                localStorage.removeItem('isVerifiedFilterValue');
+            }
+            
         }
 
-        if(localStorage.getItem('genderFilterValue')){
-            $('#filter-gender').text(localStorage.getItem('genderFilterValue')); // Update the paragraph text
-        }
-        else{
-            $('#filter-gender').text('All');
+        if (localStorage.getItem('genderFilterValue')) {
+            const item = JSON.parse(localStorage.getItem('genderFilterValue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-gender').text(item.selectedValue); // Update the paragraph text
+            }
+            else {
+                $('#filter-gender').text('All');
+                localStorage.removeItem('genderFilterValue');
+            }
         }
 
-        if(localStorage.getItem('relationFilterValue')){
-            $('#filter-relation').text(localStorage.getItem('relationFilterValue')); // Update the paragraph text
-        }
-        else{
-            $('#filter-relation').text('All');
+        if (localStorage.getItem('relationFilterValue')) {
+            const item = JSON.parse(localStorage.getItem('relationFilterValue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-relation').text(item.selectedValue); // Update the paragraph text
+            }
+            else {
+                $('#filter-relation').text('All');
+                localStorage.removeItem('relationFilterValue');
+            }
         }
     });
 </script>
@@ -85,7 +123,8 @@
     <div class="mb-2 mt-1 dropdn">
         <span class="h6 dropbtn">{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}
             <i class="fa fa-caret-down"></i>
-            <p id="{% blocktrans with filter_title=title %}filter-{{ filter_title }}{% endblocktrans %}" class="filter-val">All</p>
+            <p id="{% blocktrans with filter_title=title %}filter-{{ filter_title }}{% endblocktrans %}"
+                class="filter-val">All</p>
         </span>
 
         <div class="dropdown-content" id="{% blocktrans with filter_title=title %}dropdownfilter-{{ filter_title }}{% endblocktrans %}">
