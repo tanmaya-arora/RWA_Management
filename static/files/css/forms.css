@@ -645,7 +645,7 @@ form .related-widget-wrapper ul {
 }
 
 .dropdn .dropbtn {
-    font-size: 16px;
+    font-size: 12px;
     border: none;
     outline: none;
     color: white;
@@ -703,4 +703,6 @@ form .related-widget-wrapper ul {
 
 .filter-val {
     margin-left: 13%;
+    font-size: 12px;
+    text-align: center;
 }

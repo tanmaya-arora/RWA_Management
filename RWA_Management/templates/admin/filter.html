@@ -21,10 +21,10 @@
             $('#filter-priority').text(selectedValue); 
         });
 
-        $('#dropdownfilter-is verified a').click(function (e) {
+        $('#dropdownfilter-isVerified a').click(function (e) {
             var selectedValue = $(this).text();
             localStorage.setItem('isVerifiedFilterValue', selectedValue) // Get the text of the clicked anchor tag
-            $('#filter-is verified').text(selectedValue); 
+            $('#filter-isVerified').text(selectedValue); 
         });
 
         $('#dropdownfilter-gender a').click(function (e) {
@@ -55,10 +55,10 @@
         }
 
         if(localStorage.getItem('isVerifiedFilterValue')){
-            $('#filter-is verified').text(localStorage.getItem('isVerifiedFilterValue')); // Update the paragraph text
+            $('#filter-isVerified').text(localStorage.getItem('isVerifiedFilterValue')); // Update the paragraph text
         }
         else{
-            $('#filter-is verified').text('All');
+            $('#filter-isVerified').text('All');
         }
 
         if(localStorage.getItem('genderFilterValue')){
