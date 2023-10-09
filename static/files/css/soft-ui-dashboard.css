@@ -3899,7 +3899,7 @@ textarea.form-control-lg {
 .btn-toolbar {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-around;
 }
 .btn-toolbar .input-group {
   width: auto;

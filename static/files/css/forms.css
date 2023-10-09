@@ -688,13 +688,13 @@ form .related-widget-wrapper ul {
 }
 
 #clear-filter-button{
-    font-size: 14px;
+    font-size: 11px;
     border: 1px solid;
     border-radius: 15px;
     border-color: #16ab39;
     outline: none;
     color: white;
-    padding: 5px 15px 5px 14px;
+    padding: 0px 5px 0px 5px;
     background-color: inherit;
     font-family: inherit;
     margin-bottom: 2%;

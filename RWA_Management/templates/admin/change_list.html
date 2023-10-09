@@ -80,7 +80,10 @@
                             {% endfor %}
             </div>
             <div class="d-block mb-4 mb-md-0 col-3 col-md-3">
-                <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="d-flex btn-toolbar mb-2 mb-md-0">
+                    <button id="clear-filter-button" onclick="pageRedirect()">
+                        Clear All Filters
+                    </button>
                     <div class="btn-group">
                         {% block object-tools-items %}
                             {% change_list_object_tools %}
@@ -93,9 +96,7 @@
 
     <div class="row mx-4">
         <div class="{% if cl.has_filters %}col-md-12{% else %}col-md-12{% endif %}">
-            <button id="clear-filter-button" onclick="pageRedirect()">
-                Clear All Filters
-            </button> 
+ 
             {% block date_hierarchy %}
                 {% if cl.date_hierarchy %}{% date_hierarchy cl %}{% endif %}
             {% endblock %}
