@@ -631,11 +631,12 @@ form .related-widget-wrapper ul {
 
 .nvbar {
     z-index: 1;
-    padding-inline: 15px;
+    padding: 0 20px 0 10px;
     border: 1px solid #d2d6da;
     border-radius: 1rem;
-    margin-inline: 4%;
+    margin-left: 15%;
     margin-bottom: 2%;
+    height: 60px;
 }
 
 
@@ -698,4 +699,8 @@ form .related-widget-wrapper ul {
     font-family: inherit;
     margin: 0;
     color: black;
+}
+
+.filter-val {
+    margin-left: 13%;
 }
