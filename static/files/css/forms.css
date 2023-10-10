@@ -569,6 +569,7 @@ form .related-widget-wrapper ul {
 
 .btn-padding {
     padding: 0.4rem 1.55rem;
+    padding-top: 7%;
 }
 
 .bg-green {
@@ -631,12 +632,12 @@ form .related-widget-wrapper ul {
 
 .nvbar {
     z-index: 1;
-    padding: 0 20px 0 10px;
+    padding: 0 6px 0 6px;
     border: 1px solid #d2d6da;
     border-radius: 1rem;
     margin-left: 15%;
     margin-bottom: 2%;
-    height: 60px;
+    height: 3rem;
 }
 
 
@@ -645,11 +646,11 @@ form .related-widget-wrapper ul {
 }
 
 .dropdn .dropbtn {
-    font-size: 12px;
+    font-size: 14px;
     border: none;
     outline: none;
     color: white;
-    padding: 5px 5px 5px 14px;
+    padding: 5px 5px 5px 0px;
     background-color: inherit;
     font-family: inherit;
     margin: 0;
@@ -697,12 +698,11 @@ form .related-widget-wrapper ul {
     padding: 0px 5px 0px 5px;
     background-color: inherit;
     font-family: inherit;
-    margin-bottom: 2%;
+    height: 3rem;
     color: black;
 }
 
 .filter-val {
-    margin-left: 13%;
     font-size: 12px;
     text-align: center;
 }
