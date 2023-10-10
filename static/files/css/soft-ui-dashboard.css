@@ -399,6 +399,7 @@ button:not(:disabled),
 
 textarea {
   resize: vertical;
+  max-width: max-content;
 }
 
 fieldset {
