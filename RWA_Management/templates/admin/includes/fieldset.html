@@ -4,51 +4,47 @@
         <div class="description">{{ fieldset.description|safe }}</div>
     {% endif %}
 
+    <table>
     {% for line in fieldset %}
-        <div class="row">
-            <div class="{% if line.fields.0 in 'last_login, date_joined' %}col-md-6{% else %}col-md-12{% endif %}">
-                <div class="mb-4 {% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %} d-flex">
-                    {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
-                    {% for field in line %}
-                        {# <div{% if not line.fields|length_is:'1' %} class="fieldBox{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>#}
+        <tr>
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
 
-                        {% if not line.fields|length_is:'1' and not field.is_readonly %}
-                            {{ field.errors }}
-                        {% endif %}
+                {% if not line.fields|length_is:'1' and not field.is_readonly %}
+                    <td>{{ field.errors }}</td>
+                {% endif %}
 
-                        {% if field.is_checkbox %}
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    {{ field.label_tag }}
-                                    {{ field.field }}
-                                    <span class="form-check-sign"><span class="check"></span></span>
-                                </label>
-                            </div>
-                        {% else %}
-
+                {% if field.is_checkbox %}
+                    <td class="form-check">
+                        <label class="form-check-label">
                             {{ field.label_tag }}
+                            {{ field.field }}
+                            <span class="form-check-sign"><span class="check"></span></span>
+                        </label>
+                    </td>
+                {% else %}
 
-                            {% if field.is_readonly %}
-                            <style>
-                                .readonly{
-                                    margin: 0% auto;
-                                    font-weight: 500;   
-                                    margin-left: 3%;    
-                                }
-                            </style>
-                                <div class="readonly">{{ field.contents }}</div>
-                            {% else %}
-                                {{ field.field }} {#<i class="fa fa-plus"></i>#}
-                            {% endif %}
-                        {% endif %}
+                    <td class="ps-5">{{ field.label_tag }}</td>
 
-                        {% if field.field.help_text %}
-                            <div class="help">{{ field.field.help_text|safe }}</div>
-                        {% endif %}
-                        {# </div>#}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+                    {% if field.is_readonly %}
+                    <style>
+                        .readonly{
+                            margin: 0% auto;
+                            font-weight: 500;   
+                            margin-left: 3%;    
+                        }
+                    </style>
+                        <td class="readonly">{{ field.contents }}</td>
+                    {% else %}
+                        <td>{{ field.field }} {#<i class="fa fa-plus"></i>#}</td>
+                    {% endif %}
+                {% endif %}
+
+                {% if field.field.help_text %}
+                    <td class="help">{{ field.field.help_text|safe }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
     {% endfor %}
+    </table>
 </fieldset>
