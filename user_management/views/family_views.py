@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from user_management.models import FamilyMember
+from user_management.models import Family
 from internal.serializers import FamilyMemberSerializer
 import json
 from datetime import date
@@ -10,7 +10,7 @@ from django.contrib.auth.models import User;
 
 @api_view(['GET'])
 def get_family_members(request):
-    member = FamilyMember.objects.all()
+    member = Family.objects.all()
     serializer = FamilyMemberSerializer(member, many=True)
     return Response(serializer.data)
 
@@ -40,7 +40,7 @@ def register_family_member(request):
         data_dict['first_name'] = splitname[0]
         data_dict['last_name'] = splitname[-1]
     
-    familymember = FamilyMember.objects.create(
+    familymember = Family.objects.create(
         gender=data_dict['gender'],
         date_of_birth=data_dict['dob'],
         relation=data_dict['relation'],

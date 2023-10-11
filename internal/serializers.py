@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import City, Committee, Country, Society, State, Package, Package_Category, Cart, Event 
 from marketing.models import Campaign
-from user_management.models import Owner, Tenant, FamilyMember
+from user_management.models import Owner, Tenant, Family
 from support.models import Ticket
 from reporting.models import ProductStock, SaleHistory
 from internal.models import Order
@@ -45,7 +45,7 @@ class EventSerializer(serializers.ModelSerializer):
 class FamilyMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = FamilyMember
+        model = Family
         fields = '__all__'
 
 

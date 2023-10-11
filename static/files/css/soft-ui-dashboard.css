@@ -334,6 +334,7 @@ th {
   border-color: inherit;
   border-style: solid;
   border-width: 0;
+  padding-block: 9px;
 }
 
 label {

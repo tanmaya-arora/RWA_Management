@@ -1,5 +1,5 @@
 from django.contrib import admin
-from user_management.models import Owner, Tenant, FamilyMember
+from user_management.models import Owner, Tenant, Family
 from django.utils.html import format_html
 
 class MemberAdmin(admin.ModelAdmin):
@@ -50,4 +50,4 @@ class FamilyMemberAdmin(admin.ModelAdmin):
 
     class Media:
         js = ['/static/files/js/family_admin.js']
-admin.site.register(FamilyMember, FamilyMemberAdmin)
+admin.site.register(Family, FamilyMemberAdmin)

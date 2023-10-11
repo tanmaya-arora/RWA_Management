@@ -53,7 +53,7 @@ class Tenant(models.Model):
     def __str__(self):
         return f"{self.fname} {self.lname}"
 
-class FamilyMember(models.Model):
+class Family(models.Model):
     family_head = models.ForeignKey(User, on_delete=models.CASCADE)
     fname = models.CharField(max_length=50, null=False)
     lname = models.CharField(max_length=50, null=False)
