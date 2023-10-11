@@ -12,7 +12,7 @@
             <b>{% blocktrans with cl.opts.verbose_name as name %}{{ name }} {% endblocktrans %}</b>
         </span>
         {% else %}
-        <a href="{% add_preserved_filters add_url is_popup to_field %}" class="green-btn btn-padding">
+        <a href="{% add_preserved_filters add_url is_popup to_field %}" class="green-btn btn-padding btn-p-top">
             <!-- {% elif }
             {% blocktrans with cl.opts.verbose_name as name %}{{ name }} {% endblocktrans %} -->
                 {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}

@@ -569,7 +569,10 @@ form .related-widget-wrapper ul {
 
 .btn-padding {
     padding: 0.4rem 1.55rem;
-    padding-top: 7%;
+}
+
+.btn-p-top {
+    padding-top: 0.7rem;
 }
 
 .bg-green {
