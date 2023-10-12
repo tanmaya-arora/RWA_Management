@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from internal.serializers import TenantSerializer, UserSerializerWithToken
 from internal.models import City, Country, State, Society
-from user_management.models import Tenant
+from user_management.models import Tenant,Owner
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -40,7 +40,11 @@ def generate_otp(request):
     data_dict = json.loads(data_str)
 
     email = data_dict.get('email')
-    
+    res_hno = data_dict.get('hno')
+    owner = Owner.objects.filter(res_hno=res_hno).first()
+
+    owner_email = owner.email
+
     try:
         tenant = Tenant.objects.get(email=email)
     except Tenant.DoesNotExist:
@@ -49,18 +53,38 @@ def generate_otp(request):
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     otp = str(random.randint(1000, 9999))
+    owner_otp = str(random.randint(10000,99999))
 
     tenant.otp = otp
-    tenant.save()
+    tenant.save()   
 
-    subject = "Your OTP Code"
-    message = f"Your OTP code is: {otp}"
-    from_email = settings.EMAIL_HOST_USER
-    recipient_list = [email]
-    send_mail(subject, message, from_email, recipient_list)
+    try:
 
-    return Response({"message": "OTP sent successfully"}, status=status.HTTP_200_OK)
+        subject = "Your OTP Code"
+        message = f"Your OTP code is: {otp}"
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = [email]
+        send_mail(subject, message, from_email, recipient_list)
 
+        if owner_email:
+            owner = Owner.objects.get(email=owner_email)
+            tenant.owner_otp = owner_otp
+
+            tenant.save()
+            
+            subject = "Your OTP Code"
+            message = f"Your OTP code for verifying your tenant is: {owner_otp}"
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [owner_email]
+            send_mail(subject, message, from_email, recipient_list)
+        
+        return Response({"message": "OTP sent successfully"}, status=status.HTTP_200_OK)
+    except Tenant.DoesNotExist:
+        return Response({"error": "Tenant not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Owner.DoesNotExist:
+        return Response({"error":"Owner not found"},status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 @api_view(['POST'])
 def verify_jwt(request):
@@ -69,6 +93,7 @@ def verify_jwt(request):
     data_dict = json.loads(data_str)
 
     otp = data_dict.get('otp')
+    owner_otp = data_dict.get('owner_otp')
 
     try:
         refresh = RefreshToken()
@@ -90,9 +115,14 @@ def verify_jwt(request):
     
     try:
         user = Tenant.objects.get(otp=otp)
-
-        if user.otp == otp:
+        owner = Tenant.objects.get(owner_otp=owner_otp)
+        print("Received owner_otp:", owner_otp)
+        print("Owner's owner_otp from the database:", owner.owner_otp)
+        if user.otp == otp and owner.owner_otp == owner_otp:
             user.isVerified = True
+            user.save()
+            user.isVerified_by_owner = True
+            user.owner_otp = owner_otp
             user.save()
             return Response({"message": "OTP verified successfully"}, status=status.HTTP_200_OK)
 
@@ -100,7 +130,14 @@ def verify_jwt(request):
             return Response({"error":"OTP formatting"})
         
     except Tenant.DoesNotExist:
-        return Response({"error": "Member not found or Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Tenant not found or Invalid Tenant OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # except Owner.DoesNotExist:
+    #     return Response({"error": "Owner not found or Invalid Owner OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response(str(e))
+        
 
 @api_view(['POST'])
 def register_tenant(request):
@@ -130,6 +167,11 @@ def register_tenant(request):
             email=email,
             password=make_password(data_dict['password'])
         )    
+        res_hno = data_dict.get('hno')
+        owner = Owner.objects.filter(res_hno=res_hno).first()
+
+        if not owner:
+            return Response({"error":"owner with this email doesnot exists"},status=status.HTTP_404_NOT_FOUND)
 
         tenant = Tenant.objects.create(
             user=user, 
@@ -137,9 +179,10 @@ def register_tenant(request):
             lname=data_dict['last_name'],
             gender=data_dict['gender'],
             email=email,
+            owner_email=owner.email,
             phone_no=data_dict['phone'],
             date_of_birth=data_dict['dob'],
-            res_hno=data_dict['hno'],
+            res_hno=owner.res_hno,
             res_area=data_dict['area'],
             res_city=data_dict['city'],
             res_state=data_dict['state'],
@@ -209,3 +252,5 @@ def reset_password(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
