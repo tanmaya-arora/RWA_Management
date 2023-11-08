@@ -150,7 +150,7 @@ def register_member(request):
             "message": "User registered successfully. Please check your email for verification."
         }
         
-        return Response(response_data, status=status.HTTP_201_CREATED)
+        return Response(response_data, status=status.HTTP_200_OK)
             
 
     except Exception as e:
