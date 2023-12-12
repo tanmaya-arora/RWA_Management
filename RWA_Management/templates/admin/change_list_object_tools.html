@@ -8,7 +8,7 @@
     {% if has_add_permission %}
         {% url cl.opts|admin_urlname:'add' as add_url %}
         {% if cl.opts.verbose_name == "sale history" or cl.opts.verbose_name == "payment history" or cl.opts.verbose_name == "product stock" %}
-        <span class="txt-black txt-capitalize">
+         <span class="txt-black txt-capitalize">
             <b>{% blocktrans with cl.opts.verbose_name as name %}{{ name }} {% endblocktrans %}</b>
         </span>
         {% else %}

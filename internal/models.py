@@ -4,7 +4,7 @@ import uuid
 
 # Create your models here.
 
-class Country(models.Model):
+class   Country(models.Model):
     country_id = models.AutoField(primary_key=True, editable=False)
     country = models.CharField(max_length=50, null=False)
 

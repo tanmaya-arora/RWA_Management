@@ -30,8 +30,16 @@ def get_member(request, pk):
         message = {'Info':'Member details fetched successfully', 'data':serializer.data}
         return Response(message, status=status.HTTP_200_OK)
     except:
-        message = {'error':'Member does not exists'}
-        return Response(message, status=status.HTTP_303_SEE_OTHER)
+
+        try:
+            member = Owner.objects.get(user_id = pk)
+            serializer = MemberSerializer(member, many = False)
+            message = {'Info':'Member details fetched successfully', 'data':serializer.data}
+            return Response(message, status=status.HTTP_200_OK)
+        except:
+
+            message = {'error':'Member does not exists'}
+            return Response(message, status=status.HTTP_303_SEE_OTHER)
 
 @api_view(['POST'])
 def generate_otp(request):
@@ -171,7 +179,7 @@ def login_member(request):
     try:
         user = User.objects.get(email=email)
         if not user.check_password(password):
-            return Response({"error": "Invalid credentials : user id or password may be incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error": "Invalid credentials : user id or password may be incorrect"}, status=status.HTTP_400_BAD_REQUEST )
         
         if not member.isVerified:
             return Response({"error": "User is not verified", 'isVerified':False}, status=status.HTTP_401_UNAUTHORIZED)
@@ -180,9 +188,13 @@ def login_member(request):
         access_token = str(refresh.access_token)
 
         return Response({"access_token": access_token,"user_type": "Owner"}, status=status.HTTP_200_OK)
-
+    except Owner.DoesNotExist:
+        return Response({"error": "Owner not found"}, status=status.HTTP_404_NOT_FOUND)
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(e)
+    return Response({"error": "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 def reset_password(request):

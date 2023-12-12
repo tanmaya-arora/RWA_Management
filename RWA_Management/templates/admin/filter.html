@@ -46,7 +46,34 @@
             $('#filter-relation').text(selectedValue);
         });
 
-        // For updating status filter dropdown value when an option is selected
+        $('#dropdownfilter-staff\\ status a').click(function (e) {
+            var selectedValue = $(this).text();
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('staffstatusFilterValue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-staff\\ status').text(selectedValue);
+        });
+
+        $('#dropdownfilter-superuser\\ status a').click(function (e) {
+            var selectedValue = $(this).text();
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('superuserstatusfiltervalue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-superuser\\ status').text(selectedValue);
+        });
+
+        $('#dropdownfilter-active a').click(function (e) {
+            var selectedValue = $(this).text();
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('activefiltervalue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-active').text(selectedValue);
+        });
+
+        $('#dropdownfilter-groups a').click(function (e) {
+            var selectedValue = $(this).text();
+            const expirationTime = Date.now() + expirationInSeconds * 1000;
+            localStorage.setItem('groupfiltervalue', JSON.stringify({ selectedValue, expirationTime })) // Get the text of the clicked anchor tag
+            $('#filter-groups').text(selectedValue);
+        });
+
         if (localStorage.getItem('statusFilterValue')) {
             const item = JSON.parse(localStorage.getItem('statusFilterValue'));
             const currentTime = Date.now();
@@ -112,7 +139,58 @@
                 localStorage.removeItem('relationFilterValue');
             }
         }
+
+        if(localStorage.getItem('staffstatusFilterValue')){
+            const item = JSON.parse(localStorage.getItem('staffstatusFilterValue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-staff\\ status').text(item.selectedValue); 
+            }
+            else {
+                $('#filter-staff\\ status').text('All');
+                localStorage.removeItem('staffstatusFilterValue');
+            }
+        }
+        if (localStorage.getItem('superuserstatusfiltervalue')) {
+            const item = JSON.parse(localStorage.getItem('superuserstatusfiltervalue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-superuser\\ status').text(item.selectedValue); // Update the paragraph text
+            }
+            else {
+                $('#filter-superuser\\ status').text('All');
+                localStorage.removeItem('superuserstatusfiltervalue');
+            }
+        }
+        if (localStorage.getItem('activefiltervalue')) {
+            const item = JSON.parse(localStorage.getItem('activefiltervalue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-active').text(item.selectedValue); // Update the paragraph text
+            }
+            else {
+                $('#filter-active').text('All');
+                localStorage.removeItem('activefiltervalue');
+            }
+        }
+
+        if (localStorage.getItem('groupfiltervalue')) {
+            const item = JSON.parse(localStorage.getItem('groupfiltervalue'));
+            const currentTime = Date.now();
+
+            if (currentTime < item.expirationTime) {
+                $('#filter-groups').text(item.selectedValue); // Update the paragraph text
+            }
+            else {
+                $('#filter-groups').text('All');
+                localStorage.removeItem('groupfiltervalue');
+            }
+        }
     });
+
 </script>
 
 {% endblock %}
