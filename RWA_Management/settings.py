@@ -34,7 +34,8 @@ PAYTM_CALLBACK_URL = 'http://localhost:8000/api/payment/callback/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = os.getenv("DEBUG", "False") == "True"
-DEBUG = True
+# DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['*']
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"

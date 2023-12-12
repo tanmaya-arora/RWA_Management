@@ -39,4 +39,4 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = [('event_name')]
     list_per_page = 5
 
-admin.site.register(Event,EventAdPmomin)
+admin.site.register(Event,EventAdmin)

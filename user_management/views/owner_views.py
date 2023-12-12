@@ -174,9 +174,8 @@ def login_member(request):
     email = data_dict.get('email')
     password = data_dict.get('password')
 
-    member = Owner.objects.get(email=email)
-
     try:
+        member = Owner.objects.get(email=email)
         user = User.objects.get(email=email)
         if not user.check_password(password):
             return Response({"error": "Invalid credentials : user id or password may be incorrect"}, status=status.HTTP_400_BAD_REQUEST )
@@ -189,7 +188,7 @@ def login_member(request):
 
         return Response({"access_token": access_token,"user_type": "Owner"}, status=status.HTTP_200_OK)
     except Owner.DoesNotExist:
-        return Response({"error": "Owner not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Owner is not registered with the RWA"}, status=status.HTTP_404_NOT_FOUND)
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
