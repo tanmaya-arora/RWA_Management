@@ -40,13 +40,14 @@ def generate_otp(request):
     data_dict = json.loads(data_str)
 
     email = data_dict.get('email')
-    res_hno = data_dict.get('hno')
-    owner = Owner.objects.filter(res_hno=res_hno).first()
+    # res_hno = data_dict.get('hno')
 
-    # owner_email = owner.email
+    owner_email = ''
 
     try:
         tenant = Tenant.objects.get(email=email)
+        owner = Owner.objects.filter(res_hno=tenant.res_hno).first()
+        owner_email += owner.email
     except Tenant.DoesNotExist:
         return Response({"error": "Member not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
@@ -67,7 +68,7 @@ def generate_otp(request):
         send_mail(subject, message, from_email, recipient_list)
 
         if owner_email:
-            owner = Owner.objects.get(email=owner_email)
+            # owner = Owner.objects.get(email=owner_email)
             tenant.owner_otp = owner_otp
 
             tenant.save()
