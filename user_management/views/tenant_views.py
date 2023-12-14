@@ -43,7 +43,7 @@ def generate_otp(request):
     res_hno = data_dict.get('hno')
     owner = Owner.objects.filter(res_hno=res_hno).first()
 
-    owner_email = owner.email
+    # owner_email = owner.email
 
     try:
         tenant = Tenant.objects.get(email=email)
