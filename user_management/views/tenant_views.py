@@ -29,8 +29,8 @@ def get_tenant(request, pk):
         serializer = TenantSerializer(tenant, many = False)
         message = {'Info':'Member details fetched successfully', 'data':serializer.data}
         return Response(message, status=status.HTTP_200_OK)
-    except:
-        message = {'error':'Member does not exists'}
+    except Exception as e:
+        message = {'error':str(e)}
         return Response(message, status=status.HTTP_303_SEE_OTHER)
     
 @api_view(['POST'])

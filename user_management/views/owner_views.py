@@ -36,9 +36,9 @@ def get_member(request, pk):
             serializer = MemberSerializer(member, many = False)
             message = {'Info':'Member details fetched successfully', 'data':serializer.data}
             return Response(message, status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
 
-            message = {'error':'Member does not exists'}
+            message = {'error':str(e)}
             return Response(message, status=status.HTTP_303_SEE_OTHER)
 
 @api_view(['POST'])
