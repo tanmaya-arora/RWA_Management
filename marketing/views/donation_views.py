@@ -69,7 +69,7 @@ def add_donation(request):
         member_obj = Owner.objects.filter(email=data['user_email']).first()
 
         if not 'note' in data:
-            data['note'] = f"Member donated Rs. {data['donation_amount']} to the RWA"
+            data['note'] = f"RWA User donated Rs. {data['donation_amount']} to the RWA"
         
         event = Event.objects.filter(event_name=data['event_name']).first()
         
