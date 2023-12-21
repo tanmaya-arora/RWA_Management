@@ -334,6 +334,7 @@ th {
   border-color: inherit;
   border-style: solid;
   border-width: 0;
+  padding-block: 9px;
 }
 
 label {
@@ -399,6 +400,7 @@ button:not(:disabled),
 
 textarea {
   resize: vertical;
+  max-width: max-content;
 }
 
 fieldset {
@@ -2494,8 +2496,9 @@ textarea.form-control-lg {
 
 .form-select {
   display: block;
-  width: 100%;
-  padding: 0.5rem 12rem 0.5rem 0.75rem;
+  width: fit-content;
+  height: 3rem;
+  padding: 0.5rem 2rem 0.5rem 0.75rem !important;
   -moz-padding-start: calc(0.75rem - 3px);
   font-size: 0.875rem;
   font-weight: 400;
@@ -3898,7 +3901,7 @@ textarea.form-control-lg {
 .btn-toolbar {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 .btn-toolbar .input-group {
   width: auto;
@@ -4862,8 +4865,8 @@ textarea.form-control-lg {
 .pagination {
   --bs-pagination-padding-x: 0.75rem;
   --bs-pagination-padding-y: 0.375rem;
-  --bs-pagination-font-size: 1rem;
-  --bs-pagination-color: #cb0c9f;
+  --bs-pagination-font-size: 0.037rem;
+  --bs-pagination-color: #000000;
   --bs-pagination-bg: #fff;
   --bs-pagination-border-width: 1px;
   --bs-pagination-border-color: #dee2e6;
@@ -4875,8 +4878,8 @@ textarea.form-control-lg {
   --bs-pagination-focus-bg: #e9ecef;
   --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(203, 12, 159, 0.25);
   --bs-pagination-active-color: #fff;
-  --bs-pagination-active-bg: #cb0c9f;
-  --bs-pagination-active-border-color: #cb0c9f;
+  --bs-pagination-active-bg: #ff96e6;
+  --bs-pagination-active-border-color: #ff2ece;
   --bs-pagination-disabled-color: #6c757d;
   --bs-pagination-disabled-bg: #fff;
   --bs-pagination-disabled-border-color: #dee2e6;
@@ -4941,14 +4944,14 @@ textarea.form-control-lg {
 .pagination-lg {
   --bs-pagination-padding-x: 1.5rem;
   --bs-pagination-padding-y: 0.75rem;
-  --bs-pagination-font-size: 1.125rem;
+  --bs-pagination-font-size: 1rem;
   --bs-pagination-border-radius: 0.75rem;
 }
 
 .pagination-sm {
   --bs-pagination-padding-x: 0.5rem;
   --bs-pagination-padding-y: 0.25rem;
-  --bs-pagination-font-size: 0.875rem;
+  --bs-pagination-font-size: 0.50rem;
   --bs-pagination-border-radius: 0.25rem;
 }
 
@@ -17733,7 +17736,7 @@ textarea.form-control-lg {
 }
 .card .card-body {
   font-family: "Open Sans";
-  padding: 1.5rem;
+  padding: 0.5rem;
 }
 .card.card-plain {
   background-color: transparent;
@@ -20239,13 +20242,13 @@ hr.horizontal.gray-light {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8392AB;
+  color: #000;
   padding: 0;
   margin: 0 3px;
   border-radius: 50% !important;
   width: 36px;
   height: 36px;
-  font-size: 0.50rem;
+  font-size: 0.750rem;
 }
 
 .pagination-lg .page-item .page-link,

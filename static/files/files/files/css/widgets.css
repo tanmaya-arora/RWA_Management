@@ -568,6 +568,8 @@ ul.timelist, .timelist li {
 .related-widget-wrapper {
     float: left;       /* display properly in form rows with multiple fields */
     overflow: hidden;  /* clear floated contents */
+    display: flex;
+    align-items: center;
 }
 
 .related-widget-wrapper-link {
@@ -621,9 +623,10 @@ select + .related-widget-wrapper-link,
 }
 
 .submit_btn{
-    background-color: #f2f4f6;
+    background-color: #ffffff;
     direction: rtl;
-    margin-top: 40px;
+    padding-right: 7%;
+    margin-top: 0px;
 }
 
 ul.errorlist {

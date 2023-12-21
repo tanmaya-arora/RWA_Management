@@ -1,0 +1,18 @@
+body {
+    background-color: lightblue;
+    font-family: verdana;
+  }
+.horizontal-fields .field-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; 
+}
+
+.horizontal-fields .field-label {
+    flex: 1;
+    margin-right: 10px; 
+}
+
+.horizontal-fields .field-value {
+    flex: 2;
+}

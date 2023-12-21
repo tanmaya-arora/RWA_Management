@@ -29,7 +29,7 @@ form .form-row p {
 /* FORM LABELS */
 
 label {
-    font-weight: normal;
+    font-weight: bold;
     color: #666;
     font-size: 13px;
 }
@@ -69,10 +69,10 @@ form ul.inline li {
 
 .aligned label {
     display: block;
-    /*padding: 4px 10px 0 0;*/
+    padding: 0.15rem 1rem !important;
     /*float: left;*/
-    /*width: 160px;*/
-    word-wrap: break-word;
+    width: 8rem;
+    word-wrap: inherit;
     /*line-height: 1;*/
 }
 
@@ -155,8 +155,8 @@ input[type="number"],
 textarea,
 select {
     display: block;
-    width: 100%;
-    padding: 0.5rem 20px;
+    width: 85%;
+    padding: 0.5rem 4px;
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.5rem;
@@ -172,12 +172,13 @@ select {
 form .aligned table p {
     margin-left: 0;
     padding-left: 0;
+    display: -webkit-inline-box;    
 }
 
 .aligned .vCheckboxLabel {
     float: none;
     width: auto;
-    display: inline-block;
+    display: inline-table;
     /*vertical-align: -3px;*/
     /*padding: 0 0 5px 5px;*/
 }
@@ -350,7 +351,7 @@ body.popup .submit-row {
 }
 
 .vDateField {
-    min-width: 6.85em;
+    min-width: 8.85em;
 }
 
 .vTimeField {
@@ -568,9 +569,17 @@ form .related-widget-wrapper ul {
 }
 
 .btn-padding {
-    padding: 0.4rem 2.55rem;
+    padding: 0.4rem 1.55rem;
 }
 
+.btn-p-top {
+    padding-top: 0.7rem;
+}
+
+.btn-p-top{
+    padding-top: 0.75rem;
+  }
+  
 .bg-green {
     background-color: #16ab39;
 }
@@ -614,9 +623,94 @@ form .related-widget-wrapper ul {
 }
 
 .width-25 {
-    width: 25%;
+    width: 25% !important;
 }
 
 .d-inline-block {
     display: inline-block;
+}
+
+.txt-black {
+    color: black;
+}
+
+.txt-capitalize {
+    text-transform: capitalize;
+}
+
+.nvbar {
+    z-index: 1;
+    padding: 0 3px 0 3px;
+    border: 1px solid #d2d6da;
+    border-radius: 1rem;
+    margin-left: 4%;
+    margin-bottom: 2%;
+    height: 3rem;
+}
+
+
+.dropdn {
+    float: left;
+}
+
+.dropdn .dropbtn {
+    font-size: 14px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 5px 5px 5px 0px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+    color: black;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdn:hover .dropdown-content {
+    display: block;
+    z-index: 1;
+}
+
+#change-history, .module{
+    /* margin-top: 4%; */
+}
+
+#clear-filter-button{
+    font-size: 11px;
+    border: 1px solid;
+    border-radius: 15px;
+    border-color: #16ab39;
+    outline: none;
+    color: white;
+    padding: 0px 5px 0px 5px;
+    background-color: inherit;
+    font-family: inherit;
+    height: 3rem;
+    color: black;
+}
+
+.filter-val {
+    font-size: 12px;
+    text-align: center;
 }
