@@ -42,6 +42,7 @@ numpy==1.24.2
 openai==0.27.8
 openapi-schema-pydantic==1.2.4
 packaging==23.1
+pandas==2.1.4
 Pillow==9.5.0
 platformdirs==3.5.1
 protobuf==3.20.3
