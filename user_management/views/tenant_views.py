@@ -225,7 +225,7 @@ def login_tenant(request):
         return Response({"access_token": access_token, "user_type":"Tenant"}, status=status.HTTP_200_OK)
 
     except Tenant.DoesNotExist:
-        return Response({"error": "Tenant is not registered with the RWA"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Tenant/Owner is not registered with the RWA"}, status=status.HTTP_404_NOT_FOUND)
     
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
