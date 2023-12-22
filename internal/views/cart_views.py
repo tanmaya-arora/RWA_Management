@@ -59,9 +59,9 @@ def remove_items(request, id):
     try:
         item = Cart.objects.filter(id=id)
         item.delete()
-        message = {'message':'item removed successfully'}
+        message = {'message':'Item removed successfully'}
         return Response(message, status=status.HTTP_200_OK)
 
-    except: 
-        message = {'error':'item cannot be remvoved'}
+    except Exception as e: 
+        message = {'error':str(e)}
         return Response(message, status=status.HTTP_406_NOT_ACCEPTABLE)
