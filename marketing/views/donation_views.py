@@ -5,6 +5,7 @@ from rest_framework import status
 from marketing.models import Campaign, Event
 from internal.serializers import CampaignSerializer
 from user_management.models import Owner
+import datetime
 
 
 # @api_view(['GET'])
@@ -65,6 +66,11 @@ def add_donation(request):
     data_str = body.decode('utf-8')
     data = json.loads(data_str)
 
+    dt = datetime.datetime.now()
+    datetimelist = str(dt).split(" ")
+    date = datetimelist[0]
+    time = datetimelist[1].split('.')[0]
+
     try:
         member_obj = Owner.objects.filter(email=data['user_email']).first()
 
@@ -81,7 +87,9 @@ def add_donation(request):
             member=member_obj,
             donation_amount=data['donation_amount'],
             event=event,
-            notes=data['note']
+            notes=data['note'],
+            date=date,
+            time=time
         )
 
         serializer = CampaignSerializer(campaign, many=False)
