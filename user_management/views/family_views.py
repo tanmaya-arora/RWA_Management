@@ -40,6 +40,9 @@ def register_family_member(request):
         data_dict['first_name'] = splitname[0]
         data_dict['last_name'] = splitname[-1]
     
+    if not 'last_name' in data_dict:
+        data_dict['last_name'] = ''
+    
     familymember = Family.objects.create(
         gender=data_dict['gender'],
         date_of_birth=data_dict['dob'],
