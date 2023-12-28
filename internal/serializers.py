@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import City, Committee, Country, Society, State, Package, Package_Category, Cart, Event 
+from .models import City, Committee, Country, Society, State, Package, Package_Category, Cart, Event, Payment 
 from marketing.models import Campaign
 from user_management.models import Owner, Tenant, Family
 from support.models import Ticket
@@ -149,4 +149,9 @@ class SaleHistorySerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
+        fields = '__all__'
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
         fields = '__all__'

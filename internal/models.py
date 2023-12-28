@@ -61,7 +61,7 @@ class Event(models.Model):
         return self.event_name
 
 class Payment(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     reference_id = models.CharField(max_length=50, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)

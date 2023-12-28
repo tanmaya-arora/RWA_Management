@@ -1,13 +1,70 @@
 from django.http import JsonResponse, HttpResponse
+from rest_framework.response import Response
 from django.conf import settings
+from internal.models import Payment
+from internal.serializers import PaymentSerializer, UserSerializer
+from django.contrib.auth.models import User
 import hashlib
 import base64
 import json
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+from rest_framework import status
 import uuid
 
 
+@api_view(['GET'])
+def get_all_payments(request):
+    payment = Payment.objects.all()
+    serializer = PaymentSerializer(payment, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_active_user_payments(request,pk):
+    try:
+        payment = Payment.objects.filter(user=pk)
+        serializer = PaymentSerializer(payment, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+         return Response(data={'error':str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def add_cash_or_bank_payment(request):
+    data = request.body
+    data_str = data.decode('utf-8')
+    data_dict = json.loads(data_str)
+
+    try:
+        user_email = User.objects.get(email=data_dict['email'])
+        response = {}
+
+        if 'bankname' in data_dict and 'bank_ac_no' in data_dict:
+            payment = Payment.objects.create(
+                user=user_email,
+                reference_id=data_dict['reference_id'],
+                amount=float(data_dict['amount']),
+                bank_acname=data_dict['bankname'],
+                bank_acnumber=data_dict['bank_ac_no'],
+                payment_method="Bank Transfer"
+            )
+            serializer = PaymentSerializer(payment, many=False)
+            response['info'] = f"Payment of Rs.{data_dict['amount']} done successfully via Bank Transfer"
+            response['data'] = serializer.data
+        else:
+            payment = Payment.objects.create(
+                user=user_email,
+                reference_id=data_dict['reference_id'],
+                amount=float(data_dict['amount']),
+                payment_method="Cash"
+            )
+            serializer = PaymentSerializer(payment, many=False)
+            response['info'] = f"Cash Payment of Rs.{data_dict['amount']} done successfully"
+            response['data'] = serializer.data
+        return Response(data=response, status=status.HTTP_200_OK)
+    except Exception as e:
+         return Response(data={'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
 @api_view(['POST'])
 def generate_paytm_token(request):
     data = request.body
