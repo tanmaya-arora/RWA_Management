@@ -5,6 +5,7 @@ from rest_framework import status
 from marketing.models import Campaign, Event
 from internal.serializers import CampaignSerializer
 from user_management.models import Owner
+from django.contrib.auth.models import User
 import datetime
 
 
@@ -72,10 +73,10 @@ def add_donation(request):
     time = datetimelist[1].split('.')[0]
 
     try:
-        member_obj = Owner.objects.filter(email=data['user_email']).first()
+        user_obj = User.objects.filter(email=data['user_email']).first()
 
         if not 'note' in data:
-            data['note'] = f"Member donated Rs. {data['donation_amount']} to the RWA"
+            data['note'] = f"Member donated Rs. {data['donation_amount']} to the RWA for {data['event_name']} event"
         
         event = Event.objects.filter(event_name=data['event_name']).first()
         
@@ -84,7 +85,7 @@ def add_donation(request):
         total_event_donation = sum([donation.donation_amount for donation in event_donations])
         
         campaign = Campaign.objects.create(
-            member=member_obj,
+            user=user_obj,
             donation_amount=data['donation_amount'],
             event=event,
             notes=data['note'],
