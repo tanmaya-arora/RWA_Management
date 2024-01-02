@@ -14,13 +14,27 @@ def get_family_members(request):
     serializer = FamilyMemberSerializer(member, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_sepecific_family(request,pk):
+    try:
+        family_members = Family.objects.filter(family_head__email=pk)
+
+        if family_members.exists():
+            serializer = FamilyMemberSerializer(family_members, many=True)
+            message = {'info': 'Family details fetched successfully', 'data': serializer.data}
+            return Response(message, status=status.HTTP_200_OK)
+        else:
+            message = {'error': 'Member not found'}
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
+
+    except Family.DoesNotExist:
+        message = {'error': 'Member not found'}
+        return Response(message, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['POST'])
 def register_family_member(request):
     data = request.body
-
-    # Decode the bytes into a string
     data_str = data.decode('utf-8')
-
     data_dict = json.loads(data_str)
 
     if data_dict['family_head'] != '':

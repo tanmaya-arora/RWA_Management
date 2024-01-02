@@ -61,14 +61,18 @@ class Event(models.Model):
         return self.event_name
 
 class Payment(models.Model):
+    status_choices = [('pending','Pending'),('approved','Approved'),('rejected','Rejected')]
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     reference_id = models.CharField(max_length=50, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateTimeField(auto_now=True)
     bank_acname = models.CharField(max_length=100, null=True, blank=True)
+    branch_name = models.CharField(max_length = 100, null = True, blank = True)
     bank_acnumber = models.CharField(max_length=20, null=True, blank=True)
     payment_method = models.CharField(max_length=50)
+    payment_status = models.CharField(max_length = 70, choices = status_choices, null = True, blank = True)
 
     def __str__(self):
         return str(self.payment_id)

@@ -40,8 +40,6 @@ def generate_otp(request):
     data_dict = json.loads(data_str)
 
     email = data_dict.get('email')
-    # res_hno = data_dict.get('hno')
-
     owner_email = ''
 
     try:
@@ -229,7 +227,69 @@ def login_tenant(request):
     
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['POST'])
+def otp_reset_password(request):
+    data = json.loads(request.body.decode('utf-8'))
+    email = data.get('email')
 
+    try:
+        tenant = Tenant.objects.get(email=email)
+    except Tenant.DoesNotExist:
+        return Response({"error": "Member not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    otp = str(random.randint(1000, 9999))
+
+    tenant.otp = otp
+    tenant.save()
+
+    subject = "Your OTP Code"
+    message = f"Your OTP code is: {otp}"
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)
+    return Response({"message": "OTP sent successfully"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def verify_reset_password(request):
+    data = json.loads(request.body.decode('utf-8'))    
+    otp = data.get('otp')
+    try:
+        refresh = RefreshToken()
+        access_token = refresh.access_token
+        user_id = access_token.payload.get('email')
+
+        refresh_token_validity = int(os.getenv("REFRESH_TOKEN_VALIDITY", 30)) 
+
+        expiry_timestamp = access_token.payload['exp']
+        current_timestamp = datetime.utcnow()
+        refresh_token_expiry_time = current_timestamp + timedelta(seconds=refresh_token_validity)
+        
+        if expiry_timestamp < refresh_token_expiry_time.timestamp():
+            return Response({"message": "Refresh token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+
+    except (TokenError, ValueError):
+        return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        user = Tenant.objects.get(otp=otp)
+
+        if user.otp == otp:
+            user.isVerified = True
+            user.save()
+            return Response({"message": "OTP verified successfully"}, status=status.HTTP_200_OK)
+
+        else:
+            return Response({"error":"OTP formatting"})
+        
+    except Tenant.DoesNotExist:
+        return Response({"error": "Member not found or Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+        
 @api_view(['POST'])
 def reset_password(request):
     try:
