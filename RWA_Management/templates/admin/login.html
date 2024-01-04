@@ -23,7 +23,7 @@
           <div class="text-center text-md-center mb-4 mt-md-0">
             <h1 class="mb-0 h3">Sign in to our platform</h1>
           </div>
-          <form method="post" class="mt-4">
+          <form method="post" class="mt-5">
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -50,7 +50,7 @@
             <!-- End of Form -->
             <div class="form-group">
               <!-- Form -->
-              <div class="form-group mb-4">
+              <div class="form-group mb-5">
                 <label for="password">{{ form.password.label }}</label>
                 <div class="input-group">
                   <span class="input-group-text" id="basic-addon2">
@@ -66,7 +66,7 @@
               </div>
               <!-- End of Form -->
             </div>
-            <div class="d-grid">
+            <div class="d-grid mb-5">
               <button type="submit" class="btn btn-gray-800">Sign in</button>
             </div>
           </form>
