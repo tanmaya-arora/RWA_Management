@@ -117,8 +117,10 @@ def register_member(request):
       
     if not 'dob' in data_dict:
         data_dict['dob'] = date.today()
+        
+    if not 'hno' in data_dict:
+        data_dict['hno'] = random.randint(1, 1000)
 
-    data_dict['hno'] = random.randint(1, 1000)
     data_dict['area'] = Society.objects.filter(area='Ardee City Sector 52').first()
     data_dict['city'] = City.objects.filter(city='Gurgaon').first()
     data_dict['state'] = State.objects.filter(state='Haryana').first()
@@ -126,11 +128,16 @@ def register_member(request):
 
     try:
         email = data_dict.get('email')
+        hno = data_dict.get('hno')
         user = User.objects.filter(email=email).first()
-
+        hno_owner = Owner.objects.filter(res_hno = hno).first()
+        
         if user:
             return Response({"error": "User with this email already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
+        if hno_owner:
+            return Response({"error": "House No Already registed with the other owner"}, status= status.HTTP_303_SEE_OTHER)
+        
         user = User.objects.create(
             first_name=data_dict['first_name'],
             last_name=data_dict['last_name'],
@@ -147,7 +154,7 @@ def register_member(request):
             email=email,
             phone_no=data_dict['phone'],
             date_of_birth=data_dict['dob'],
-            res_hno=data_dict['hno'],
+            res_hno=hno,
             res_area=data_dict['area'],
             res_city=data_dict['city'],
             res_state=data_dict['state'],

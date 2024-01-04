@@ -15,6 +15,9 @@ status_choices = (
         )
 
 class Ticket(models.Model):
+    priority_choices = (
+        ('low', 'Low'), ('normal', 'Normal'), ('high', 'High'))
+    
     ticket_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     person_name = models.CharField(max_length=50)
     person_email = models.EmailField(max_length=100)
@@ -22,10 +25,7 @@ class Ticket(models.Model):
     date = models.DateTimeField(auto_now=True)
     message = models.TextField()
     status = models.CharField(max_length=28,choices=status_choices)
-    priority = models.CharField(max_length=12, choices=(
-        ('low', 'Low'), ('normal', 'Normal'), ('high', 'High')),
-        default='Normal'
-    )
+    priority = models.CharField(max_length=12, default = 'normal' )
     reply_message = models.TextField(null=True, blank=True)
     # datetime_reply = models.DateTimeField(auto_now=True)
     replied_by = models.ForeignKey(Group, on_delete=models.CASCADE, null =True,blank=True, default = None)

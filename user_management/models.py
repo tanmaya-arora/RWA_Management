@@ -71,3 +71,7 @@ class Family(models.Model):
 
     def __str__(self):
         return f"{self.fname} {self.lname}"
+    class Meta:
+        verbose_name = "Family Member"
+        verbose_name_plural="Family Members"
+        

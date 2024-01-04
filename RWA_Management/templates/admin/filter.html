@@ -1,0 +1,16 @@
+{% load static i18n %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/forms.css" %}">
+{% endblock %}
+
+<div class="filter_panel">
+    <div class="d-flex align-items-center">
+        <span class="h6" style="white-space: nowrap;margin-right: 10px">{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}  </span>
+        <select onchange="location = this.value;"style = "margin-right:10px ">
+            {% for choice in choices %}
+                <option value="{{ choice.query_string|iriencode }}" {% if choice.selected %}selected{% endif %}>{{ choice.display }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

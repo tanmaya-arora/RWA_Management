@@ -2,9 +2,14 @@ from django.contrib import admin
 from support.models import Ticket
 from django.utils.html import format_html
 from simple_history.admin import SimpleHistoryAdmin
-
+from django import forms
+from django.contrib.auth.models import Group
     # Register your models here.    
+    
+class TicketAdminForms(forms.ModelForm):
+    replied_by = forms.ModelChoiceField(queryset= Group.objects.all())
 class TicketAdmin(SimpleHistoryAdmin):
+    form = TicketAdminForms
     list_display= ('ticket_colored', 'priority_colored','name_colored','color_status','check_status','formatted_date')
     list_filter = (
         ('status'),
@@ -13,9 +18,10 @@ class TicketAdmin(SimpleHistoryAdmin):
     search_fields = ('person_name','ticket_id')
     list_per_page = 5
     actions = ['mark_as_flagged']
-    readonly_fields = ('person_name','person_email','phone_no','priority','message','date')    
+    readonly_fields = ('person_name','person_email','priority','phone_no','message','date')  
     history_list_display = ["status"]
-
+    
+    change_form_template = 'admin/support/ticket.html'
 
     # object_history_template ='admin/support/object_history.html'
     # ordering = ("person_name", "person_email", "contact_no")  
@@ -34,7 +40,6 @@ class TicketAdmin(SimpleHistoryAdmin):
             ),
         }),
     )
-    change_form_template = 'admin/support/change_form.html'   
 
     def field_format(self,obj,fields):
          return obj.fields('<div class="d-flex"></div>')

@@ -47,7 +47,7 @@ def add_cash_or_bank_payment(request):
                 bank_acname=data_dict['bankname'],
                 branch_name = data_dict['branch_name'], 
                 bank_acnumber=data_dict['bank_ac_no'],
-                payment_method="Bank Transfer"
+                payment_method="Bank Transfer",
             )
             serializer = PaymentSerializer(payment, many=False)
             response['info'] = f"Payment of Rs.{data_dict['amount']} done successfully via Bank Transfer"
