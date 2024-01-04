@@ -10,7 +10,6 @@ class ProductStockAdminForms(forms.ModelForm):
 class ProductStockAdmin(admin.ModelAdmin):
     form = ProductStockAdminForms
     list_display = ('product', 'quantity')
-    search_fields = [('product')]
     list_per_page = 5
     
 admin.site.register(ProductStock, ProductStockAdmin)
@@ -23,7 +22,7 @@ class SaleHistoryAdmin(admin.ModelAdmin):
     list_display = ('user','package','payment', 'date','quantity')
     list_per_page = 5
     list_filter = ('package',)
-    search_fields = ('package',)
+    search_fields = ('package__name','user__username')
     def has_add_permission(self, request):
         return False
     def has_change_permission(self, request, obj=None):
@@ -37,7 +36,7 @@ class PaymentHistoryAdminForms(forms.ModelForm):
 class PaymentHistoryAdmin(admin.ModelAdmin):
     form = PaymentHistoryAdminForms
     list_display = ('user','amount','payment_method','bank_acname','bank_acnumber','payment_status','payment_date')
-    search_fields = ['customer']
+    search_fields = ['amount', 'payment_method', 'bank_acname', 'bank_acnumber', 'user__username']
     def has_add_permission(self, request):
         return False
     def has_change_permission(self, request, obj=None):

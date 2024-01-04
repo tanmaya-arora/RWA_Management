@@ -77,7 +77,7 @@ class OrderAdmin(admin.ModelAdmin):
     form = OrderAdminForm
     list_display = ('user','package','quantity')
     list_filter = [('package')]
-    search_fields =('package','user')
+    search_fields =('package__name','user__username')
     list_per_page = 5
     readonly_fields = ['date']
     

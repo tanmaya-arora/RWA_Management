@@ -54,7 +54,6 @@
         </div>
     {% endblock %}
 {% endif %}
-
 {% block content %}
     <div class="table-settings mt-5 mb-4 ms-4 d-flex flex-row align-items-center justify-content-between">
         <!-- <div class="row align-items-center justify-content-between"> -->
@@ -63,9 +62,9 @@
                         <!-- <div class="card-header filter_card_header"> -->
                             
                         <!-- </div> -->
-                        <div class="p-2{% if cl.has_filters %} card card-body d-flex flex-row align-items-center justify-content-around{% else %}d-none{% endif %} none">
+                        <div class="p-2{% if cl.has_filters %} card card-body flex-row align-items-center justify-content-around{% else %}d-none{% endif %} none">
                             {% block search %}
-                                {% search_form cl %}
+                                {% search_form cl %}    
                             {% endblock %}
                             {% if cl.has_filters %}
                                 {% block filters %}
@@ -73,6 +72,11 @@
                                     {% for spec in cl.filter_specs %}
                                         {% admin_list_filter cl spec %}
                                     {% endfor %}
+                                    <button style="border-radius: 10px;background-color: #10B981;">
+                                        <a href="?" style="color: white;">
+                                            clear
+                                        </a>
+                                    </button>
                                 {% endblock %}
                             {% endif %}
                         </div>
