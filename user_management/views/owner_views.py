@@ -144,22 +144,42 @@ def register_member(request):
             username=email,
             email=email,
             password=make_password(data_dict['password'])
-        )    
-
-        member = Owner.objects.create(
-            user=user, 
-            fname=data_dict['first_name'],
-            lname=data_dict['last_name'],
-            gender=data_dict['gender'],
-            email=email,
-            phone_no=data_dict['phone'],
-            date_of_birth=data_dict['dob'],
-            res_hno=hno,
-            res_area=data_dict['area'],
-            res_city=data_dict['city'],
-            res_state=data_dict['state'],
-            res_country=data_dict['country'],
         )
+
+        if 'anniversary_date' in data_dict:
+            member = Owner.objects.create(
+                user=user,
+                fname=data_dict['first_name'],
+                lname=data_dict['last_name'],
+                gender=data_dict['gender'],
+                email=email,
+                phone_no=data_dict['phone'],
+                date_of_birth=data_dict['dob'],
+                aniversary_date=data_dict['anniversary_date'],
+                marital_status=data_dict['marriedCheck'],
+                res_hno=hno,
+                res_area=data_dict['area'],
+                res_city=data_dict['city'],
+                res_state=data_dict['state'],
+                res_country=data_dict['country'],
+            )    
+
+        else:
+            member = Owner.objects.create(
+                user=user, 
+                fname=data_dict['first_name'],
+                lname=data_dict['last_name'],
+                gender=data_dict['gender'],
+                email=email,
+                phone_no=data_dict['phone'],
+                date_of_birth=data_dict['dob'],
+                marital_status=data_dict['marriedCheck'],
+                res_hno=hno,
+                res_area=data_dict['area'],
+                res_city=data_dict['city'],
+                res_state=data_dict['state'],
+                res_country=data_dict['country'],
+            )
 
         response_data = {
             "message": "User registered successfully. Please check your email for verification."
