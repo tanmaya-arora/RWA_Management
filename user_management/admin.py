@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http.request import HttpRequest
 from user_management.models import Owner, Tenant, Family
 from django.utils.html import format_html
 from django import forms
@@ -72,6 +73,8 @@ class FamilyMemberAdmin(admin.ModelAdmin):
      list_per_page = 5
      search_fields = ('family_head__username','fname','gender')
 
+     def has_add_permission(self, request):
+          return True
      class Media:
           js = ['/static/files/js/family_admin.js']
 admin.site.register(Family, FamilyMemberAdmin)

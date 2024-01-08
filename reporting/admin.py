@@ -21,7 +21,7 @@ class SaleHistoryAdmin(admin.ModelAdmin):
     form = SaleHistoryAdminForm
     list_display = ('user','package','payment', 'date','quantity')
     list_per_page = 5
-    list_filter = ('package',)
+    list_filter = ('package','date')
     search_fields = ('package__name','user__username')
     def has_add_permission(self, request):
         return False
@@ -37,10 +37,13 @@ class PaymentHistoryAdmin(admin.ModelAdmin):
     form = PaymentHistoryAdminForms
     list_display = ('user','amount','payment_method','bank_acname','bank_acnumber','payment_status','payment_date')
     search_fields = ['amount', 'payment_method', 'bank_acname', 'bank_acnumber', 'user__username']
+    list_filter = ['payment_method','payment_status','payment_date']
+    
     def has_add_permission(self, request):
         return False
     def has_change_permission(self, request, obj=None):
         return False
     def has_delete_permission(self, request,obj = None):
         return False
+
 admin.site.register(PaymentHistory, PaymentHistoryAdmin)

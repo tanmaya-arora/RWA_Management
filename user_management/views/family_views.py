@@ -28,7 +28,7 @@ def get_sepecific_family(request,pk):
             return Response(message, status=status.HTTP_404_NOT_FOUND)
 
     except Family.DoesNotExist:
-        message = {'error': 'Member not found'}
+        message = {'error': 'No Family Member registered for this user'}
         return Response(message, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
@@ -46,9 +46,6 @@ def register_family_member(request):
     if 'dob' not in data_dict:
         data_dict['dob'] = date.today()
 
-    if 'anniversary_date' not in data_dict:
-        data_dict['anniversary_date'] = date.today()
-
     if ' ' in data_dict['first_name']:
         splitname = data_dict['first_name'].split(' ')
         data_dict['first_name'] = splitname[0]
@@ -57,16 +54,28 @@ def register_family_member(request):
     if not 'last_name' in data_dict:
         data_dict['last_name'] = ''
     
-    familymember = Family.objects.create(
-        gender=data_dict['gender'],
-        date_of_birth=data_dict['dob'],
-        relation=data_dict['relation'],
-        fname=data_dict['first_name'],
-        lname=data_dict['last_name'],
-        aniversary_date=data_dict['anniversary_date'],
-        marital_status=data_dict['marriedCheck'],
-        family_head=user
-    )
+    if 'aniversary_date' in data_dict:    
+        familymember = Family.objects.create(
+            gender=data_dict['gender'],
+            date_of_birth=data_dict['dob'],
+            relation=data_dict['relation'],
+            fname=data_dict['first_name'],
+            lname=data_dict['last_name'],
+            aniversary_date=data_dict['aniversary_date'],
+            marital_status=data_dict['marriedCheck'],
+            family_head=user
+        )
+    else:
+        familymember = Family.objects.create(
+            gender=data_dict['gender'],
+            date_of_birth=data_dict['dob'],
+            relation=data_dict['relation'],
+            fname=data_dict['first_name'],
+            lname=data_dict['last_name'],
+            marital_status=data_dict['marriedCheck'],
+            family_head=user
+        )
+        
 
     serializer = FamilyMemberSerializer(familymember)
     message = {

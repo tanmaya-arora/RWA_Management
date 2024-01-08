@@ -16,8 +16,8 @@ class SaleHistory(Order):
 
     class Meta: 
         proxy = True
-        verbose_name = 'Sale History'
-        verbose_name_plural = 'Sale Histories'
+        verbose_name = 'Product Sale History'
+        verbose_name_plural = 'Product Sales History'
 
 class PaymentHistory(Payment):
     # customer = models.ForeignKey(User, on_delete= models.CASCADE)
@@ -25,5 +25,5 @@ class PaymentHistory(Payment):
     
     class Meta:
         proxy = True
-        verbose_name = 'Payment History'
-        verbose_name_plural = 'Payment Histories'
+        verbose_name = 'Financial Summary'
+        verbose_name_plural = 'Financial Summaries'

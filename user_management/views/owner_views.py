@@ -182,7 +182,7 @@ def register_member(request):
             )
 
         response_data = {
-            "message": "User registered successfully. Please check your email for verification."
+            "message": "User registered successfully."
         }
         
         return Response(response_data, status=status.HTTP_200_OK)
