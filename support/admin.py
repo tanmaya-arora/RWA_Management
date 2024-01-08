@@ -43,7 +43,8 @@ class TicketAdmin(SimpleHistoryAdmin):
 
     def field_format(self,obj,fields):
          return obj.fields('<div class="d-flex"></div>')
-         
+    def has_add_permission(self, request):
+        return False
 
     def formatted_date(self, obj):
         return obj.date.strftime("%d-%m-%Y  %H:%M")  

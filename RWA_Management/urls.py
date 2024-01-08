@@ -14,9 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -39,10 +41,14 @@ urlpatterns = [
     path('api/states/', include('internal.urls.state_urls')),
     path('api/users/', include('internal.urls.user_urls')),
     path('api/sale/',include('reporting.urls.sale_history_urls')),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name=os.path.join('admin', 'auth', 'user', 'forgot-pass.html')),name='admin_password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='admin_password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='admin_password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='admin_password_reset_complete'),
     path('token/', 
           jwt_views.TokenObtainPairView.as_view(), 
           name ='token_obtain_pair'),
      path('token/refresh/', 
           jwt_views.TokenRefreshView.as_view(), 
-          name ='token_refresh')
+          name ='token_refresh')    
 ]

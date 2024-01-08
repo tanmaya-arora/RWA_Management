@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http.request import HttpRequest
 
 from reporting.models import ProductStock
 from .models import Chat, Broadcast, Committee, Country, State, City, Society, Meeting, Payment, Package, Package_Category, Package_attributes, Cart, Event, Order
@@ -80,6 +81,9 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields =('package__name','user__username')
     list_per_page = 5
     readonly_fields = ['date']
+    
+    def has_add_permission(self,request):
+        return False 
     
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)

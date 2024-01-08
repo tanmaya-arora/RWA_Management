@@ -50,7 +50,7 @@
             <!-- End of Form -->
             <div class="form-group">
               <!-- Form -->
-              <div class="form-group mb-5">
+              <div class="form-group mb-4 ">
                 <label for="password">{{ form.password.label }}</label>
                 <div class="input-group">
                   <span class="input-group-text" id="basic-addon2">
@@ -64,9 +64,12 @@
                   <input type="password" class="form-control" placeholder="Password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}">
                 </div>
               </div>
+              <div class="d-grid justify-content-end mb-5 ">
+                <a href="{% url 'admin_password_reset' %}" class="text-muted text-decoration-none">Forgot Password</a>
+              </div>
               <!-- End of Form -->
             </div>
-            <div class="d-grid mb-5">
+            <div class="d-grid mb-4 ">
               <button type="submit" class="btn btn-gray-800">Sign in</button>
             </div>
           </form>

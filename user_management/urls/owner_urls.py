@@ -1,10 +1,10 @@
 from django.urls import path
-from django.contrib.auth.views import (
-    PasswordResetConfirmView,
-    PasswordResetCompleteView,
-    PasswordResetDoneView,
-    PasswordResetView
-)
+# from django.contrib.auth.views import (
+#     PasswordResetConfirmView,
+#     PasswordResetCompleteView,
+#     PasswordResetDoneView,
+#     PasswordResetView
+# )
 from user_management.views import owner_views as views
 
 urlpatterns = [
@@ -16,8 +16,8 @@ urlpatterns = [
     path('login/', views.login_member, name='login-member'),
     path('reset/', views.reset_password, name='reset-password'),
     # path('send-email/', views.send_email_to_client, name='send-email'),
-    path('password-reset/', PasswordResetView.as_view(template_name='password_reset.html'), name='password_reset'),
-    path('password-reset-done/', PasswordResetDoneView.as_view(template_name='password_reset_done.html'), name='password_reset_done'),
-    path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name='password_reset_confirm'),
-    path('password-reset-complete/', PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
+    # path('password-reset/', PasswordResetView.as_view(template_name='password_reset.html'), name='password_reset'),
+    # path('password-reset-done/', PasswordResetDoneView.as_view(template_name='password_reset_done.html'), name='password_reset_done'),
+    # path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name='password_reset_confirm'),
+    # path('password-reset-complete/', PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
 ]
