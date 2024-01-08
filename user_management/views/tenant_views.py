@@ -172,7 +172,8 @@ def register_tenant(request):
         if not owner:
             return Response({"error":"owner with this email doesnot exists"},status=status.HTTP_404_NOT_FOUND)
 
-        tenant = Tenant.objects.create(
+        if 'anniversary_date' in data_dict:
+            tenant = Tenant.objects.create(
             user=user, 
             fname=data_dict['first_name'],
             lname=data_dict['last_name'],
@@ -181,6 +182,26 @@ def register_tenant(request):
             owner_email=owner.email,
             phone_no=data_dict['phone'],
             date_of_birth=data_dict['dob'],
+            aniversary_date=data_dict['anniversary_date'],
+            marital_status=data_dict['marriedCheck'],
+            res_hno=owner.res_hno,
+            res_area=data_dict['area'],
+            res_city=data_dict['city'],
+            res_state=data_dict['state'],
+            res_country=data_dict['country'],
+        )
+        
+        else:
+            tenant = Tenant.objects.create(
+            user=user, 
+            fname=data_dict['first_name'],
+            lname=data_dict['last_name'],
+            gender=data_dict['gender'],
+            email=email,
+            owner_email=owner.email,
+            phone_no=data_dict['phone'],
+            date_of_birth=data_dict['dob'],
+            marital_status=data_dict['marriedCheck'],
             res_hno=owner.res_hno,
             res_area=data_dict['area'],
             res_city=data_dict['city'],
